@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  app:
+    restart: always
+    build: .
+    ports:
+      - "8070:8070"
+    environment:
+      DATABASE_URL: 'jdbc:postgresql://online_db:5432/OnlineStore'
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+    depends_on:
+      - online_db
+
+  online_db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: OnlineStore
+    volumes:
+      - online_db:/var/lib/postgresql/data
+
+volumes:
+  online_db: {}
+  app: {}
