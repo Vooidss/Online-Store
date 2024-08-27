@@ -1,0 +1,20 @@
+.main{
+  display: grid;
+  grid-template-columns: 70% 30%;
+
+  &__image{
+    border: 2px salmon solid;
+  }
+
+  &__info{
+    border: 2px salmon solid;
+    display: grid;
+    grid-template-row: 100px 70%;
+
+    &__name{
+      justify-self: center;
+      align-self: center;
+    }
+  }
+
+}
