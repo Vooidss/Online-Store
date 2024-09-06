@@ -1,5 +1,6 @@
 package com.onlinestore.backend.Services;
 
+import com.onlinestore.backend.Models.Short;
 import com.onlinestore.backend.Models.TShirt;
 import com.onlinestore.backend.Repositories.TShirtRepositories;
 import lombok.AllArgsConstructor;
@@ -16,12 +17,23 @@ public class TShirtService {
 
     public Map<String,Object> findAll(){
         return Map.of(
-                "shorts", tShirtRepositories.findAll(),
+                "tshirts", tShirtRepositories.findAll(),
                 "isEmpty", tShirtRepositories.findAll().isEmpty()
         );
     }
 
-    public Optional<TShirt> findById(int id) {
-        return tShirtRepositories.findById(id);
+    public Map<String,Optional<TShirt>> findById(int id) {
+        return Map.of("products",tShirtRepositories.findById(id));
+    }
+
+    public TShirt setShort(TShirt tShirt){
+        tShirtRepositories.save(tShirt); return tShirt;
+    }
+
+    public Optional<TShirt> deleteShort(int id){
+        Optional<TShirt> deleteShort = findById(id).get("products");
+
+        tShirtRepositories.deleteById(id);
+        return deleteShort;
     }
 }

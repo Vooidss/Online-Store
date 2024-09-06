@@ -22,7 +22,7 @@ export default class Short extends Component {
                 (result) => {
                     this.setState({
                         isLoading: true,
-                        items: result.sneakers,
+                        items: result.shorts,
                         isEmpty: result.isEmpty
                     });
                 });
@@ -49,6 +49,7 @@ export default class Short extends Component {
                 <h1>Пусто</h1>
             )
         }
+        console.log(items);
 
         return (
             items.map((short) =>{

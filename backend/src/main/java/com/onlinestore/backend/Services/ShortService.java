@@ -21,7 +21,20 @@ public class ShortService {
                 "isEmpty", shortRepositories.findAll().isEmpty()
         );
     }
-    public Optional<Short> findById(int id) {
-        return shortRepositories.findById(id);
+    public Map<String,Optional<Short>> findById(int id) {
+        return Map.of("products",shortRepositories.findById(id));
     }
+
+    public Short setShort(Short shorts){
+        shortRepositories.save(shorts);
+        return shorts;
+    }
+
+    public Optional<Short> deleteShort(int id){
+        Optional<Short> deleteShort = findById(id).get("products");
+
+        shortRepositories.deleteById(id);
+        return deleteShort;
+    }
+
 }

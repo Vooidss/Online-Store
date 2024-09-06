@@ -1,5 +1,6 @@
 package com.onlinestore.backend.Services;
 
+import com.onlinestore.backend.Models.Short;
 import com.onlinestore.backend.Models.Sneaker;
 import com.onlinestore.backend.Repositories.SneakerRepositories;
 import lombok.AllArgsConstructor;
@@ -16,11 +17,25 @@ public class SneakerService {
 
     public Map<String,Object> findAll(){
         return Map.of(
-                "shorts", sneakerRepositories.findAll(),
+                "sneakers", sneakerRepositories.findAll(),
                 "isEmpty", sneakerRepositories.findAll().isEmpty()
         );
     }
-    public Optional<Sneaker> findById(int id) {
-        return sneakerRepositories.findById(id);
+    public Map<String,Optional<Sneaker>> findById(int id) {
+        return Map.of("products",sneakerRepositories.findById(id));
     }
+
+
+    public Sneaker setShort(Sneaker sneaker){
+        sneakerRepositories.save(sneaker);
+        return sneaker;
+    }
+
+    public Optional<Sneaker> deleteShort(int id){
+        Optional<Sneaker> deleteShort = findById(id).get("products");
+
+        sneakerRepositories.deleteById(id);
+        return deleteShort;
+    }
+
 }

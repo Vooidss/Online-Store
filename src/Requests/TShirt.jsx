@@ -21,7 +21,7 @@ export default class TShirt extends Component {
                 (result) => {
                     this.setState({
                         isLoading: true,
-                        items: result.sneakers,
+                        items: result.tshirts,
                         isEmpty : result.isEmpty
                     });
                 });

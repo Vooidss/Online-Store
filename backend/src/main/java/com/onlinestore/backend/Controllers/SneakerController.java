@@ -1,12 +1,15 @@
 package com.onlinestore.backend.Controllers;
 
 
+import com.onlinestore.backend.Models.Short;
+import com.onlinestore.backend.Models.Sneaker;
 import com.onlinestore.backend.Services.SneakerService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/sneaker/v1")
@@ -21,8 +24,19 @@ public class SneakerController {
     }
 
     @GetMapping("/{id}")
-    private Map<String,Object> getSneaker(@PathVariable("id") int id){
-        return Map.of("products",sneakerService.findById(id));
+    private Map<String,Optional<Sneaker>> getSneaker(@PathVariable("id") int id){
+        return sneakerService.findById(id);
     }
+
+    @PostMapping()
+    private Sneaker setShort(@RequestBody Sneaker sneaker){
+        return sneakerService.setShort(sneaker);
+    }
+
+    @DeleteMapping("/{id}")
+    private Optional<Sneaker> deleteShort(@PathVariable("id") int id){
+        return sneakerService.deleteShort(id);
+    }
+
 
 }

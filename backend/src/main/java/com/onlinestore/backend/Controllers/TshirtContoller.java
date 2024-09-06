@@ -1,5 +1,6 @@
 package com.onlinestore.backend.Controllers;
 
+import com.onlinestore.backend.Models.Sneaker;
 import com.onlinestore.backend.Models.TShirt;
 import com.onlinestore.backend.Services.TShirtService;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/tshirt/v1")
@@ -21,8 +23,18 @@ public class TshirtContoller {
     }
 
     @GetMapping("/{id}")
-    private Map<String,Object> getSneaker(@PathVariable("id") int id){
-        return Map.of("products",tShirtService.findById(id));
+    private Map<String, Optional<TShirt>> getSneaker(@PathVariable("id") int id){
+        return tShirtService.findById(id);
+    }
+
+    @PostMapping()
+    private TShirt setShort(@RequestBody TShirt tShirt){
+        return tShirtService.setShort(tShirt);
+    }
+
+    @DeleteMapping("/{id}")
+    private Optional<TShirt> deleteShort(@PathVariable("id") int id){
+        return tShirtService.deleteShort(id);
     }
 
 }

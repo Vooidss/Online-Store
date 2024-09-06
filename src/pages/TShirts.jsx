@@ -1,9 +1,17 @@
 import React from 'react';
+import {useNavigate} from "react-router-dom";
 
 export default function TShirts(props) {
+    const navigate = useNavigate();
+    const type = "tshirt"
+
+    const handleClick = () => {
+        navigate(`/${type}/${props.tshirt.id}`);
+    };
+
         return (
             <div className="section__item">
-                <div className="section__item__components">
+                <div className="section__item__components" onClick={() => handleClick}>
                     <div className="section__item__components__image">
                         <img className="section__item__components__image__self" src={props.tshirt.img}
                              alt={"sad"}/>

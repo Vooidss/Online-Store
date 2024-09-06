@@ -1,7 +1,7 @@
 FROM maven:3.9.8-eclipse-temurin-21 as builder
 WORKDIR /opt/app
 COPY mvnw pom.xml ./
-COPY ./src ./src
+COPY products/src/src ./src
 RUN mvn clean install -DskipTests
 
 FROM eclipse-temurin:21
