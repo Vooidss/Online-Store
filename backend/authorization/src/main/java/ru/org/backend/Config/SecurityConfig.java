@@ -1,5 +1,6 @@
 package ru.org.backend.Config;
 
+import jakarta.servlet.Filter;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
@@ -13,21 +14,26 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.org.backend.Services.MyUserDetailService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.org.backend.Services.UserService;
 import ru.org.backend.user.Role;
 
 @Configuration
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private final MyUserDetailService userDetailService;
-
+    private final UserDetailsService userDetailService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserService userService;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
@@ -38,13 +44,19 @@ public class SecurityConfig {
                     registry.requestMatchers("/user/**").hasRole(Role.USER.toString());
                     registry.anyRequest().authenticated();
                 })
+                .sessionManagement( sessian -> {
+                    sessian.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                })
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .build();
     }
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return userDetailService;
+        return login -> (UserDetails) userService.findByLogin(login)
+                .orElseThrow(() -> new UsernameNotFoundException("Такой пользователь не найден"));
     }
 
     @Bean
