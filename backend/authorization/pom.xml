@@ -11,7 +11,7 @@
 
     <groupId>ru.org.backend</groupId>
     <artifactId>authorization</artifactId>
-
+ 
     <properties>
         <spring-security.version>6.3.3</spring-security.version>
         <jjwt.version>0.12.6</jjwt.version>
