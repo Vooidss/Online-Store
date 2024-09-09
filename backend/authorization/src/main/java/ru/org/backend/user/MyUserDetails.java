@@ -1,6 +1,7 @@
 package ru.org.backend.user;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -10,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @AllArgsConstructor
+@Builder
 public class MyUserDetails implements UserDetails {
 
     private final MyUser user;

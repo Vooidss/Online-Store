@@ -17,18 +17,6 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepositories userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public MyUser save(MyUser user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if(user.getRole() == null) {
-            user.setRole(Role.USER);
-        }
-        System.out.println(user);
-        userRepository.save(user);
-
-        return user;
-    }
 
     public Optional<MyUser> findById(int id){
         return userRepository.findById(id);
@@ -36,9 +24,6 @@ public class UserService {
 
     public Optional<MyUser> findByName(String name){
         return userRepository.findByName(name);
-    }
-    public Optional<MyUser> findByLogin(String login){
-        return userRepository.findByLogin(login);
     }
 
     public List<MyUser> findAll(){

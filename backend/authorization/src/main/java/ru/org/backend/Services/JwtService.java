@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.org.backend.user.MyUser;
 
+import java.io.IOException;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class JwtService {
      * @param token токен
      * @return имя пользователя
      */
-    public String extractUserName(String token) {
+    public String extractLogin(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -47,9 +48,8 @@ public class JwtService {
         return generateTokenWithExtraClaims(claims, userDetails);
     }
 
-
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String login = extractUserName(token);
+        final String login = extractLogin(token);
         return (login.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 

@@ -22,9 +22,9 @@ public class RegistrationService {
 
         var user = MyUser.builder()
                 .login(request.getLogin())
-                .password(request.getPassword())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .name(request.getName())
-                .secondname(passwordEncoder.encode(request.getPassword()))
+                .secondname(request.getSecondName())
                 .email(request.getEmail())
                 .age(request.getAge())
                 .role(request.getRole())
@@ -38,7 +38,6 @@ public class RegistrationService {
         userRepository.save(user);
 
         var jwt = jwtService.generateToken(new MyUserDetails(user));
-
 
         return JwtAuthenticationResponse
                 .builder()
