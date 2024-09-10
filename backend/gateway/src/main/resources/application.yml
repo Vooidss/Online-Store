@@ -1,0 +1,27 @@
+spring:
+
+  application:
+    name: gateway
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id : products
+          uri : https://localhost:8070
+          predicates:
+            - Path = /sneaker/v1/**
+        - id: authentication
+          uri: https://localhost:8060
+
+eureka:
+  client:
+    register-with-eureka: false
+
+server:
+  port: 8090
