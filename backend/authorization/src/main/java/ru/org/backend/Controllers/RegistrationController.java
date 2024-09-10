@@ -9,6 +9,8 @@ import ru.org.backend.Services.RegistrationService;
 import ru.org.backend.Services.UserService;
 import ru.org.backend.user.MyUser;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/registration")
 @AllArgsConstructor

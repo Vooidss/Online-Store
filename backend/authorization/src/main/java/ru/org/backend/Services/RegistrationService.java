@@ -15,10 +15,15 @@ import ru.org.backend.user.Role;
 public class RegistrationService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepositories userRepository;
+    private final UserService userService;
     private final JwtService jwtService;
 
     public JwtAuthenticationResponse registration(RegisterRequest request){
+
+        if(userService.getByLogin(request.getLogin()) != null || userService.getByEmail(request.getEmail()) != null){
+            throw new RuntimeException("Такой пользователь уже существует");
+        }
+
 
         var user = MyUser.builder()
                 .login(request.getLogin())
@@ -35,7 +40,7 @@ public class RegistrationService {
         }
 
         System.out.println(user);
-        userRepository.save(user);
+        userService.save(user);
 
         var jwt = jwtService.generateToken(new MyUserDetails(user));
 

@@ -28,7 +28,7 @@ public class JwtService {
      * @param token токен
      * @return имя пользователя
      */
-    public String extractLogin(String token) {
+    public String extractLogin(String token) throws RuntimeException {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -48,12 +48,12 @@ public class JwtService {
         return generateTokenWithExtraClaims(claims, userDetails);
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token, UserDetails userDetails) throws RuntimeException {
         final String login = extractLogin(token);
         return (login.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) throws RuntimeException {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
@@ -102,7 +102,7 @@ public class JwtService {
      * @param token токен
      * @return данные
      */
-    private Claims extractAllClaims(String token) {
+    private Claims extractAllClaims(String token) throws RuntimeException {
         return Jwts
                 .parser()
                 .setSigningKey(getSigningKey())

@@ -17,6 +17,7 @@ import ru.org.backend.Services.JwtService;
 import ru.org.backend.Services.MyUserDetailService;
 
 import java.io.IOException;
+import java.security.SignatureException;
 
 @Component
 @RequiredArgsConstructor
@@ -31,32 +32,45 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NotNull HttpServletResponse response,
             @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
+
+        final String path = request.getRequestURI();
+
+
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String userLogin;
+        String userLogin = "";
 
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+        if(authHeader == null || !authHeader.startsWith("Bearer ") || path.startsWith("/registration") || path.startsWith("/authentication")){
             filterChain.doFilter(request,response );
             return;
         }
 
         jwt = authHeader.substring(7);
-        userLogin = jwtService.extractLogin(jwt);
 
+        try {
+            userLogin = jwtService.extractLogin(jwt);
+        }catch (RuntimeException e){
+            System.out.println("Неверный токен");
+            filterChain.doFilter(request,response );
+            return;
+        }
         if(userLogin != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailService.loadUserByUsername(userLogin);
 
-            if(jwtService.isTokenValid(jwt,userDetails)){
-                UsernamePasswordAuthenticationToken authToken  = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
+                if(jwtService.isTokenValid(jwt,userDetails)){
+                    UsernamePasswordAuthenticationToken authToken  = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }else{
+                    filterChain.doFilter(request,response);
+                    throw new RuntimeException("Проблема с JWT токеном");
+                }
         }
         filterChain.doFilter(request,response);
     }

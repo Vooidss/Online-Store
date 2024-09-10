@@ -26,11 +26,20 @@ public class UserService {
         return userRepository.findByName(name);
     }
 
+    public void save(MyUser user){
+        userRepository.save(user);
+    }
+
     public List<MyUser> findAll(){
         return userRepository.findAll();
     }
     public MyUser getByLogin(String login) {
         return userRepository.findByLogin(login)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+    }
+
+    public MyUser getByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 
