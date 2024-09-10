@@ -13,15 +13,18 @@ spring:
           enabled: true
       routes:
         - id : products
-          uri : https://localhost:8070
+          uri : lb://PRODUCTS
           predicates:
-            - Path = /sneaker/v1/**
+            - Path=/sneaker/v1/**
         - id: authentication
-          uri: https://localhost:8060
+          uri: lb://AUTHORIZATION
+          predicates:
+            - Path=/login/**
 
 eureka:
   client:
-    register-with-eureka: false
+    register-with-eureka: true
+    fetch-registry: true
 
 server:
   port: 8090
