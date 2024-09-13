@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import Sneakers from "../pages/Sneakers";
 
 
-const url = "http://localhost:8070/sneaker/v1";
+const url = "http://localhost:8070/products/sneaker/v1";
 
 export default class Sneaker extends Component {
     constructor(props) {

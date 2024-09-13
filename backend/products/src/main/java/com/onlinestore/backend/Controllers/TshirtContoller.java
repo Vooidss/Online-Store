@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/tshirt/v1")
+@RequestMapping("/products/tshirt/v1")
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class TshirtContoller {

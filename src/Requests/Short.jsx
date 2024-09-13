@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Shorts from "../pages/Shorts";
 
-const url = "http://localhost:8070/short/v1";
+const url = "http://localhost:8070/products/short/v1";
 
 export default class Short extends Component {
     constructor(props) {

@@ -11,7 +11,7 @@ import ru.org.backend.Services.AuthenticationService;
 import ru.org.backend.Services.UserService;
 
 @RestController
-@RequestMapping("/authentication")
+@RequestMapping("/auth/authentication")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class AuthenticationController {

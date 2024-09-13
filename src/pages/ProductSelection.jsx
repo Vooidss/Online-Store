@@ -9,7 +9,7 @@ export default function ProductSelection(){
     console.log(id);
 
     useEffect(() => {
-        fetch(`http://localhost:8070/${products}/v1/${id}`)
+        fetch(`http://localhost:8070/products/${products}/v1/${id}`)
             .then(res => res.json())
             .then((response) => setProducts(response.products))
     }, [id, products]);

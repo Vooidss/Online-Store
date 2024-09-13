@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/sneaker/v1")
+@RequestMapping("/products/sneaker/v1")
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class SneakerController {

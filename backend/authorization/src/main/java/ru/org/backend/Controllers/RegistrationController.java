@@ -12,7 +12,7 @@ import ru.org.backend.user.MyUser;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/registration")
+@RequestMapping("/auth/registration")
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class RegistrationController {

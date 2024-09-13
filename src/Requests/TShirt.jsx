@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import TShirts from "../pages/TShirts";
 
-const url = "http://localhost:8070/tshirt/v1";
+const url = "http://localhost:8070/products/tshirt/v1";
 
 export default class TShirt extends Component {
     constructor(props) {
