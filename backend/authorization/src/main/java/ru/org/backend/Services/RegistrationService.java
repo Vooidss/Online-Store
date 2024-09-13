@@ -1,17 +1,21 @@
 package ru.org.backend.Services;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.org.backend.DTO.JwtAuthenticationResponse;
 import ru.org.backend.DTO.RegisterRequest;
-import ru.org.backend.Repositories.UserRepositories;
+import ru.org.backend.Exceptions.JwtGenerateTokenExceptions;
 import ru.org.backend.user.MyUser;
 import ru.org.backend.user.MyUserDetails;
 import ru.org.backend.user.Role;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RegistrationService {
 
     private final PasswordEncoder passwordEncoder;
@@ -20,11 +24,15 @@ public class RegistrationService {
 
     public JwtAuthenticationResponse registration(RegisterRequest request){
 
-        if(userService.getByLogin(request.getLogin()) != null || userService.getByEmail(request.getEmail()) != null){
-            throw new RuntimeException("Такой пользователь уже существует");
+        JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse();
+        String jwt = null;
+        String error = null;
+
+        if(request.getLogin() == null || request.getPassword() == null){
+            error = "Нет лоигина или пароля";
+            log.error(error);
+            return jwtResponse.setError(error);
         }
-
-
         var user = MyUser.builder()
                 .login(request.getLogin())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -39,15 +47,33 @@ public class RegistrationService {
             user.setRole(Role.USER);
         }
 
-        System.out.println(user);
-        userService.save(user);
 
-        var jwt = jwtService.generateToken(new MyUserDetails(user));
+        try {
+            userService.save(user);
+        }catch (ConstraintViolationException e){
+            error = e.getConstraintViolations().stream().toList().getFirst().getMessage();
+            log.error(error);
+            return jwtResponse.setError(error);
+        }catch (DataIntegrityViolationException e ){
+            error = e.getMostSpecificCause().getLocalizedMessage();
+            log.error(error);
+            return jwtResponse.setError(error);
+        }
+
+        //TODO: Доделать JwtGenerateTokenExceptions ( По желанию )
+        try{
+            jwt = jwtService.generateToken(new MyUserDetails(user));
+        }catch (JwtGenerateTokenExceptions e){
+            error = "Ошибка генерации токена";
+            log.error(error);
+            return jwtResponse.setError(error);
+        }
 
         return JwtAuthenticationResponse
                 .builder()
                 .token(jwt)
                 .build();
+
     }
 
 }

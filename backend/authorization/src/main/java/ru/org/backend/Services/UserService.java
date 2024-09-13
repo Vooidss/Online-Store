@@ -1,6 +1,10 @@
 package ru.org.backend.Services;
 
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.UnexpectedTypeException;
 import lombok.AllArgsConstructor;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService{
 
     private final UserRepositories userRepository;
 
@@ -26,7 +30,7 @@ public class UserService {
         return userRepository.findByName(name);
     }
 
-    public void save(MyUser user){
+    public void save(MyUser user) throws ConstraintViolationException, DataIntegrityViolationException, UnexpectedTypeException {
         userRepository.save(user);
     }
 

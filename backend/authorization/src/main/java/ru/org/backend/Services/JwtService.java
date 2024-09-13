@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ru.org.backend.Exceptions.JwtGenerateTokenExceptions;
 import ru.org.backend.user.MyUser;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class JwtService {
      * @param userDetails данные пользователя
      * @return токен
      */
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) throws JwtGenerateTokenExceptions {
         Map<String, Object> claims = new HashMap<>();
         if (userDetails instanceof MyUser customUserDetails) {
             claims.put("id", customUserDetails.getId());

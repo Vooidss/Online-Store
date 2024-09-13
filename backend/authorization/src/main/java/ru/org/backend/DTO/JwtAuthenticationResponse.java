@@ -14,4 +14,11 @@ import lombok.NoArgsConstructor;
 public class JwtAuthenticationResponse {
     @Schema(description = "Токен доступа", example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYyMjUwNj...")
     private String token;
+
+    private String error;
+
+    public JwtAuthenticationResponse setError(String error) {
+        this.error = error;
+        return this;
+    }
 }

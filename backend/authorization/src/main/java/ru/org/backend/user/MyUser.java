@@ -2,7 +2,7 @@ package ru.org.backend.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,10 +22,12 @@ public class MyUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "password")
+    @NotNull(message =  "Пароль должен присутствовать обязательно")
+    @Column(name = "password", nullable = false, unique = true)
     private String password;
 
-    @Column(name = "login", unique = true)
+    @NotNull(message =  "Логин должен присутствовать обязательно")
+    @Column(name = "login")
     private String login;
 
     @Column(name = "name")
