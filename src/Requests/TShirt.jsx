@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import TShirts from "../pages/TShirts";
+import Product from "../pages/Product";
 
-const url = "http://localhost:8070/products/tshirt/v1";
+const url = "http://localhost:8091/products/tshirt/v1";
 
 export default class TShirt extends Component {
     constructor(props) {
@@ -10,7 +10,7 @@ export default class TShirt extends Component {
         this.state = {
             items : [],
             isLoading: false,
-            isEmpty: false
+            error: false
         }
     }
 
@@ -21,21 +21,27 @@ export default class TShirt extends Component {
                 (result) => {
                     this.setState({
                         isLoading: true,
-                        items: result.tshirts,
-                        isEmpty : result.isEmpty
+                        items: result.tshirts
                     });
-                });
+                },
+                (error) => {
+                    this.setState({
+                        isLoading: true,
+                        error: true
+                    });
+                }
+            );
     }
 
 
     render() {
-        const {items, isLoading, isEmpty} = this.state;
+        const {items, isLoading, error} = this.state;
 
         console.log(items);
 
-        if(isEmpty){
+        if(error){
             return(
-                <h1>Товара пока нет</h1>
+                <h1>Ошибка</h1>
             )
         }
 
@@ -53,8 +59,8 @@ export default class TShirt extends Component {
 
 
         return (
-            items.map((thshirt) => {
-                return <TShirts key={thshirt.id} tshirt={thshirt}/>;})
+            items.map((thisProduct) =>{
+                return <Product key={thisProduct.id} thisProduct={thisProduct}/>})
         )
     }
 }

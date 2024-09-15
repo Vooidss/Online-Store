@@ -1,17 +1,16 @@
 import React, {Component} from "react";
-import Shorts from "../pages/Shorts";
+import Product from "../pages/Product";
 
-const url = "http://localhost:8070/products/short/v1";
+const url = "http://localhost:8091/products/short/v1";
 
 export default class Short extends Component {
     constructor(props) {
         super(props);
 
-
         this.state = {
             items : [],
             isLoading: false,
-            isEmpty: false
+            error: false
         }
     }
 
@@ -22,19 +21,25 @@ export default class Short extends Component {
                 (result) => {
                     this.setState({
                         isLoading: true,
-                        items: result.shorts,
-                        isEmpty: result.isEmpty
+                        items: result.shorts
                     });
-                });
+                },
+                (error) => {
+                    this.setState({
+                        isLoading: true,
+                        error: true
+                    });
+                }
+            );
     }
 
     render(){
-        const {items, isLoading,isEmpty} = this.state;
+        const {items, isLoading,error} = this.state;
         console.log(items);
 
-        if(isEmpty){
+        if(error){
             return(
-                <h1>Товара пока нет</h1>
+                <h1>Ошибка</h1>
             )
         }
 
@@ -49,11 +54,10 @@ export default class Short extends Component {
                 <h1>Пусто</h1>
             )
         }
-        console.log(items);
 
         return (
-            items.map((short) =>{
-                return <Shorts key={short.id} short={short}/>})
+            items.map((thisProduct) =>{
+                return <Product key={thisProduct.id} thisProduct={thisProduct}/>})
         )
     }
 
