@@ -31,6 +31,7 @@
 		<module>gateway</module>
 		<module>config-server</module>
 		<module>discovery</module>
+		<module>basket</module>
 	</modules>
 	<scm>
 		<connection/>

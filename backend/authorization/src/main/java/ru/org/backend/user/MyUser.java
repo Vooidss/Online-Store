@@ -46,8 +46,4 @@ public class MyUser {
     @Column(name = "email", unique = true)
     @Email
     private String email;
-
-    @Transient
-    private List<String> listProduct;
-
 }

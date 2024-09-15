@@ -9,8 +9,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>ru.org.backend</groupId>
-    <artifactId>products</artifactId>
+    <groupId>ru.org.basket</groupId>
+    <artifactId>basket</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -37,5 +37,4 @@
             <version>${spring-boot}</version>
         </dependency>
     </dependencies>
-
 </project>
