@@ -1,7 +1,7 @@
 package com.onlinestore.backend.Services;
 
 import com.onlinestore.backend.Models.Short;
-import com.onlinestore.backend.Models.TShirt;
+import com.onlinestore.backend.Models.ProductRequest;
 import com.onlinestore.backend.Repositories.TShirtRepositories;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,16 @@ public class TShirtService {
         );
     }
 
-    public Map<String,Optional<TShirt>> findById(int id) {
+    public Map<String,Optional<ProductRequest>> findById(int id) {
         return Map.of("products",tShirtRepositories.findById(id));
     }
 
-    public TShirt setShort(TShirt tShirt){
+    public ProductRequest setShort(ProductRequest tShirt){
         tShirtRepositories.save(tShirt); return tShirt;
     }
 
-    public Optional<TShirt> deleteShort(int id){
-        Optional<TShirt> deleteShort = findById(id).get("products");
+    public Optional<ProductRequest> deleteShort(int id){
+        Optional<ProductRequest> deleteShort = findById(id).get("products");
 
         tShirtRepositories.deleteById(id);
         return deleteShort;

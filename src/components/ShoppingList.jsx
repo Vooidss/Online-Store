@@ -1,8 +1,6 @@
 import React from "react";
-import Sneakers from "../Requests/Sneaker";
 import {BrowserRouter as Router,Routes, Route } from "react-router-dom";
-import TShirts from "../Requests/TShirt";
-import Shorts from "../Requests/Short";
+import ProductRequest from "../Requests/ProductRequest";
 
 class ShoppingList extends React.Component {
     render(){
@@ -13,9 +11,9 @@ class ShoppingList extends React.Component {
                         </div>
                         <div className = "section">
                             <Routes>
-                                <Route path="/Sneakers" element={<Sneakers/>}/>
-                                <Route path="/Shorts" element={<Shorts/>}/>
-                                <Route path="/TShirts" element={<TShirts/>}/>
+                                <Route path="/Sneakers" element={<ProductRequest  product={"sneakers"}/>}/>
+                                <Route path="/Shorts" element={<ProductRequest  product={"shorts"}/>}/>
+                                <Route path="/TShirts" element={<ProductRequest product={"tshirts"}/>}/>
                             </Routes>
                         </div>
                         <aside className="asside__main">

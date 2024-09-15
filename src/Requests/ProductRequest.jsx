@@ -1,9 +1,7 @@
 import React, {Component} from "react";
 import Product from "../pages/Product";
 
-const url = "http://localhost:8091/products/sneaker/v1";
-
-export default class Sneaker extends Component {
+export default class ProductRequest extends Component {
     constructor(props) {
         super(props);
 
@@ -15,13 +13,26 @@ export default class Sneaker extends Component {
     }
 
     componentDidMount() {
+        this.fetchData();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.product !== this.props.product) {
+            this.fetchData();
+        }
+    }
+
+    fetchData() {
+        const productName = this.props.product;
+
+        let url = `http://localhost:8091/products/${productName}/v1`;
         fetch(url)
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
                         isLoading: true,
-                        items: result.sneakers
+                        items: result[productName]
                     });
                 },
                 (error) => {
@@ -33,8 +44,11 @@ export default class Sneaker extends Component {
             );
     }
 
-    render(){
-        const {items, isLoading,error} = this.state;
+
+    render() {
+        const {items, isLoading, error} = this.state;
+
+        console.log(items);
 
         if(error){
             return(
