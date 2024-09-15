@@ -5,8 +5,6 @@ export default function ProductSelection(){
     const {products,id} = useParams();
     const [info, setProducts] = useState([]);
 
-    console.log(products);
-    console.log(id);
 
     useEffect(() => {
         fetch(`http://localhost:8091/products/${products}/v1/${id}`)

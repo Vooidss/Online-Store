@@ -6,7 +6,7 @@ import { BsBasket2Fill } from "react-icons/bs";
 export default function Product(props) {
 
     const navigate = useNavigate();
-    const type = "product"
+    const type = props.productName;
 
     const handleClick = () => {
         navigate(`/${type}/${props.thisProduct.id}`);

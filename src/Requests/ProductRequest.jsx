@@ -71,7 +71,7 @@ export default class ProductRequest extends Component {
 
         return (
             items.map((thisProduct) =>{
-                return <Product key={thisProduct.id} thisProduct={thisProduct}/>})
+                return <Product key={thisProduct.id} thisProduct={thisProduct} productName={this.props.product}/>})
         )
     }
 }

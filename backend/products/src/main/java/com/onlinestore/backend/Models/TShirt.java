@@ -7,7 +7,7 @@ import lombok.Getter;
 @Entity
 @Table(name = "tshirts")
 @Getter
-public class ProductRequest {
+public class TShirt {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
