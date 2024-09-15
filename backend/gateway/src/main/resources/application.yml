@@ -22,9 +22,10 @@ spring:
         - id: authentication
           uri: lb://AUTHORIZATION
           predicates:
-            - Path=/auth/**,/login/**
+            - Path=/auth/**,/login
           filters:
             - AddRequestHeader=Method, POST
+            - RewritePath=/auth/login, /login
 
 eureka:
   client:
@@ -32,4 +33,4 @@ eureka:
     fetch-registry: true
 
 server:
-  port: 8090
+  port: 8091

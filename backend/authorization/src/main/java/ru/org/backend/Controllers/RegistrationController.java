@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.org.backend.DTO.JwtAuthenticationResponse;
 import ru.org.backend.DTO.RegisterRequest;
 import ru.org.backend.Services.RegistrationService;
-import ru.org.backend.Services.UserService;
-import ru.org.backend.user.MyUser;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth/registration")
@@ -21,6 +18,11 @@ public class RegistrationController {
     @PostMapping("/user")
     public ResponseEntity<JwtAuthenticationResponse> createUser(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(registrationService.registration(request));
+    }
+
+    @GetMapping("/user")
+    public String avc(){
+        return "asd";
     }
 
 }

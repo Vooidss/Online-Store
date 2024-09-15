@@ -11,16 +11,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import ru.org.backend.Services.MyUserDetailService;
-import ru.org.backend.Services.UserService;
 import ru.org.backend.user.Role;
 
 @Configuration
@@ -35,8 +31,8 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/registration/**","/authentication/**","/products/**").permitAll();
-                    registry.requestMatchers("/admin/**","/user/**").hasRole(Role.ADMIN.toString());
+                    registry.requestMatchers("/auth/**","/products/**").permitAll();
+                    registry.requestMatchers("/admin/**").hasRole(Role.ADMIN.toString());
                     registry.requestMatchers("/user/**").hasRole(Role.USER.toString());
                     registry.anyRequest().authenticated();
                 })
