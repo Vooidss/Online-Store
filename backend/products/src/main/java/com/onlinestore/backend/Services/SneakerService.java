@@ -4,6 +4,7 @@ import com.onlinestore.backend.Models.Short;
 import com.onlinestore.backend.Models.Sneaker;
 import com.onlinestore.backend.Repositories.SneakerRepositories;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +16,14 @@ import java.util.Optional;
 public class SneakerService {
     private final SneakerRepositories sneakerRepositories;
 
+    @Cacheable(value = "sneaker", unless = "#result = null")
     public Map<String,Object> findAll(){
         return Map.of(
                 "sneakers", sneakerRepositories.findAll(),
                 "isEmpty", sneakerRepositories.findAll().isEmpty()
         );
     }
+    @Cacheable(value = "sneaker", unless = "#result = null")
     public Map<String,Optional<Sneaker>> findById(int id) {
         return Map.of("products",sneakerRepositories.findById(id));
     }

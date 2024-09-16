@@ -3,6 +3,7 @@ package com.onlinestore.backend.Services;
 import com.onlinestore.backend.Models.TShirt;
 import com.onlinestore.backend.Repositories.TShirtRepositories;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public class TShirtService {
     private final TShirtRepositories tShirtRepositories;
 
+    @Cacheable(value = "tshirt", unless = "#result = null")
     public Map<String,Object> findAll(){
         return Map.of(
                 "tshirts", tShirtRepositories.findAll(),
@@ -21,6 +23,7 @@ public class TShirtService {
         );
     }
 
+    @Cacheable(value = "tshirt", unless = "#result = null")
     public Map<String,Optional<TShirt>> findById(int id) {
         return Map.of("products",tShirtRepositories.findById(id));
     }

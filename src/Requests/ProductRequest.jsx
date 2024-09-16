@@ -47,9 +47,7 @@ export default class ProductRequest extends Component {
 
     render() {
         const {items, isLoading, error} = this.state;
-
-        console.log(items);
-
+        
         if(error){
             return(
                 <h1>Ошибка</h1>

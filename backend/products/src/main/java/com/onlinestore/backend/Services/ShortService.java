@@ -3,6 +3,7 @@ package com.onlinestore.backend.Services;
 import com.onlinestore.backend.Models.Short;
 import com.onlinestore.backend.Repositories.ShortRepositories;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.Optional;
 public class ShortService {
     private final ShortRepositories shortRepositories;
 
+
+    @Cacheable(value = "short", unless = "#result = null")
     public Map<String,Object> findAll(){
 
         return Map.of(
@@ -21,6 +24,7 @@ public class ShortService {
                 "isEmpty", shortRepositories.findAll().isEmpty()
         );
     }
+    @Cacheable(value = "short", unless = "#result = null")
     public Map<String,Optional<Short>> findById(int id) {
         return Map.of("products",shortRepositories.findById(id));
     }
