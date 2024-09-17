@@ -3,11 +3,11 @@ package com.onlinestore.backend.Models;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-
 @Entity
 @Table(name = "sneaker")
 @Getter
 public class Sneaker {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

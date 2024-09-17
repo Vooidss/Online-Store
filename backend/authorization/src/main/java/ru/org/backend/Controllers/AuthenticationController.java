@@ -1,6 +1,5 @@
 package ru.org.backend.Controllers;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +19,9 @@ public class AuthenticationController {
 
     @PostMapping("/user")
     public ResponseEntity<JwtAuthenticationResponse> authentication(
-            @RequestBody AuthenticationRequest request){
+        @RequestBody AuthenticationRequest request
+    ) {
         System.out.println(authenticationService.authenticate(request));
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
-
-
 }

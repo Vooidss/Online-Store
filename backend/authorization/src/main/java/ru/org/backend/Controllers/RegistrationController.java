@@ -7,7 +7,6 @@ import ru.org.backend.DTO.JwtAuthenticationResponse;
 import ru.org.backend.DTO.RegisterRequest;
 import ru.org.backend.Services.RegistrationService;
 
-
 @RestController
 @RequestMapping("/auth/registration")
 @AllArgsConstructor
@@ -15,14 +14,16 @@ import ru.org.backend.Services.RegistrationService;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+
     @PostMapping("/user")
-    public ResponseEntity<JwtAuthenticationResponse> createUser(@RequestBody RegisterRequest request){
+    public ResponseEntity<JwtAuthenticationResponse> createUser(
+        @RequestBody RegisterRequest request
+    ) {
         return ResponseEntity.ok(registrationService.registration(request));
     }
 
     @GetMapping("/user")
-    public String avc(){
+    public String avc() {
         return "asd";
     }
-
 }

@@ -26,41 +26,53 @@ public class SecurityConfig {
 
     private final MyUserDetailService userDetailService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)
+        throws Exception {
         return httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/auth/**","/products/**").permitAll();
-                    registry.requestMatchers("/admin/**").hasRole(Role.ADMIN.toString());
-                    registry.requestMatchers("/user/**").hasRole(Role.USER.toString());
-                    registry.anyRequest().authenticated();
-                })
-                .sessionManagement( session -> {
-                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                })
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .build();
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(registry -> {
+                registry
+                    .requestMatchers("/auth/**", "/products/**")
+                    .permitAll();
+                registry
+                    .requestMatchers("/admin/**")
+                    .hasRole(Role.ADMIN.toString());
+                registry
+                    .requestMatchers("/user/**")
+                    .hasRole(Role.USER.toString());
+                registry.anyRequest().authenticated();
+            })
+            .sessionManagement(session -> {
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            })
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
+            )
+            .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+            .build();
     }
 
     @Bean
-     public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailService);
         provider.setPasswordEncoder(passwordEncoder());
-        return  provider;
+        return provider;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration config
+    ) throws Exception {
         return config.getAuthenticationManager();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
