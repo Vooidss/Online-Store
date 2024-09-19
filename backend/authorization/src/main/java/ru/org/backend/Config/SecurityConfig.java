@@ -16,12 +16,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import ru.org.backend.Services.MyUserDetailService;
 import ru.org.backend.user.Role;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
+@CrossOrigin(origins = "http://localhost:8070")
 public class SecurityConfig {
 
     private final MyUserDetailService userDetailService;
