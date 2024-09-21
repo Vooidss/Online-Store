@@ -361,12 +361,44 @@ svg * {
 .mainWindow__authenticationWindow__input {
   margin: 10px;
 }
+.mainWindow__authenticationWindow__error {
+  margin: 10px;
+  transform: scale(0);
+  color: red;
+}
+.mainWindow__authenticationWindow__error.active {
+  transform: scale(1);
+}
 .mainWindow__authenticationWindow__button {
   margin: 10px;
   height: 50%;
   width: 50%;
   justify-self: center;
   cursor: pointer;
+}
+
+.main-window {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  user-select: none;
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.5s;
+  justify-content: right;
+  align-items: start;
+}
+.main-window.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.main-window__window-profile {
+  background-color: white;
+  padding: 15px;
+  border-radius: 10%;
+  margin-right: 5px;
+  margin-top: 5px;
 }
 
 /*# sourceMappingURL=main.css.map */

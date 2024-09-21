@@ -18,10 +18,10 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping("/user")
+    @PostMapping()
     public ResponseEntity<JwtAuthenticationResponse> authentication(
             @RequestBody AuthenticationRequest request){
-        System.out.println(authenticationService.authenticate(request));
+        System.out.println(request);
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 

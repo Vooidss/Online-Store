@@ -1,9 +1,24 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import { NavLink } from 'react-router-dom';
 import Authentication from "../pages/Authorization";
+import Profile from "../pages/Profile";
 
 export default function Header({modalActive, setModalActive}) {
+    const [isAuthentication, setAuthentication] = useState(false);
+
+    useEffect(() => {
+        // Проверяем наличие токена при монтировании компонента
+        const token = localStorage.getItem('token');
+        setAuthentication(!!token);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setAuthentication(false);
+        setModalActive(false);
+    };
+
     const activeLink = "header__mainHeader__items__link--active";
     const defaultLink= "header__mainHeader__items__link";
 
@@ -36,10 +51,14 @@ export default function Header({modalActive, setModalActive}) {
                                 Корзина
                             </NavLink>
                         </p>
-                        <p className="header__mainHeader__side__account" onClick={() => setModalActive(true)}>Профиль</p>
+                        <p className="header__mainHeader__side__account" onClick={() => setModalActive(true)}>{isAuthentication ? 'Профиль' : 'Войти'}</p>
                     </div>
                 </div>
-                <Authentication active={modalActive} setActive={setModalActive}/>
+                {isAuthentication ? (
+                    <Profile active={modalActive} setActive={setModalActive} onLogout={handleLogout} />
+                ) : (
+                    <Authentication active={modalActive} setActive={setModalActive} setAuthentication={setAuthentication} />
+                )}
             </header>
         )
 }

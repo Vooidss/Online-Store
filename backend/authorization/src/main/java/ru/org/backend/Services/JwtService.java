@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+//TODO: Разобраться почему не правильно достаётся Login из токена
 public class JwtService {
     @Value("${token.signing.key}")
     private String jwtSigningKey;
@@ -29,7 +30,10 @@ public class JwtService {
      * @param token токен
      * @return имя пользователя
      */
-    public String extractLogin(String token) throws RuntimeException {
+    public String extractLogin(String token)  {
+        if(token.isEmpty()){
+            throw new RuntimeException();
+        }
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -49,12 +53,12 @@ public class JwtService {
         return generateTokenWithExtraClaims(claims, userDetails);
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) throws RuntimeException {
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         final String login = extractLogin(token);
         return (login.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) throws RuntimeException {
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
@@ -71,7 +75,6 @@ public class JwtService {
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .setSubject(userDetails.getPassword())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 100000 * 60 * 24))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
@@ -103,7 +106,7 @@ public class JwtService {
      * @param token токен
      * @return данные
      */
-    private Claims extractAllClaims(String token) throws RuntimeException {
+    private Claims extractAllClaims(String token){
         return Jwts
                 .parser()
                 .setSigningKey(getSigningKey())

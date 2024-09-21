@@ -15,12 +15,12 @@ import ru.org.backend.Services.RegistrationService;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
-    @PostMapping("/user")
+    @PostMapping()
     public ResponseEntity<JwtAuthenticationResponse> createUser(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(registrationService.registration(request));
     }
 
-    @GetMapping("/user")
+    @GetMapping()
     public String avc(){
         return "asd";
     }

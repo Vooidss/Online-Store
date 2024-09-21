@@ -43,6 +43,16 @@
       margin: 10px;
     }
 
+    &__error{
+      margin: 10px;
+      transform:scale(0);
+      color: red;
+
+      &.active{
+        transform:scale(1);
+      }
+    }
+
     &__button{
       margin: 10px;
       height: 50%;

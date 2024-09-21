@@ -25,7 +25,7 @@ export default class ProductRequest extends Component {
     fetchData() {
         const productName = this.props.product;
 
-        let url = `http://localhost:8071/products/${productName}/v1`;
+        let url = `http://localhost:8071/products/${productName}`;
         fetch(url)
             .then(res => res.json())
             .then(
@@ -47,6 +47,8 @@ export default class ProductRequest extends Component {
 
     render() {
         const {items, isLoading, error} = this.state;
+
+        console.log(items);
 
         if(error){
             return(

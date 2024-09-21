@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,7 +24,8 @@ import ru.org.backend.user.Role;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
-@CrossOrigin(origins = "http://localhost:8070")
+@CrossOrigin(origins = "http://localhost:3000")
+//TODO Разобраться с ролями
 public class SecurityConfig {
 
     private final MyUserDetailService userDetailService;
@@ -34,8 +36,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/auth/**","/products/**").permitAll();
-                    registry.requestMatchers("/admin/**").hasRole(Role.ADMIN.toString());
-                    registry.requestMatchers("/user/**").hasRole(Role.USER.toString());
+                    registry.requestMatchers("/admin/**").hasAuthority(Role.ADMIN.toString());
                     registry.anyRequest().authenticated();
                 })
                 .sessionManagement( session -> {
@@ -43,7 +44,7 @@ public class SecurityConfig {
                 })
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 

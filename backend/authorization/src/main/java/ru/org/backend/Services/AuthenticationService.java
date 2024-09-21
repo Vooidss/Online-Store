@@ -3,6 +3,7 @@ package ru.org.backend.Services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import ru.org.backend.DTO.AuthenticationRequest;
@@ -22,31 +23,40 @@ public class AuthenticationService {
     public JwtAuthenticationResponse authenticate(AuthenticationRequest request){
 
         String jwt = null;
-        JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse();
-        String error = null;
+        int code = 200;
+        StringBuilder error = new StringBuilder();
+        boolean isError = false;
 
-        authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(
-                  request.getLogin(),
-                  request.getPassword()
-          )
-        );
-
-
-        var user = userService.getByLogin(request.getLogin());
-
-        if(user.getLogin() == null){
-            throw new RuntimeException("Такого непользвателя нет");
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getLogin(),
+                            request.getPassword()
+                    )
+            );
+        }catch (BadCredentialsException e){
+            error.append("Неверный учётные данные пользователя");
+            code = 404;
+            log.error(error.toString() + e.getMessage());
+            isError = true;
         }
 
-        try{
-            jwt = jwtService.generateToken(new MyUserDetails(user));
-        }catch (JwtGenerateTokenExceptions e){
-            log.error(e.getMessage());
-            return jwtResponse.setError(error);
+        if(!isError){
+            var user = userService.getByLogin(request.getLogin());
+
+            try{
+                jwt = jwtService.generateToken(new MyUserDetails(user));
+            }catch (JwtGenerateTokenExceptions e){
+                log.error(e.getMessage());
+            }
         }
 
-        return JwtAuthenticationResponse.builder().token(jwt).build();
+        return JwtAuthenticationResponse.builder()
+                .token(jwt)
+                .error(error.toString())
+                .code(code)
+                .isFailed(isError)
+                .build();
     }
 
 }

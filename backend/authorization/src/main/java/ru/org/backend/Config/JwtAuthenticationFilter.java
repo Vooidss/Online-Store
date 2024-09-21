@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.org.backend.Services.JwtService;
 import ru.org.backend.Services.MyUserDetailService;
+import ru.org.backend.Services.UserService;
 
 import java.io.IOException;
 import java.security.SignatureException;
@@ -25,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final MyUserDetailService userDetailService;
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(
@@ -48,6 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwt = authHeader.substring(7);
 
         try {
+            System.out.println(jwtService.extractLogin(jwt));
             userLogin = jwtService.extractLogin(jwt);
         }catch (RuntimeException e){
             System.out.println("Неверный токен");
@@ -56,6 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         if(userLogin != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailService.loadUserByUsername(userLogin);
+
 
                 if(jwtService.isTokenValid(jwt,userDetails)){
                     UsernamePasswordAuthenticationToken authToken  = new UsernamePasswordAuthenticationToken(
@@ -67,6 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+                    System.out.println(userService.getCurrentUser());
                 }else{
                     filterChain.doFilter(request,response);
                     throw new RuntimeException("Проблема с JWT токеном");
