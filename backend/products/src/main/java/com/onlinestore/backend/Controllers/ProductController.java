@@ -15,12 +15,12 @@ import java.util.Optional;
 public class ProductController {
     private final ProductService productService;
     @GetMapping
-    private Map<String, Object> getShorts(){
+    private Map<String, Object> findAllProducts(){
         return productService.findAll();
     }
 
     @GetMapping("/{type}")
-    private Map<String, Object> getSneaker(@PathVariable("type") String type){
+    private Map<String, Object> findProductByType(@PathVariable("type") String type){
         return productService.findByType(type);
     }
 

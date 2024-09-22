@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Profile from "./Profile";
 
 
 export default function Authorization({active,setActive,setAuthentication}) {

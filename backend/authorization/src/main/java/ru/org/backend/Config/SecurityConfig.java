@@ -24,7 +24,7 @@ import ru.org.backend.user.Role;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:8050")
 //TODO Разобраться с ролями
 public class SecurityConfig {
 

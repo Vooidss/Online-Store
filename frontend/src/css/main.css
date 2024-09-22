@@ -2,6 +2,7 @@
 .header {
   background-color: black;
   user-select: none;
+  z-index: 1;
 }
 .header__mainHeader {
   height: 100%;
@@ -260,6 +261,8 @@ svg * {
   width: 100%;
   height: 100%;
   position: relative;
+  background: #ffffff;
+  border-radius: 10px;
   flex-flow: column nowrap;
 }
 .section__item__components__basket {
@@ -278,9 +281,11 @@ svg * {
   width: 100%; /* Растягивание изображения по ширине контейнера */
   height: 90%; /* Растягивание изображения по высоте контейнера */
   object-fit: cover; /* Масштабирование изображения для заполнения контейнера, сохраняя пропорции */
+  border-bottom: black 2px solid;
 }
 .section__item__components__image__self:hover {
   transform: scale(1.01);
+  box-shadow: black 0px 1px;
 }
 .section__item__components__items {
   display: flex;
@@ -323,7 +328,7 @@ svg * {
 }
 
 .mainWindow {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0);
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -345,7 +350,8 @@ svg * {
   display: grid;
   justify-content: center;
   grid-template-rows: 10% 70% 20%;
-  background-color: whitesmoke;
+  background-color: #ffffff;
+  border: black 2px solid;
   height: 50%;
   width: 20%;
   border-radius: 8%;

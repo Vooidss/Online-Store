@@ -3,8 +3,10 @@ package ru.org.backend.Services;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.UnexpectedTypeException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,10 +16,12 @@ import ru.org.backend.user.MyUser;
 import ru.org.backend.user.Role;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService{
 
     private final UserRepositories userRepository;
@@ -50,5 +54,13 @@ public class UserService{
     public MyUser getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByLogin(username);
+    }
+
+    public ResponseEntity<Map<String,Integer>> findUserId() {
+        MyUser myUser = getCurrentUser();
+
+        return ResponseEntity.ok(Map.of(
+               "Id" , myUser.getId()
+        ));
     }
 }

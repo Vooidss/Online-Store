@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,11 +23,11 @@ import java.security.SignatureException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final MyUserDetailService userDetailService;
-    private final UserService userService;
 
     @Override
     protected void doFilterInternal(
@@ -49,8 +50,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authHeader.substring(7);
 
+        System.out.println(jwt);
+
         try {
-            System.out.println(jwtService.extractLogin(jwt));
             userLogin = jwtService.extractLogin(jwt);
         }catch (RuntimeException e){
             System.out.println("Неверный токен");
@@ -59,7 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         if(userLogin != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailService.loadUserByUsername(userLogin);
-
 
                 if(jwtService.isTokenValid(jwt,userDetails)){
                     UsernamePasswordAuthenticationToken authToken  = new UsernamePasswordAuthenticationToken(
@@ -71,7 +72,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-                    System.out.println(userService.getCurrentUser());
                 }else{
                     filterChain.doFilter(request,response);
                     throw new RuntimeException("Проблема с JWT токеном");

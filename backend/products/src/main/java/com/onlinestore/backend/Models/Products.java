@@ -1,10 +1,7 @@
 package com.onlinestore.backend.Models;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
 
@@ -33,9 +30,9 @@ public class Products {
     @Column(name = "description")
     String description;
 
+    @Column(name = "model")
+    String model;
+
     @Column(name = "price")
     int price;
-
-    @Column(name = "material")
-    String material;
 }

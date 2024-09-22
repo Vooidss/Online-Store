@@ -1,6 +1,7 @@
 .header{
   background-color: black;
   user-select: none;
+  z-index: 1;
 
   &__mainHeader{
     height: 100%;

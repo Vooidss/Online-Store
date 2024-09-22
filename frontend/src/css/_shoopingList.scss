@@ -48,6 +48,8 @@
           width: 100%;
           height: 100%;
           position: relative;
+          background: #ffffff;
+          border-radius: 10px;
 
           flex-flow: column nowrap;
 
@@ -68,9 +70,11 @@
               width: 100%; /* Растягивание изображения по ширине контейнера */
               height: 90%; /* Растягивание изображения по высоте контейнера */
               object-fit: cover; /* Масштабирование изображения для заполнения контейнера, сохраняя пропорции */
+              border-bottom: black 2px solid;
 
               &:hover{
                 transform: scale(1.01);
+                box-shadow: black 0px 1px;
               }
             }
           }

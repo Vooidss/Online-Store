@@ -1,15 +1,24 @@
 package ru.org.basket.Controllers;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+import ru.org.basket.Model.Basket;
+import ru.org.basket.Model.ProductInfoRequest;
+import ru.org.basket.Services.BasketService;
 
 @RestController
+@Slf4j
 @RequestMapping("/basket")
+@CrossOrigin(origins = "http://localhost:3000")
+@AllArgsConstructor
 public class BasketController {
 
-    @PostMapping("{id}")
-    public void addProductForUser(){
+    private final BasketService basketService;
 
+    @PostMapping("/save")
+    public Basket addProductForUser(@RequestBody ProductInfoRequest request) {
+        return basketService.save(request);
     }
+
 }
