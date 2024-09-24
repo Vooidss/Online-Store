@@ -6,10 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.org.basket.Model.Basket;
 import ru.org.basket.DTO.ProductInfoRequest;
-import ru.org.basket.Model.Product;
 import ru.org.basket.Services.BasketService;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController

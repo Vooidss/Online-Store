@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.org.basket.Model.Basket;
 import ru.org.basket.DTO.ProductInfoRequest;
-import ru.org.basket.Model.Product;
+import ru.org.basket.DTO.ProductResponse;
 import ru.org.basket.Repositories.BasketRepositories;
 
 import java.io.BufferedReader;
@@ -94,7 +94,7 @@ public class BasketService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     Map.of(
                             "message", "Проблема с токеном",
-                                "status", HttpStatus.BAD_REQUEST,
+                            "status", HttpStatus.BAD_REQUEST,
                             "code", HttpStatus.BAD_REQUEST.value()
                     )
             );
@@ -137,13 +137,15 @@ public class BasketService {
                 }
                 log.info("Response: " + response.toString());
 
-                Type productListType = new TypeToken<List<Product>>() {}.getType();
+                Type productListType = new TypeToken<List<ProductResponse>>() {}.getType();
 
-                List<Product> products = new Gson().fromJson(response.toString(), productListType);
+                List<ProductResponse> products = new Gson().fromJson(response.toString(), productListType);
 
                 return ResponseEntity.ok(Map.of(
                         "products", products,
-                        "status", HttpStatus.OK
+                        "status", HttpStatus.OK,
+                        "message", "Все впорядке",
+                        "code", HttpStatus.OK.value()
                 ));
 
             } else {
@@ -159,7 +161,8 @@ public class BasketService {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                 "status", HttpStatus.NOT_FOUND,
-                "code", HttpStatus.NOT_FOUND.value()
+                "code", HttpStatus.NOT_FOUND.value(),
+                "message", "Корзина пуста"
         ));
     }
 }
