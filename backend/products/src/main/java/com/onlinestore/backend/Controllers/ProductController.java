@@ -3,8 +3,11 @@ package com.onlinestore.backend.Controllers;
 import com.onlinestore.backend.Models.Products;
 import com.onlinestore.backend.Services.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,5 +35,10 @@ public class ProductController {
     @DeleteMapping("/{id}")
     private Optional<Products> deleteShort(@PathVariable("id") int id){
         return productService.deleteProduct(id);
+    }
+
+    @PostMapping("/ids")
+    public ResponseEntity<List<Products>> findProductsByIds(@RequestBody List<Integer> ids){
+        return productService.findAllById(ids);
     }
 }

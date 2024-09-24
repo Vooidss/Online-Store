@@ -1,4 +1,4 @@
-package ru.org.basket.Model;
+package ru.org.basket.DTO;
 
 import lombok.Builder;
 import lombok.Data;

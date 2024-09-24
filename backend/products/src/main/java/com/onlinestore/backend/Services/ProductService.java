@@ -4,7 +4,10 @@ import com.onlinestore.backend.Models.Products;
 import com.onlinestore.backend.Repositories.ProductRepositories;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Map;
@@ -45,5 +48,15 @@ public class ProductService {
         productRepositories.deleteById(id);
         return deleteProduct;
 
+    }
+
+    public ResponseEntity<List<Products>> findAllById(List<Integer> ids) {
+        List<Products> products = productRepositories.findAllById(ids);
+
+        if (products.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.ok(products);
     }
 }

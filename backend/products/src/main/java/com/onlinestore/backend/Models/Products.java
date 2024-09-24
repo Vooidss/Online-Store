@@ -1,13 +1,14 @@
 package com.onlinestore.backend.Models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
 
 @Entity
 @Table(name = "products")
-@Getter
+@Data
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Products {
 
