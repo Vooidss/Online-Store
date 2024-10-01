@@ -5,6 +5,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ public class BasketService {
     private final BasketRepositories basketRepositories;
     private final RestTemplate restTemplate;
 
-    public Integer findUserId(String token){
+    private Integer findUserId(String token){
 
         String urlString = "http://localhost:8060/user/id";
         try {
@@ -70,7 +72,7 @@ public class BasketService {
         return null;
     }
 
-    public Basket createBasket(ProductInfoRequest productInfoRequest){
+    private Basket createBasket(ProductInfoRequest productInfoRequest){
         return Basket.builder()
                 .productId(productInfoRequest.getProductId())
                 .userId(findUserId(
@@ -83,7 +85,9 @@ public class BasketService {
         return basketRepositories.save(createBasket(productInfoRequest));
     }
 
-    public ResponseEntity<Map<String,Object>> getProductsByUser(String token) {
+    public ResponseEntity<Map<String,Object>> getProductsByUser(HttpServletRequest request) {
+
+        String token = request.getHeader("Authorization").substring(7);
 
         int userId;
 

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import Product from "../pages/Product";
+import Product from "../components/Product";
 
 export default class ProductRequest extends Component {
     constructor(props) {

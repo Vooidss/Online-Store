@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Header from "./Header";
 import ShoppingList from "./ShoppingList";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -7,26 +7,23 @@ import ProductSelection from "../pages/ProductSelection";
 import BasketPage from "../pages/Basket";
 import ProfilePage from "../pages/Profile";
 
-class Main extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isModalOpen: false,
-        };
+export default  function Main(){
+
+    const[isModelOpen,setModelOpen] = useState(false);
+
+    const token = localStorage.getItem("token");
+
+    const toggleModal = (isActive) => {
+        setModelOpen(isActive);
     }
 
-    toggleModal = (isActive) => {
-        this.setState({ isModalOpen: isActive });
-    }
-
-    render(){
         return(
-            <div className="App" style={{ pointerEvents: this.state.isModalOpen ? 'none' : 'auto' }}>
+            <div className="App" style={{ pointerEvents: isModelOpen ? 'none' : 'auto' }}>
                 <Router>
                     <ScrollToTop />
                     <Header
-                        modalActive={this.state.isModalOpen}
-                        setModalActive={this.toggleModal} />
+                        modalActive={isModelOpen}
+                        setModalActive={toggleModal} />
                     <Routes>
                         <Route path="/ShopList/*" element={<ShoppingList/>} />
                         <Route path="/:products/:id" element={<ProductSelection />} />
@@ -34,9 +31,5 @@ class Main extends React.Component {
                         <Route path="/Profile" element={<ProfilePage />} />
                     </Routes>
                 </Router>
-            </div>
-        )
-    }
+            </div>)
 }
-
-export default Main;

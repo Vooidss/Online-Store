@@ -26,21 +26,10 @@ public class UserService{
 
     private final UserRepositories userRepository;
 
-    public Optional<MyUser> findById(int id){
-        return userRepository.findById(id);
-    }
-
-    public Optional<MyUser> findByName(String name){
-        return userRepository.findByName(name);
-    }
-
     public void save(MyUser user) throws ConstraintViolationException, DataIntegrityViolationException, UnexpectedTypeException {
         userRepository.save(user);
     }
 
-    public List<MyUser> findAll(){
-        return userRepository.findAll();
-    }
     public MyUser getByLogin(String login) {
         return userRepository.findByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
@@ -54,6 +43,10 @@ public class UserService{
     public MyUser getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByLogin(username);
+    }
+
+    public ResponseEntity<MyUser> getResponseCurrentUser() {
+        return ResponseEntity.ok(getCurrentUser());
     }
 
     public ResponseEntity<Map<String,Integer>> findUserId() {

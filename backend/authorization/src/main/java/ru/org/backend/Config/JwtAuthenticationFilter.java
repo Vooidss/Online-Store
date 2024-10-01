@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(
             @NotNull HttpServletRequest request,
-            @NotNull HttpServletResponse response,
+            @NotNull @NonNull HttpServletResponse response,
             @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
 
@@ -43,22 +44,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         String userLogin = "";
 
-        if(authHeader == null || !authHeader.startsWith("Bearer ") || path.startsWith("/registration") || path.startsWith("/authentication")){
+        if(authHeader == null || !authHeader.startsWith("Bearer ") || path.startsWith("/auth")){
             filterChain.doFilter(request,response );
             return;
         }
 
         jwt = authHeader.substring(7);
 
-        System.out.println(jwt);
+        log.info(jwt);
 
         try {
+            log.info("2");
             userLogin = jwtService.extractLogin(jwt);
+            log.info("1");
         }catch (RuntimeException e){
-            System.out.println("Неверный токен");
             filterChain.doFilter(request,response );
             return;
         }
+        log.info("2");
+
+        if (jwtService.isTokenBlacklisted(jwt)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            log.error("Токен находится в Black List");
+            return;
+        }
+
         if(userLogin != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailService.loadUserByUsername(userLogin);
 

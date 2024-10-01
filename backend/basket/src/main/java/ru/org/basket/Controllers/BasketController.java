@@ -1,5 +1,6 @@
 package ru.org.basket.Controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,8 @@ public class BasketController {
     }
 
     @GetMapping()
-    public ResponseEntity<Map<String,Object>> getProductsByUser(@RequestParam(value = "token",required = false) String token){
-        return basketService.getProductsByUser(token);
+    public ResponseEntity<Map<String,Object>> getProductsByUser(HttpServletRequest request){
+        return basketService.getProductsByUser(request);
     }
 
 }

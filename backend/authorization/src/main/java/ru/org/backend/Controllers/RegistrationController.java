@@ -11,7 +11,6 @@ import ru.org.backend.Services.RegistrationService;
 @RestController
 @RequestMapping("/auth/registration")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -19,10 +18,4 @@ public class RegistrationController {
     public ResponseEntity<JwtAuthenticationResponse> createUser(@RequestBody RegisterRequest request){
         return ResponseEntity.ok(registrationService.registration(request));
     }
-
-    @GetMapping()
-    public String avc(){
-        return "asd";
-    }
-
 }

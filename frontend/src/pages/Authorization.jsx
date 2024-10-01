@@ -15,7 +15,7 @@ export default function Authorization({active,setActive,setAuthentication}) {
         const credentials = {login, password};
 
         try {
-            const response = await fetch('http://localhost:8060/auth/authentication', {
+            const response = await fetch('http://localhost:8091/auth/authentication', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -17,9 +17,23 @@ public class JwtAuthenticationResponse {
     private String error;
     private int code;
     private boolean isFailed;
+    private boolean isTokenExpired;
 
     public JwtAuthenticationResponse setError(String error) {
         this.error = error;
         return this;
+    }
+
+    public static JwtAuthenticationResponse generateJwtAuthenticationResponse(
+            String token, boolean isTokenExpired, String error, int code, boolean isFailed
+    ){
+        return JwtAuthenticationResponse
+                .builder()
+                .token(token)
+                .isTokenExpired(isTokenExpired)
+                .error(error)
+                .code(code)
+                .isFailed(isFailed)
+                .build();
     }
 }

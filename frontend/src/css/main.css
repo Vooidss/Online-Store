@@ -327,6 +327,65 @@ svg * {
   align-self: center;
 }
 
+.main_window_basket {
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  height: 100%;
+  width: 100%;
+  background-color: #cbc5c5;
+}
+.main_window_basket__basket {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 10% 90%;
+}
+.main_window_basket__basket__head {
+  border-bottom: black 2px solid;
+  display: flex;
+  align-self: center;
+  justify-self: center;
+}
+.main_window_basket__basket__items {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+.main_window_basket__basket__items__item {
+  background-color: white;
+  border-radius: 30px;
+  height: 100%;
+  width: 75%;
+  margin: 10px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+.main_window_basket__basket__items__item__image {
+  background-color: #fff9f9;
+  border: black 1px solid;
+  margin: 10px;
+  border-radius: 20px;
+}
+.main_window_basket__basket__items__item__info {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+.main_window_basket__basket__items__item__info * {
+  font-size: 24px;
+  padding: 10px;
+}
+.main_window_basket__basket__items__item__info__price {
+  color: red;
+  justify-self: right;
+  align-self: center;
+}
+.main_window_basket__basket__items__item__info__size {
+  font-size: 18px;
+}
 .mainWindow {
   background-color: rgba(0, 0, 0, 0);
   height: 100vh;

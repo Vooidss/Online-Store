@@ -7,16 +7,56 @@ import Profile from "../pages/Profile";
 export default function Header({modalActive, setModalActive}) {
     const [isAuthentication, setAuthentication] = useState(false);
 
+    const token = localStorage.getItem('token');
+
+    async function isTokenExpired(){
+        try {
+            const response = await fetch('http://localhost:8060/auth/authentication/isTokenExpired', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+
+            console.log(data);
+
+            setAuthentication(!data.tokenExpired)
+
+        } catch (error) {
+            console.error('Network error:', error);
+        }
+    }
+
     useEffect(() => {
-        // Проверяем наличие токена при монтировании компонента
-        const token = localStorage.getItem('token');
         setAuthentication(!!token);
+        isTokenExpired();
     }, []);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         localStorage.removeItem('token');
         setAuthentication(false);
         setModalActive(false);
+
+        const url = 'http://localhost:8060/auth/authentication/logout';
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const data = response.json();
+
+            console.log(data)
+        }catch (e){
+            console.log(e);
+        }
     };
 
     const activeLink = "header__mainHeader__items__link--active";

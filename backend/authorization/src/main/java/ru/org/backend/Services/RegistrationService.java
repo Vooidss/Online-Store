@@ -60,7 +60,6 @@ public class RegistrationService {
             return jwtResponse.setError(error);
         }
 
-        //TODO: Доделать JwtGenerateTokenExceptions ( По желанию )
         try{
             jwt = jwtService.generateToken(new MyUserDetails(user));
         }catch (JwtGenerateTokenExceptions e){

@@ -1,15 +1,28 @@
 package ru.org.backend.Services;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import ru.org.backend.DTO.AuthenticationRequest;
 import ru.org.backend.DTO.JwtAuthenticationResponse;
 import ru.org.backend.Exceptions.JwtGenerateTokenExceptions;
+import ru.org.backend.Models.BlackListTokens;
+import ru.org.backend.user.MyUser;
 import ru.org.backend.user.MyUserDetails;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,20 +56,69 @@ public class AuthenticationService {
 
         if(!isError){
             var user = userService.getByLogin(request.getLogin());
+            MyUserDetails myUserDetails = MyUserDetails
+                    .builder()
+                    .user(user)
+                    .build();
 
             try{
-                jwt = jwtService.generateToken(new MyUserDetails(user));
+                jwt = jwtService.generateToken(myUserDetails);
             }catch (JwtGenerateTokenExceptions e){
                 log.error(e.getMessage());
             }
         }
 
-        return JwtAuthenticationResponse.builder()
-                .token(jwt)
-                .error(error.toString())
-                .code(code)
-                .isFailed(isError)
-                .build();
+        return JwtAuthenticationResponse.generateJwtAuthenticationResponse(
+                jwt,
+                jwtService.isTokenExpired(jwt),
+                error.toString(),
+                code,
+                isError
+        );
+    }
+    public ResponseEntity<JwtAuthenticationResponse> isTokenExpired(HttpServletRequest request) {
+
+        if(SecurityContextHolder.getContext().getAuthentication() == null){
+            return ResponseEntity.ok(JwtAuthenticationResponse.generateJwtAuthenticationResponse(
+                    null,
+                    true,
+                    "Пользователб ещё не вошёл.",
+                    404,
+                    true
+            ));
+        }
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        if(jwtService.isTokenExpired(token)){
+            return ResponseEntity.ok(JwtAuthenticationResponse.generateJwtAuthenticationResponse(
+                    token,
+                    true,
+                    null,
+                    200,
+                    false
+                    ));
+        }
+
+        return ResponseEntity.ok(JwtAuthenticationResponse.generateJwtAuthenticationResponse(
+                token,
+                false,
+                null,
+                200,
+                false
+        ));
     }
 
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+
+        jwtService.saveInvalidateToken(BlackListTokens
+                .builder()
+                .token(token)
+                .build());
+
+        SecurityContextHolder.clearContext();
+
+        return ResponseEntity.ok("Logout successful");
+    }
 }

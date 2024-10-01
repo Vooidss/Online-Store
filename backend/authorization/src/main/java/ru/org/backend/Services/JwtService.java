@@ -1,39 +1,47 @@
 package ru.org.backend.Services;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.org.backend.Exceptions.JwtGenerateTokenExceptions;
+import ru.org.backend.Models.BlackListTokens;
+import ru.org.backend.Repositories.BlackListRepository;
 import ru.org.backend.user.MyUser;
+import ru.org.backend.user.MyUserDetails;
 
-import java.io.IOException;
-import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import javax.crypto.SecretKey;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
-//TODO: Разобраться почему не правильно достаётся Login из токена
+@Slf4j
 public class JwtService {
+
+    private final BlackListRepository blackListRepository;
+
     @Value("${token.signing.key}")
     private String jwtSigningKey;
 
+    public JwtService(BlackListRepository blackListRepository) {
+        this.blackListRepository = blackListRepository;
+    }
+
     /**
-     * Извлечение имени пользователя из токена
+     * Извлечение логина пользователя из токена
      *
      * @param token токен
-     * @return имя пользователя
+     * @return логин пользователя
      */
-    public String extractLogin(String token)  {
+    public String extractLogin(String token) {
         if(token.isEmpty()){
-            throw new RuntimeException();
+            throw new RuntimeException("Токен пустой");
         }
+
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -43,12 +51,18 @@ public class JwtService {
      * @param userDetails данные пользователя
      * @return токен
      */
-    public String generateToken(UserDetails userDetails) throws JwtGenerateTokenExceptions {
+    public String generateToken(UserDetails userDetails) throws JwtGenerateTokenExceptions{
         Map<String, Object> claims = new HashMap<>();
-        if (userDetails instanceof MyUser customUserDetails) {
-            claims.put("id", customUserDetails.getId());
-            claims.put("email", customUserDetails.getEmail());
-            claims.put("role", customUserDetails.getRole());
+        if (userDetails instanceof MyUserDetails customUserDetails) {
+
+            MyUser user = customUserDetails.getUser();
+
+            claims.put("id", user.getId());
+            claims.put("name", user.getName());
+            claims.put("secondName", user.getSecondname());
+            claims.put("age", user.getAge());
+            claims.put("email", user.getEmail());
+            claims.put("role", user.getRole());
         }
         return generateTokenWithExtraClaims(claims, userDetails);
     }
@@ -58,7 +72,7 @@ public class JwtService {
         return (login.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers){
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
@@ -73,11 +87,11 @@ public class JwtService {
     private String generateTokenWithExtraClaims(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts
                 .builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 100000 * 60 * 24))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
+                .claims(extraClaims)
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 10000 * 60 * 24))
+                .signWith(getSigningKey()).compact();
     }
 
     /**
@@ -86,8 +100,13 @@ public class JwtService {
      * @param token токен
      * @return true, если токен просрочен
      */
-    private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+    protected boolean isTokenExpired(String token){
+        try{
+            extractExpiration(token).before(new Date());
+        }catch (ExpiredJwtException e){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -96,7 +115,7 @@ public class JwtService {
      * @param token токен
      * @return дата истечения
      */
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
@@ -106,13 +125,13 @@ public class JwtService {
      * @param token токен
      * @return данные
      */
-    private Claims extractAllClaims(String token){
+    public Claims extractAllClaims(String token){
         return Jwts
                 .parser()
-                .setSigningKey(getSigningKey())
+                .verifyWith(getSigningKey())
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
                                      /**
@@ -120,8 +139,16 @@ public class JwtService {
      *
      * @return ключ
      */
-    private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
-        return Keys.hmacShaKeyFor(keyBytes);
+    private SecretKey getSigningKey() {
+        byte[] key = Base64.getDecoder().decode(jwtSigningKey);
+        return Keys.hmacShaKeyFor(key);
+    }
+
+    public void saveInvalidateToken(BlackListTokens blackListTokens) {
+        blackListRepository.save(blackListTokens);
+    }
+
+    public boolean isTokenBlacklisted(String token){
+        return blackListRepository.findByToken(token).isPresent();
     }
 }
