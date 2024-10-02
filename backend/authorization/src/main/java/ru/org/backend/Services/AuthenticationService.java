@@ -49,7 +49,7 @@ public class AuthenticationService {
             );
         } catch (BadCredentialsException e) {
             error.append("Неверный учётные данные пользователя");
-            code = 404;
+            code = 400;
             log.error(error.toString() + e.getMessage());
             isError = true;
         }
@@ -84,8 +84,8 @@ public class AuthenticationService {
                 JwtAuthenticationResponse.generateJwtAuthenticationResponse(
                     null,
                     true,
-                    "Пользователб ещё не вошёл.",
-                    404,
+                    "Пользователь ещё не вошёл.",
+                    401,
                     true
                 )
             );
