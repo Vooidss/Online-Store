@@ -1,82 +1,79 @@
-.main_window_basket{
-
-  display: grid;
-  grid-template-columns: 20% 60% 20%;
-  height: 100%;
-  width: 100%;
-  background-color: #cbc5c5;
-
-  &__basket{
-
+.main_window_basket {
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
     height: 100%;
     width: 100%;
+    background-color: #cbc5c5;
 
-    display: grid;
-    grid-template-rows: 10% 90%;
-
-    &__head{
-      border-bottom: black 2px solid;
-      display: flex;
-      align-self: center;
-      justify-self: center;
-      &__name{
-      }
-    }
-
-    &__items {
-      display: flex;
-      height: 100%;
-      width: 100%;
-
-      flex-direction: column;
-      align-items: center;
-
-      &__item {
-
-        background-color: white;
-        border-radius: 30px;
+    &__basket {
         height: 100%;
-        width: 75%;
-        margin: 10px;
-        padding: 10px;
+        width: 100%;
 
         display: grid;
-        grid-template-columns: 20% 80%;
+        grid-template-rows: 10% 90%;
 
-        &__image {
-          background-color: #fff9f9;
-          border: black 1px solid;
-          margin: 10px;
-          border-radius: 20px;
-        }
-
-        &__info {
-          margin: 10px;
-
-          display: grid;
-          grid-template-columns: 40% 60%;
-          *{
-            font-size: 24px;
-            padding: 10px;
-          }
-
-          &__brand{}
-          &__price{
-            color: red;
-            justify-self: right;
+        &__head {
+            border-bottom: black 2px solid;
+            display: flex;
             align-self: center;
-          }
-          &__count{}
-          &__size{
-            font-size: 18px
-          }
-
+            justify-self: center;
+            &__name {
+            }
         }
 
-        &__close {
+        &__items {
+            display: flex;
+            height: 100%;
+            width: 100%;
 
+            flex-direction: column;
+            align-items: center;
+
+            &__item {
+                background-color: white;
+                border-radius: 30px;
+                height: 100%;
+                width: 75%;
+                margin: 10px;
+                padding: 10px;
+
+                display: grid;
+                grid-template-columns: 20% 80%;
+
+                &__image {
+                    background-color: #fff9f9;
+                    border: black 1px solid;
+                    margin: 10px;
+                    border-radius: 20px;
+                }
+
+                &__info {
+                    margin: 10px;
+
+                    display: grid;
+                    grid-template-columns: 40% 60%;
+                    * {
+                        font-size: 24px;
+                        padding: 10px;
+                    }
+
+                    &__brand {
+                    }
+                    &__price {
+                        color: red;
+                        justify-self: right;
+                        align-self: center;
+                    }
+                    &__count {
+                    }
+                    &__size {
+                        font-size: 18px;
+                    }
+                }
+
+                &__close {
+                }
+            }
         }
-      }
     }
-  }
 }
