@@ -1,63 +1,63 @@
 @charset "UTF-8";
 .header {
-    background-color: black;
-    user-select: none;
-    z-index: 1;
+  background-color: black;
+  user-select: none;
+  z-index: 1;
 }
 .header__mainHeader {
-    height: 100%;
-    display: grid;
-    grid-template-columns: 10% 80% 10%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
 }
 .header__mainHeader__logo {
-    color: white;
-    position: relative;
-    justify-self: center;
-    align-self: center;
+  color: white;
+  position: relative;
+  justify-self: center;
+  align-self: center;
 }
 .header__mainHeader__items {
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .header__mainHeader__items :hover {
-    cursor: pointer;
-    transform: scale(1.1);
-    color: #c5c5c5;
+  cursor: pointer;
+  transform: scale(1.1);
+  color: #c5c5c5;
 }
 .header__mainHeader__items__link {
-    padding: 10px;
-    position: relative;
-    color: white;
-    text-decoration: none;
+  padding: 10px;
+  position: relative;
+  color: white;
+  text-decoration: none;
 }
 .header__mainHeader__items__link--active {
-    padding: 10px;
-    position: relative;
-    text-decoration: underline;
-    text-decoration-color: #4605ff;
-    text-decoration-thickness: 3px;
-    color: white;
+  padding: 10px;
+  position: relative;
+  text-decoration: underline;
+  text-decoration-color: #4605ff;
+  text-decoration-thickness: 3px;
+  color: white;
 }
 .header__mainHeader__side {
-    color: #ffffff;
-    display: grid;
-    justify-self: center;
-    grid-auto-flow: column;
-    align-self: center;
-    font-size: 20px;
+  color: #ffffff;
+  display: grid;
+  justify-self: center;
+  grid-auto-flow: column;
+  align-self: center;
+  font-size: 20px;
 }
 .header__mainHeader__side :hover {
-    color: salmon;
-    cursor: pointer;
-    transform: scale(1.1);
+  color: salmon;
+  cursor: pointer;
+  transform: scale(1.1);
 }
 .header__mainHeader__side__basket {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 .header__mainHeader__side__account {
-    margin-right: 15px;
+  margin-right: 15px;
 }
 
 /**
@@ -66,7 +66,7 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /**
@@ -74,7 +74,7 @@
   у которых есть атрибут class
  */
 :where(ul, ol):where([class]) {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 /**
@@ -83,7 +83,7 @@
  */
 body,
 :where(blockquote, figure):where([class]) {
-    margin: 0;
+  margin: 0;
 }
 
 /**
@@ -91,17 +91,17 @@ body,
   у которых есть атрибут class
  */
 :where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl):where([class]) {
-    margin-block: 0;
+  margin-block: 0;
 }
 
 :where(dd[class]) {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 :where(fieldset[class]) {
-    margin-left: 0;
-    padding: 0;
-    border: none;
+  margin-left: 0;
+  padding: 0;
+  border: none;
 }
 
 /**
@@ -109,7 +109,7 @@ body,
   у которого есть атрибут class
  */
 :where(ul[class]) {
-    list-style: none;
+  list-style: none;
 }
 
 /**
@@ -118,8 +118,8 @@ body,
   чтобы избежать взаимодействие с более сложным селектором
  */
 p {
-    --paragraphMarginBottom: 24px;
-    margin-block: 0;
+  --paragraphMarginBottom: 24px;
+  margin-block: 0;
 }
 
 /**
@@ -127,15 +127,15 @@ p {
   который расположен не последним среди своих соседних элементов
  */
 p:where(:not([class]):not(:last-child)) {
-    margin-bottom: var(--paragraphMarginBottom);
+  margin-bottom: var(--paragraphMarginBottom);
 }
 
 /**
   Упрощаем работу с изображениями
  */
 img {
-    display: block;
-    max-width: 100%;
+  display: block;
+  max-width: 100%;
 }
 
 /**
@@ -145,50 +145,50 @@ input,
 textarea,
 select,
 button {
-    font: inherit;
+  font: inherit;
 }
 
 html {
-    /**
-    Пригодится в большинстве ситуаций
-    (когда, например, нужно будет "прижать" футер к низу сайта)
-   */
-    height: 100%;
-    /**
-    Плавный скролл
-   */
-    scroll-behavior: smooth;
+  /**
+   Пригодится в большинстве ситуаций
+   (когда, например, нужно будет "прижать" футер к низу сайта)
+  */
+  height: 100%;
+  /**
+   Плавный скролл
+  */
+  scroll-behavior: smooth;
 }
 
 body {
-    /**
-    Пригодится в большинстве ситуаций
-    (когда, например, нужно будет "прижать" футер к низу сайта)
-   */
-    min-height: 100vh;
-    min-width: 100vh;
-    /**
-    Унифицированный интерлиньяж
-   */
-    line-height: 1.5;
+  /**
+   Пригодится в большинстве ситуаций
+   (когда, например, нужно будет "прижать" футер к низу сайта)
+  */
+  min-height: 100vh;
+  min-width: 100vh;
+  /**
+   Унифицированный интерлиньяж
+  */
+  line-height: 1.5;
 }
 
 /**
   Приводим к единому цвету svg-элементы
  */
 svg *[fill] {
-    fill: currentColor;
+  fill: currentColor;
 }
 
 svg *[stroke] {
-    stroke: currentColor;
+  stroke: currentColor;
 }
 
 /**
   Чиним баг задержки смены цвета при взаимодействии с svg-элементами
  */
 svg * {
-    transition-property: fill, stroke;
+  transition-property: fill, stroke;
 }
 
 /**
@@ -196,265 +196,328 @@ svg * {
   которые предпочитают их не использовать
  */
 @media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 #main {
-    min-height: 100vh;
-    min-width: 100vh;
+  min-height: 100vh;
+  min-width: 100vh;
 }
 
 .main-window-shopping-list {
-    display: grid;
-    grid-template-columns: 10% 90%;
+  display: grid;
+  grid-template-columns: 10% 90%;
 }
 
 .nav {
-    background-color: #115402;
-    padding: 10px;
-    border-right: 5px solid black;
-    border-top: 5px solid black;
+  background-color: #115402;
+  padding: 10px;
+  border-right: 5px solid black;
+  border-top: 5px solid black;
 }
 
 .section {
-    background-color: #cbc5c5;
-    display: flex;
-    user-select: none;
-    justify-content: space-around;
-    align-items: flex-start;
-    flex-flow: row wrap;
-    word-wrap: break-word;
+  background-color: #cbc5c5;
+  display: flex;
+  user-select: none;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-flow: row wrap;
+  word-wrap: break-word;
 }
 .section__item {
-    width: 350px;
-    height: 350px;
-    margin: 20px;
-    padding: 2px;
-    color: aliceblue;
-    border-radius: 10px;
+  width: 350px;
+  height: 350px;
+  margin: 20px;
+  padding: 2px;
+  color: aliceblue;
+  border-radius: 10px;
 }
 .section__item :hover {
-    background-color: #eae9e9;
-    cursor: pointer;
-    border-radius: 10px;
+  background-color: #eae9e9;
+  cursor: pointer;
+  border-radius: 10px;
 }
 .section__item:hover {
-    box-shadow: 5px 5px 10px #ffffff;
-    transform: scale(1.03);
-    background: #eae9e9;
+  box-shadow: 5px 5px 10px #ffffff;
+  transform: scale(1.03);
+  background: #eae9e9;
 }
 .section__item__components {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    background: #ffffff;
-    border-radius: 10px;
-    flex-flow: column nowrap;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #ffffff;
+  border-radius: 10px;
+  flex-flow: column nowrap;
 }
 .section__item__components__basket {
-    color: black;
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 10px;
+  color: black;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
 }
 .section__item__components__image {
-    width: 100%;
-    min-height: 80%;
+  width: 100%;
+  min-height: 80%;
 }
 .section__item__components__image__self {
-    border-radius: 10px;
-    width: 100%; /* Растягивание изображения по ширине контейнера */
-    height: 90%; /* Растягивание изображения по высоте контейнера */
-    object-fit: cover; /* Масштабирование изображения для заполнения контейнера, сохраняя пропорции */
-    border-bottom: black 2px solid;
+  border-radius: 10px;
+  width: 100%;
+  height: 90%;
+  object-fit: cover;
+  border-bottom: black 2px solid;
 }
 .section__item__components__image__self:hover {
-    transform: scale(1.01);
-    box-shadow: black 0px 1px;
+  transform: scale(1.01);
+  box-shadow: black 0px 1px;
 }
 .section__item__components__items {
-    display: flex;
-    color: black;
+  display: flex;
+  color: black;
 }
 .section__item__components__items__component {
-    padding: 4px;
-    justify-content: center;
-    align-items: center;
+  padding: 4px;
+  justify-content: center;
+  align-items: center;
 }
 .asside__main {
-    background-color: #000000;
-    padding: 10px;
-    border-left: 5px solid black;
-    border-top: 5px solid black;
+  background-color: #000000;
+  padding: 10px;
+  border-left: 5px solid black;
+  border-top: 5px solid black;
 }
 
 .App {
-    min-height: 100vh;
-    min-width: 100vh;
-    display: grid;
-    grid-template-rows: 100px;
+  min-height: 100vh;
+  min-width: 100vh;
+  display: grid;
+  grid-template-rows: 100px;
 }
 
 .main {
-    display: grid;
-    grid-template-columns: 70% 30%;
+  display: grid;
+  grid-template-columns: 70% 30%;
 }
 .main__image {
-    border: 2px salmon solid;
+  border: 2px salmon solid;
 }
 .main__info {
-    border: 2px salmon solid;
-    display: grid;
-    grid-template-row: 100px 70%;
+  border: 2px salmon solid;
+  display: grid;
+  grid-template-row: 100px 70%;
 }
 .main__info__name {
-    justify-self: center;
-    align-self: center;
+  justify-self: center;
+  align-self: center;
 }
 
 .main_window_basket {
-    display: grid;
-    grid-template-columns: 20% 60% 20%;
-    height: 100%;
-    width: 100%;
-    background-color: #cbc5c5;
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  height: 100%;
+  width: 100%;
+  background-color: #cbc5c5;
+  user-select: none;
 }
 .main_window_basket__basket {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-rows: 10% 90%;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-rows: 10% 90%;
 }
 .main_window_basket__basket__head {
-    border-bottom: black 2px solid;
-    display: flex;
-    align-self: center;
-    justify-self: center;
+  border-bottom: black 2px solid;
+  display: flex;
+  align-self: center;
+  justify-self: center;
 }
 .main_window_basket__basket__items {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  display: flex;
+  height: 700px;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+.main_window_basket__basket__items::-webkit-scrollbar {
+  width: 0;
 }
 .main_window_basket__basket__items__item {
-    background-color: white;
-    border-radius: 30px;
-    height: 100%;
-    width: 75%;
-    margin: 10px;
-    padding: 10px;
-    display: grid;
-    grid-template-columns: 20% 80%;
+  background-color: white;
+  border-radius: 30px;
+  height: 25%;
+  width: 80%;
+  margin: 10px;
+  padding: 10px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  grid-template-rows: 100% 100%;
 }
 .main_window_basket__basket__items__item__image {
-    background-color: #fff9f9;
-    border: black 1px solid;
-    margin: 10px;
-    border-radius: 20px;
+  margin: 10px;
+  border-radius: 20px;
+  object-fit: cover;
+  width: 100%;
+  height: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+  position: relative;
+}
+.main_window_basket__basket__items__item__image:hover {
+  transform: scale(1.04);
 }
 .main_window_basket__basket__items__item__info {
-    margin: 10px;
-    display: grid;
-    grid-template-columns: 40% 60%;
+  margin: 10px;
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
 }
 .main_window_basket__basket__items__item__info * {
-    font-size: 24px;
-    padding: 10px;
+  font-size: 24px;
+  padding: 10px;
 }
-.main_window_basket__basket__items__item__info__price {
-    color: red;
-    justify-self: right;
-    align-self: center;
+.main_window_basket__basket__items__item__info__delete {
+  display: flex;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  margin: 10px 30px 6px 10px;
 }
-.main_window_basket__basket__items__item__info__size {
-    font-size: 18px;
+.main_window_basket__basket__items__item__info__delete * {
+  font-size: 18px;
+  transition: transform 0.5s ease-out;
 }
+.main_window_basket__basket__items__item__info__delete__icon {
+  justify-self: end;
+  align-self: center;
+}
+.main_window_basket__basket__items__item__info__delete__name {
+  padding-right: 4px;
+}
+.main_window_basket__basket__items__item__info__price_count {
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 50%;
+  min-width: 50%;
+  justify-self: end;
+  position: relative;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.main_window_basket__basket__items__item__info__price_count__price {
+  color: red;
+  justify-self: right;
+  align-self: center;
+}
+.main_window_basket__basket__items__item__info__price_count__count {
+  display: flex;
+  border: #c5c5c5 2px solid;
+  border-radius: 20px;
+  padding: 2px;
+  align-self: center;
+  justify-content: center;
+  transform: scale(0.8);
+}
+.main_window_basket__basket__items__item__info__price_count__count__plus {
+  cursor: pointer;
+}
+.main_window_basket__basket__items__item__info__price_count__count__minus {
+  cursor: pointer;
+}
+
 .mainWindow {
-    background-color: rgba(0, 0, 0, 0);
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    position: fixed;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    transition: 0.5s;
-    pointer-events: none;
+  background-color: rgba(0, 0, 0, 0);
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: 0.5s;
+  pointer-events: none;
 }
 .mainWindow.active {
-    opacity: 1;
-    pointer-events: auto;
+  opacity: 1;
+  pointer-events: auto;
 }
 .mainWindow__authenticationWindow {
-    display: grid;
-    justify-content: center;
-    grid-template-rows: 10% 70% 20%;
-    background-color: #ffffff;
-    border: black 2px solid;
-    height: 50%;
-    width: 20%;
-    border-radius: 8%;
+  display: grid;
+  justify-content: center;
+  grid-template-rows: 10% 70% 20%;
+  background-color: #ffffff;
+  border: black 2px solid;
+  height: 50%;
+  width: 20%;
+  border-radius: 8%;
 }
 .mainWindow__authenticationWindow__head {
-    padding: 10px;
-    text-align: center;
+  padding: 10px;
+  text-align: center;
 }
 .mainWindow__authenticationWindow__inputs {
-    display: grid;
-    align-content: center;
+  display: grid;
+  align-content: center;
 }
 .mainWindow__authenticationWindow__input {
-    margin: 10px;
+  margin: 10px;
 }
 .mainWindow__authenticationWindow__error {
-    margin: 10px;
-    transform: scale(0);
-    color: red;
+  margin: 10px;
+  transform: scale(0);
+  color: red;
 }
 .mainWindow__authenticationWindow__error.active {
-    transform: scale(1);
+  transform: scale(1);
 }
 .mainWindow__authenticationWindow__button {
-    margin: 10px;
-    height: 50%;
-    width: 50%;
-    justify-self: center;
-    cursor: pointer;
+  margin: 10px;
+  height: 50%;
+  width: 50%;
+  justify-self: center;
+  cursor: pointer;
 }
 
 .main-window {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    user-select: none;
-    position: fixed;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.5s;
-    justify-content: right;
-    align-items: start;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  user-select: none;
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.5s;
+  justify-content: right;
+  align-items: start;
 }
 .main-window.active {
-    opacity: 1;
-    pointer-events: auto;
+  opacity: 1;
+  pointer-events: auto;
 }
 .main-window__window-profile {
-    background-color: white;
-    padding: 15px;
-    border-radius: 10%;
-    margin-right: 5px;
-    margin-top: 5px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 10%;
+  margin-right: 5px;
+  margin-top: 5px;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -5,10 +5,15 @@
     width: 100%;
     background-color: #cbc5c5;
 
+    user-select: none;
+
+
     &__basket {
         height: 100%;
         width: 100%;
 
+
+        position: relative;
         display: grid;
         grid-template-rows: 10% 90%;
 
@@ -22,56 +27,149 @@
         }
 
         &__items {
+
+
+            overflow-y: auto;
+            scroll-behavior: smooth;
+
             display: flex;
-            height: 100%;
+            height: 700px;
             width: 100%;
 
             flex-direction: column;
             align-items: center;
 
+            &::-webkit-scrollbar {
+                width: 0;
+            }
+
             &__item {
                 background-color: white;
                 border-radius: 30px;
-                height: 100%;
-                width: 75%;
+                height: 25%;
+                width: 80%;
                 margin: 10px;
                 padding: 10px;
 
+                position: relative;
+
                 display: grid;
                 grid-template-columns: 20% 80%;
+                grid-template-rows: 100% 100%;
 
                 &__image {
-                    background-color: #fff9f9;
-                    border: black 1px solid;
                     margin: 10px;
                     border-radius: 20px;
+
+                    object-fit: cover;
+
+                    width: 100%;
+                    height: 90%;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    transition: transform 0.2s ease;
+
+                    position: relative;
+
+                    &:hover {
+                        transform: scale(1.04);
+                    }
+
                 }
 
                 &__info {
                     margin: 10px;
 
+                    position: relative;
+
+                    max-width: 100%;
+                    max-height: 100%;
+
                     display: grid;
-                    grid-template-columns: 40% 60%;
+                    grid-template-columns: 50% 50%;
+                    grid-template-rows: 50% 50%;
+
                     * {
                         font-size: 24px;
                         padding: 10px;
                     }
 
+                    &__delete {
+
+                        display: flex;
+                        position: absolute;
+
+                        right: 0;
+                        bottom: 0;
+
+                        cursor: pointer;
+
+                        margin: 10px 30px 6px 10px;
+
+                        *{
+                            font-size: 18px;
+                            transition: transform 0.5s ease-out;
+                        }
+
+
+                        &__icon{
+                            justify-self: end;
+                            align-self: center;
+                        }
+
+                        &__name{
+                            padding-right: 4px;
+                        }
+
+                    }
+
                     &__brand {
                     }
-                    &__price {
-                        color: red;
-                        justify-self: right;
-                        align-self: center;
-                    }
-                    &__count {
-                    }
-                    &__size {
-                        font-size: 18px;
-                    }
-                }
+                    &__price_count {
 
-                &__close {
+                        max-width: 100%;
+                        max-height: 100%;
+
+                        min-height: 50%;
+                        min-width: 50%;
+
+                        justify-self: end;
+
+                        position: relative;
+
+                        padding: 5px;
+
+                        display: flex;
+                        flex-direction: column;
+
+                        &__price{
+                            color: red;
+                            justify-self: right;
+                            align-self: center;
+                        }
+
+                        &__count{
+
+                            display: flex;
+                            border: #c5c5c5 2px solid;
+                            border-radius: 20px;
+
+                            padding: 2px;
+
+                            align-self: center;
+                            justify-content: center;
+
+                            transform: scale(0.8);
+
+                            &__plus{
+                                cursor: pointer;
+                            }
+                            &__number{}
+                            &__minus{
+                                cursor: pointer;
+                            }
+
+                        }
+                    }
                 }
             }
         }

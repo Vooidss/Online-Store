@@ -18,7 +18,7 @@ export default function Authorization({
 
         try {
             const response = await fetch(
-                'http://localhost:8091/auth/authentication',
+                'http://localhost:8060/auth/authentication',
                 {
                     method: 'POST',
                     headers: {
