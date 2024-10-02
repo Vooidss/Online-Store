@@ -8,6 +8,7 @@ import ru.org.backend.user.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
+
     private String name;
     private String secondName;
     private String login;

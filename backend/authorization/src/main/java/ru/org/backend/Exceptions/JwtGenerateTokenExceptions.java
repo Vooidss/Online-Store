@@ -1,8 +1,8 @@
 package ru.org.backend.Exceptions;
 
-public class JwtGenerateTokenExceptions extends Exception{
-    public JwtGenerateTokenExceptions() {
-    }
+public class JwtGenerateTokenExceptions extends Exception {
+
+    public JwtGenerateTokenExceptions() {}
 
     public JwtGenerateTokenExceptions(String message) {
         super(message);
@@ -16,7 +16,12 @@ public class JwtGenerateTokenExceptions extends Exception{
         super(cause);
     }
 
-    public JwtGenerateTokenExceptions(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public JwtGenerateTokenExceptions(
+        String message,
+        Throwable cause,
+        boolean enableSuppression,
+        boolean writableStackTrace
+    ) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

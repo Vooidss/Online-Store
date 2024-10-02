@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ProductResponse {
+
     private int id;
     private String type;
     private String brand;

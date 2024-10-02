@@ -3,6 +3,7 @@ package com.onlinestore.backend.Exceptions;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 public class ProductNotFoundException extends RuntimeException {
+
     public ProductNotFoundException() {
         super("Product not found");
     }

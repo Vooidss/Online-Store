@@ -4,6 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import java.util.*;
+import java.util.function.Function;
+import javax.crypto.SecretKey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,10 +16,6 @@ import ru.org.backend.Models.BlackListTokens;
 import ru.org.backend.Repositories.BlackListRepository;
 import ru.org.backend.user.MyUser;
 import ru.org.backend.user.MyUserDetails;
-
-import javax.crypto.SecretKey;
-import java.util.*;
-import java.util.function.Function;
 
 @Service
 @Slf4j
@@ -38,7 +37,7 @@ public class JwtService {
      * @return логин пользователя
      */
     public String extractLogin(String token) {
-        if(token.isEmpty()){
+        if (token.isEmpty()) {
             throw new RuntimeException("Токен пустой");
         }
 
@@ -51,10 +50,10 @@ public class JwtService {
      * @param userDetails данные пользователя
      * @return токен
      */
-    public String generateToken(UserDetails userDetails) throws JwtGenerateTokenExceptions{
+    public String generateToken(UserDetails userDetails)
+        throws JwtGenerateTokenExceptions {
         Map<String, Object> claims = new HashMap<>();
         if (userDetails instanceof MyUserDetails customUserDetails) {
-
             MyUser user = customUserDetails.getUser();
 
             claims.put("id", user.getId());
@@ -69,10 +68,15 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String login = extractLogin(token);
-        return (login.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        return (
+            (login.equals(userDetails.getUsername())) && !isTokenExpired(token)
+        );
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers){
+    private <T> T extractClaim(
+        String token,
+        Function<Claims, T> claimsResolvers
+    ) {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }
@@ -84,14 +88,17 @@ public class JwtService {
      * @param userDetails данные пользователя
      * @return токен
      */
-    private String generateTokenWithExtraClaims(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts
-                .builder()
-                .claims(extraClaims)
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 10000 * 60 * 24))
-                .signWith(getSigningKey()).compact();
+    private String generateTokenWithExtraClaims(
+        Map<String, Object> extraClaims,
+        UserDetails userDetails
+    ) {
+        return Jwts.builder()
+            .claims(extraClaims)
+            .subject(userDetails.getUsername())
+            .issuedAt(new Date(System.currentTimeMillis()))
+            .expiration(new Date(System.currentTimeMillis() + 10000 * 60 * 24))
+            .signWith(getSigningKey())
+            .compact();
     }
 
     /**
@@ -100,10 +107,10 @@ public class JwtService {
      * @param token токен
      * @return true, если токен просрочен
      */
-    protected boolean isTokenExpired(String token){
-        try{
+    protected boolean isTokenExpired(String token) {
+        try {
             extractExpiration(token).before(new Date());
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             return true;
         }
         return false;
@@ -125,16 +132,15 @@ public class JwtService {
      * @param token токен
      * @return данные
      */
-    public Claims extractAllClaims(String token){
-        return Jwts
-                .parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+    public Claims extractAllClaims(String token) {
+        return Jwts.parser()
+            .verifyWith(getSigningKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
     }
 
-                                     /**
+    /**
      * Получение ключа для подписи токена
      *
      * @return ключ
@@ -148,7 +154,7 @@ public class JwtService {
         blackListRepository.save(blackListTokens);
     }
 
-    public boolean isTokenBlacklisted(String token){
+    public boolean isTokenBlacklisted(String token) {
         return blackListRepository.findByToken(token).isPresent();
     }
 }

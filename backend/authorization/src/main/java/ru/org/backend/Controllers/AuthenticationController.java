@@ -1,6 +1,5 @@
 package ru.org.backend.Controllers;
 
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +16,17 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<JwtAuthenticationResponse> authentication(
-            @RequestBody AuthenticationRequest request){
+        @RequestBody AuthenticationRequest request
+    ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
     @GetMapping("/isTokenExpired")
-    public ResponseEntity<JwtAuthenticationResponse> isValidToken(HttpServletRequest request){
+    public ResponseEntity<JwtAuthenticationResponse> isValidToken(
+        HttpServletRequest request
+    ) {
         return authenticationService.isTokenExpired(request);
     }
 

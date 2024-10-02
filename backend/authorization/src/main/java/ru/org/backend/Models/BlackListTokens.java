@@ -1,10 +1,9 @@
 package ru.org.backend.Models;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.Date;
+import lombok.*;
 
 @Table(name = "blackListTokens")
 @Entity
@@ -13,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BlackListTokens {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

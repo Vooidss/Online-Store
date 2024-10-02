@@ -12,8 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "Ответ c токеном доступа")
 public class JwtAuthenticationResponse {
-    @Schema(description = "Токен доступа", example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYyMjUwNj...")
+
+    @Schema(
+        description = "Токен доступа",
+        example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYyMjUwNj..."
+    )
     private String token;
+
     private String error;
     private int code;
     private boolean isFailed;
@@ -25,15 +30,18 @@ public class JwtAuthenticationResponse {
     }
 
     public static JwtAuthenticationResponse generateJwtAuthenticationResponse(
-            String token, boolean isTokenExpired, String error, int code, boolean isFailed
-    ){
-        return JwtAuthenticationResponse
-                .builder()
-                .token(token)
-                .isTokenExpired(isTokenExpired)
-                .error(error)
-                .code(code)
-                .isFailed(isFailed)
-                .build();
+        String token,
+        boolean isTokenExpired,
+        String error,
+        int code,
+        boolean isFailed
+    ) {
+        return JwtAuthenticationResponse.builder()
+            .token(token)
+            .isTokenExpired(isTokenExpired)
+            .error(error)
+            .code(code)
+            .isFailed(isFailed)
+            .build();
     }
 }
