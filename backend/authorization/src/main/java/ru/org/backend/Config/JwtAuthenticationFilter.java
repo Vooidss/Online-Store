@@ -5,6 +5,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
+import java.io.IOException;
+import java.security.SignatureException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +21,6 @@ import ru.org.backend.Services.JwtService;
 import ru.org.backend.Services.MyUserDetailService;
 import ru.org.backend.Services.UserService;
 
-import java.io.IOException;
-import java.security.SignatureException;
-
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -32,20 +31,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            @NotNull HttpServletRequest request,
-            @NotNull @NonNull HttpServletResponse response,
-            @NotNull FilterChain filterChain
+        @NotNull HttpServletRequest request,
+        @NotNull @NonNull HttpServletResponse response,
+        @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
-
         final String path = request.getRequestURI();
-
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         String userLogin = "";
 
-        if(authHeader == null || !authHeader.startsWith("Bearer ") || path.startsWith("/auth")){
-            filterChain.doFilter(request,response );
+        if (
+            authHeader == null ||
+            !authHeader.startsWith("Bearer ") ||
+            path.startsWith("/auth")
+        ) {
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -57,8 +58,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("2");
             userLogin = jwtService.extractLogin(jwt);
             log.info("1");
-        }catch (RuntimeException e){
-            filterChain.doFilter(request,response );
+        } catch (RuntimeException e) {
+            filterChain.doFilter(request, response);
             return;
         }
         log.info("2");
@@ -69,24 +70,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        if(userLogin != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = this.userDetailService.loadUserByUsername(userLogin);
+        if (
+            userLogin != null &&
+            SecurityContextHolder.getContext().getAuthentication() == null
+        ) {
+            UserDetails userDetails =
+                this.userDetailService.loadUserByUsername(userLogin);
 
-                if(jwtService.isTokenValid(jwt,userDetails)){
-                    UsernamePasswordAuthenticationToken authToken  = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
+            if (jwtService.isTokenValid(jwt, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
                     );
-                    authToken.setDetails(
-                            new WebAuthenticationDetailsSource().buildDetails(request)
-                    );
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }else{
-                    filterChain.doFilter(request,response);
-                    throw new RuntimeException("Проблема с JWT токеном");
-                }
+                authToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                filterChain.doFilter(request, response);
+                throw new RuntimeException("Проблема с JWT токеном");
+            }
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }

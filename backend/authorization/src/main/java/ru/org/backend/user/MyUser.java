@@ -3,12 +3,11 @@ package ru.org.backend.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Table(name = "users")
 @Data
@@ -17,16 +16,17 @@ import java.util.List;
 @Entity
 @Builder
 public class MyUser {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull(message =  "Пароль должен присутствовать обязательно")
+    @NotNull(message = "Пароль должен присутствовать обязательно")
     @Column(name = "password", nullable = false, unique = true)
     private String password;
 
-    @NotNull(message =  "Логин должен присутствовать обязательно")
+    @NotNull(message = "Логин должен присутствовать обязательно")
     @Column(name = "login")
     private String login;
 

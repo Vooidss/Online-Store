@@ -1,5 +1,7 @@
 package ru.org.backend.Config;
 
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +26,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ru.org.backend.Services.MyUserDetailService;
 import ru.org.backend.user.Role;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -34,28 +33,34 @@ public class SecurityConfig {
 
     private final MyUserDetailService userDetailService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)
+        throws Exception {
         return httpSecurity
-                .cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/auth/**").permitAll();
-                    registry.requestMatchers("/admin/**").hasAuthority(Role.ADMIN.toString());
-                    registry.anyRequest().authenticated();
-                })
-                .sessionManagement( session -> {
-                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                })
-                .authenticationProvider(authenticationProvider())
-                .httpBasic(Customizer.withDefaults())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+            .cors(Customizer.withDefaults())
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(registry -> {
+                registry.requestMatchers("/auth/**").permitAll();
+                registry
+                    .requestMatchers("/admin/**")
+                    .hasAuthority(Role.ADMIN.toString());
+                registry.anyRequest().authenticated();
+            })
+            .sessionManagement(session -> {
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            })
+            .authenticationProvider(authenticationProvider())
+            .httpBasic(Customizer.withDefaults())
+            .addFilterBefore(
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
+            )
+            .build();
     }
 
-
     @Bean
-     public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailService);
         provider.setPasswordEncoder(passwordEncoder());
@@ -63,13 +68,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration config
+    ) throws Exception {
         return config.getAuthenticationManager();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

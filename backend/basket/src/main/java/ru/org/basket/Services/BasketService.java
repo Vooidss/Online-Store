@@ -4,28 +4,26 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
-
 import jakarta.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.org.basket.Model.Basket;
 import ru.org.basket.DTO.ProductInfoRequest;
 import ru.org.basket.DTO.ProductResponse;
+import ru.org.basket.Model.Basket;
 import ru.org.basket.Repositories.BasketRepositories;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -35,24 +33,25 @@ public class BasketService {
     private final BasketRepositories basketRepositories;
     private final RestTemplate restTemplate;
 
-    private Integer findUserId(String token){
-
+    private Integer findUserId(String token) {
         String urlString = "http://localhost:8060/user/id";
         try {
-
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization","Bearer " + token);
+            conn.setRequestProperty("Authorization", "Bearer " + token);
 
             int responseCode = conn.getResponseCode();
             System.out.println("Response Code: " + responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
-
                 StringBuilder response = new StringBuilder();
 
-                try(BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))){
+                try (
+                    BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream())
+                    )
+                ) {
                     String inputLine;
 
                     while ((inputLine = in.readLine()) != null) {
@@ -61,7 +60,9 @@ public class BasketService {
                 }
                 System.out.println("Response: " + response.toString());
 
-                JsonObject jsonResponse = JsonParser.parseString(response.toString()).getAsJsonObject();
+                JsonObject jsonResponse = JsonParser.parseString(
+                    response.toString()
+                ).getAsJsonObject();
                 return jsonResponse.get("Id").getAsInt();
             } else {
                 System.out.println("GET request not worked");
@@ -72,45 +73,47 @@ public class BasketService {
         return null;
     }
 
-    private Basket createBasket(ProductInfoRequest productInfoRequest){
+    private Basket createBasket(ProductInfoRequest productInfoRequest) {
         return Basket.builder()
-                .productId(productInfoRequest.getProductId())
-                .userId(findUserId(
-                        productInfoRequest.getToken())
-                )
-                .build();
+            .productId(productInfoRequest.getProductId())
+            .userId(findUserId(productInfoRequest.getToken()))
+            .build();
     }
 
-    public Basket save(ProductInfoRequest productInfoRequest){
+    public Basket save(ProductInfoRequest productInfoRequest) {
         return basketRepositories.save(createBasket(productInfoRequest));
     }
 
-    public ResponseEntity<Map<String,Object>> getProductsByUser(HttpServletRequest request) {
-
+    public ResponseEntity<Map<String, Object>> getProductsByUser(
+        HttpServletRequest request
+    ) {
         String token = request.getHeader("Authorization").substring(7);
 
         int userId;
 
         try {
             userId = findUserId(token);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.info("Проблема с токеном");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    Map.of(
-                            "message", "Проблема с токеном",
-                            "status", HttpStatus.BAD_REQUEST,
-                            "code", HttpStatus.BAD_REQUEST.value()
-                    )
+                Map.of(
+                    "message",
+                    "Проблема с токеном",
+                    "status",
+                    HttpStatus.BAD_REQUEST,
+                    "code",
+                    HttpStatus.BAD_REQUEST.value()
+                )
             );
         }
         String urlString = "http://localhost:8071/products/ids";
 
-        List<Integer> list = basketRepositories.findProductIdByUserId(userId)
-                .stream()
-                .map(Basket::getProductId)
-                .toList();
+        List<Integer> list = basketRepositories
+            .findProductIdByUserId(userId)
+            .stream()
+            .map(Basket::getProductId)
+            .toList();
         try {
-
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -118,7 +121,6 @@ public class BasketService {
             conn.setDoOutput(true);
 
             String jsonInputString = new Gson().toJson(list);
-
 
             try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes("utf-8");
@@ -129,10 +131,13 @@ public class BasketService {
             System.out.println("Response Code: " + responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
-
                 StringBuilder response = new StringBuilder();
 
-                try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                try (
+                    BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream())
+                    )
+                ) {
                     String inputLine;
 
                     while ((inputLine = in.readLine()) != null) {
@@ -141,32 +146,50 @@ public class BasketService {
                 }
                 log.info("Response: " + response.toString());
 
-                Type productListType = new TypeToken<List<ProductResponse>>() {}.getType();
+                Type productListType = new TypeToken<
+                    List<ProductResponse>
+                >() {}.getType();
 
-                List<ProductResponse> products = new Gson().fromJson(response.toString(), productListType);
+                List<ProductResponse> products = new Gson()
+                    .fromJson(response.toString(), productListType);
 
-                return ResponseEntity.ok(Map.of(
-                        "products", products,
-                        "status", HttpStatus.OK,
-                        "message", "Все впорядке",
-                        "code", HttpStatus.OK.value()
-                ));
-
+                return ResponseEntity.ok(
+                    Map.of(
+                        "products",
+                        products,
+                        "status",
+                        HttpStatus.OK,
+                        "message",
+                        "Все впорядке",
+                        "code",
+                        HttpStatus.OK.value()
+                    )
+                );
             } else {
                 System.out.println("GET request not worked");
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
-                    "status", HttpStatus.NOT_FOUND,
-                    "code", HttpStatus.NOT_FOUND.value(),
-                    "message", "Технические неполадки. Сервис 'Продуктов' не доступе"
-            ));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                Map.of(
+                    "status",
+                    HttpStatus.NOT_FOUND,
+                    "code",
+                    HttpStatus.NOT_FOUND.value(),
+                    "message",
+                    "Технические неполадки. Сервис 'Продуктов' не доступе"
+                )
+            );
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
-                "status", HttpStatus.NOT_FOUND,
-                "code", HttpStatus.NOT_FOUND.value(),
-                "message", "Корзина пуста"
-        ));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+            Map.of(
+                "status",
+                HttpStatus.NOT_FOUND,
+                "code",
+                HttpStatus.NOT_FOUND.value(),
+                "message",
+                "Корзина пуста"
+            )
+        );
     }
 }
