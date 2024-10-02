@@ -1,22 +1,20 @@
-import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
-export default function ProductSelection(){
-    const {products,id} = useParams();
-    const [info, setProducts] = useState([]);
-
+export default function ProductSelection() {
+    const { products, id } = useParams()
+    const [info, setProducts] = useState([])
 
     useEffect(() => {
         fetch(`http://localhost:8071/products/${products}/v1/${id}`)
             .then(res => res.json())
-            .then((response) => setProducts(response.products))
-    }, [id, products]);
+            .then(response => setProducts(response.products))
+    }, [id, products])
 
-
-    return(
+    return (
         <div className="main">
             <div className="main__image">
-                <img className="main_image__image" src={info.img} alt="img"/>
+                <img className="main_image__image" src={info.img} alt="img" />
             </div>
             <div className="main__info">
                 <h1 className="main__info__name">{info.name}</h1>

@@ -1,77 +1,74 @@
-.header{
-  background-color: black;
-  user-select: none;
-  z-index: 1;
+.header {
+    background-color: black;
+    user-select: none;
+    z-index: 1;
 
-  &__mainHeader{
-    height: 100%;
-    display: grid;
-    grid-template-columns:10% 80% 10%;
+    &__mainHeader {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 10% 80% 10%;
 
-    &__logo{
-      color: white;
-      position: relative;
-      justify-self: center;
-      align-self: center;
-    }
-
-    &__items{
-      color: white;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      :hover{
-        cursor: pointer;
-        transform: scale(1.1);
-        color: #c5c5c5;
-      }
-
-        &__link{
-          padding: 10px;
-          position: relative;
-          color: white;
-          text-decoration: none;
-
-          &--active{
-            padding: 10px;
-            position: relative;
-
-            text-decoration: underline;
-            text-decoration-color: #4605ff ;
-            text-decoration-thickness: 3px ;
+        &__logo {
             color: white;
-          }
-      }
+            position: relative;
+            justify-self: center;
+            align-self: center;
+        }
+
+        &__items {
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            :hover {
+                cursor: pointer;
+                transform: scale(1.1);
+                color: #c5c5c5;
+            }
+
+            &__link {
+                padding: 10px;
+                position: relative;
+                color: white;
+                text-decoration: none;
+
+                &--active {
+                    padding: 10px;
+                    position: relative;
+
+                    text-decoration: underline;
+                    text-decoration-color: #4605ff;
+                    text-decoration-thickness: 3px;
+                    color: white;
+                }
+            }
+        }
+
+        &__side {
+            color: #ffffff;
+
+            display: grid;
+            justify-self: center;
+            grid-auto-flow: column;
+            align-self: center;
+
+            font-size: 20px;
+
+            :hover {
+                color: salmon;
+                cursor: pointer;
+                transform: scale(1.1);
+            }
+
+            &__basket {
+                margin-right: 10px;
+            }
+
+            &__account {
+                margin-right: 15px;
+            }
+        }
     }
-
-    &__side{
-      color: #ffffff;
-
-      display: grid;
-      justify-self: center;
-      grid-auto-flow: column;
-      align-self: center;
-
-      font-size: 20px;
-
-      :hover{
-        color: salmon;
-        cursor: pointer;
-        transform: scale(1.1);
-      }
-
-      &__basket{
-        margin-right: 10px;
-
-      }
-
-      &__account{
-        margin-right: 15px;
-      }
-
-    }
-
-  }
 }

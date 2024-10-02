@@ -1,66 +1,64 @@
-.mainWindow{
-  background-color: rgba(0,0,0,0);
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  position: fixed;
-  left: 0;
-  top: 0;
-  opacity: 0;
-  transition: 0.5s;
-  pointer-events: none;
-
-  &.active{
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  &__authenticationWindow{
-    display: grid;
+.mainWindow {
+    background-color: rgba(0, 0, 0, 0);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    grid-template-rows: 10% 70% 20%;
-    background-color: #ffffff;
-    border: black 2px solid;
+    user-select: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    transition: 0.5s;
+    pointer-events: none;
 
-    height: 50%;
-    width: 20%;
-    border-radius: 8%;
-
-    &__head{
-      padding: 10px;
-      text-align: center;
+    &.active {
+        opacity: 1;
+        pointer-events: auto;
     }
 
-    &__inputs{
-      display: grid;
-      align-content: center;
+    &__authenticationWindow {
+        display: grid;
+        justify-content: center;
+        grid-template-rows: 10% 70% 20%;
+        background-color: #ffffff;
+        border: black 2px solid;
 
+        height: 50%;
+        width: 20%;
+        border-radius: 8%;
+
+        &__head {
+            padding: 10px;
+            text-align: center;
+        }
+
+        &__inputs {
+            display: grid;
+            align-content: center;
+        }
+
+        &__input {
+            margin: 10px;
+        }
+
+        &__error {
+            margin: 10px;
+            transform: scale(0);
+            color: red;
+
+            &.active {
+                transform: scale(1);
+            }
+        }
+
+        &__button {
+            margin: 10px;
+            height: 50%;
+            width: 50%;
+            justify-self: center;
+            cursor: pointer;
+        }
     }
-
-    &__input{
-      margin: 10px;
-    }
-
-    &__error{
-      margin: 10px;
-      transform:scale(0);
-      color: red;
-
-      &.active{
-        transform:scale(1);
-      }
-    }
-
-    &__button{
-      margin: 10px;
-      height: 50%;
-      width: 50%;
-      justify-self: center;
-      cursor: pointer;
-    }
-
-  }
 }

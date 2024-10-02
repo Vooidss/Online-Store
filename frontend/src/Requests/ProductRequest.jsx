@@ -1,77 +1,74 @@
-import React, {Component} from "react";
-import Product from "../components/Product";
+import React, { Component } from 'react'
+import Product from '../components/Product'
 
 export default class ProductRequest extends Component {
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
-            items : [],
+            items: [],
             isLoading: false,
-            error: false
+            error: false,
         }
     }
 
     componentDidMount() {
-        this.fetchData();
+        this.fetchData()
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.product !== this.props.product) {
-            this.fetchData();
+            this.fetchData()
         }
     }
 
     fetchData() {
-        const productName = this.props.product;
+        const productName = this.props.product
 
-        let url = `http://localhost:8071/products/${productName}`;
+        let url = `http://localhost:8071/products/${productName}`
         fetch(url)
             .then(res => res.json())
             .then(
-                (result) => {
+                result => {
                     this.setState({
                         isLoading: true,
-                        items: result[productName]
-                    });
+                        items: result[productName],
+                    })
                 },
-                (error) => {
+                error => {
                     this.setState({
                         isLoading: true,
-                        error: true
-                    });
-                }
-            );
+                        error: true,
+                    })
+                },
+            )
     }
 
-
     render() {
-        const {items, isLoading, error} = this.state;
+        const { items, isLoading, error } = this.state
 
-        console.log(items);
+        console.log(items)
 
-        if(error){
-            return(
-                <h1>Ошибка</h1>
-            )
+        if (error) {
+            return <h1>Ошибка</h1>
         }
 
-        if(!isLoading){
-            return(
-                <h1>Loading...</h1>
-            )
+        if (!isLoading) {
+            return <h1>Loading...</h1>
         }
 
-        if(JSON.stringify(items) === '[]'){
-            return(
-                <h1>Пусто</h1>
-            )
+        if (JSON.stringify(items) === '[]') {
+            return <h1>Пусто</h1>
         }
 
-
-        return (
-            items.map((thisProduct) =>{
-                return <Product key={thisProduct.id} product={thisProduct} productName={this.props.product}/>})
-        )
+        return items.map(thisProduct => {
+            return (
+                <Product
+                    key={thisProduct.id}
+                    product={thisProduct}
+                    productName={this.props.product}
+                />
+            )
+        })
     }
 }
