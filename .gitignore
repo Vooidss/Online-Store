@@ -25,4 +25,4 @@ yarn-error.log*
 */.mvn
 */.idea
 yarn.lock
-*/target
+*/*/target

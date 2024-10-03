@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProductUser from '../components/ProductUser'
+import InformationAboutProducts from '../components/InformationAboutProducts'
 
 export default function Basket() {
     const [products, setProduct] = useState([]);
@@ -13,7 +14,7 @@ export default function Basket() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`
                 },
             })
 
@@ -70,7 +71,7 @@ export default function Basket() {
                     <div/>
                 </div>
             </div>
-            <nav></nav>
+            <InformationAboutProducts/>
         </div>
     )
 }
