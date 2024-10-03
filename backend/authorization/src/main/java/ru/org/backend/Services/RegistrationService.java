@@ -28,7 +28,7 @@ public class RegistrationService {
         String error = null;
 
         if (request.getLogin() == null || request.getPassword() == null) {
-            error = "Нет лоигина или пароля";
+            error = "Нет логина или пароля";
             log.error(error);
             return jwtResponse.setError(error);
         }

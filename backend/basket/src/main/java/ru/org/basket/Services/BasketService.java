@@ -160,7 +160,7 @@ public class BasketService {
                         "status",
                         HttpStatus.OK,
                         "message",
-                        "Все впорядке",
+                        "Все в порядке",
                         "code",
                         HttpStatus.OK.value()
                     )
@@ -177,7 +177,7 @@ public class BasketService {
                     "code",
                     HttpStatus.NOT_FOUND.value(),
                     "message",
-                    "Технические неполадки. Сервис 'Продуктов' не доступе"
+                    "Технические неполадки. Сервис 'Продуктов' не доступен"
                 )
             );
         }
