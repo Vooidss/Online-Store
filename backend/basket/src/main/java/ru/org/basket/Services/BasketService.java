@@ -14,11 +14,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import ru.org.basket.DTO.ProductInfoRequest;
 import ru.org.basket.DTO.ProductResponse;
@@ -190,6 +194,32 @@ public class BasketService {
                 "message",
                 "Корзина пуста"
             )
+        );
+    }
+
+    @Transactional
+    public ResponseEntity<Map<String, Object>> deleteProduct(int id, HttpServletRequest request) {
+
+        String token = request.getHeader("Authorization").substring(7);
+
+        try {
+            basketRepositories.deleteBasketByProductIdAndUserId(id,findUserId(token));
+        }catch (RuntimeException e){
+            log.error(e.toString());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    Map.of(
+                    "status", HttpStatus.NOT_FOUND,
+                    "code", HttpStatus.NOT_FOUND.value(),
+                    "message", "Проблема с удалением"
+            ));
+        }
+
+        return ResponseEntity.ok().body(
+                Map.of(
+                        "status",HttpStatus.OK,
+                        "code", HttpStatus.OK.value(),
+                        "message", "Продукт удален"
+                )
         );
     }
 }

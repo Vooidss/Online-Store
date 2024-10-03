@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {RiDeleteBin6Line} from "react-icons/ri";
 
 
-export default function ProductUser({key,product }) {
+export default function ProductUser({product,onDelete}) {
     const [count, setCount] = useState(1);
     const [price, setPrice] = useState(product.price);
     const [totalPrice, setTotalPrice] = useState(product.price);
@@ -56,19 +56,27 @@ export default function ProductUser({key,product }) {
         setBlack(false);
     }
 
+
     async function deleteItem(){
-        const url = `http://localhost:8050/basket/delete/${key}}`
+        const id = product.id
+        const url = `http://localhost:8050/basket/delete/${id}`
+        const token = localStorage.getItem("token");
 
         try {
 
             const response = await fetch(url, {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             })
 
             const data = response.json();
+
+            console.log(data.Promise)
+
+            onDelete(id);
 
             console.log(data)
         }catch (e){
@@ -98,11 +106,11 @@ export default function ProductUser({key,product }) {
                     Размер: {product.size}
                 </p>
             </div>
-            <div className="main_window_basket__basket__items__item__info__delete" onMouseEnter={MouseEnter} onMouseLeave={MouseLeave}>
+            <div className="main_window_basket__basket__items__item__info__delete" onMouseEnter={MouseEnter} onMouseLeave={MouseLeave} onClick={deleteItem}>
                 <p className="main_window_basket__basket__items__item__info__delete__name" style={{
                     color : isBlack ? 'black' : 'rgba(0, 0, 0, 0.32)',
                     transform : isActive ? 'scale(1)' : 'scale(0)'
-                    }} onClick={deleteItem}>Удалить</p>
+                    }}>Удалить</p>
                 <RiDeleteBin6Line className="main_window_basket__basket__items__item__info__delete__icon" style={{
                     color : isBlack ? 'black' : 'rgba(0, 0, 0, 0.32)',
                     transform : isActive ? 'scale(1)' : 'scale(0)'

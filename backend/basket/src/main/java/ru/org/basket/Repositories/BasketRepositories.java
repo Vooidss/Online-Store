@@ -6,4 +6,5 @@ import ru.org.basket.Model.Basket;
 
 public interface BasketRepositories extends JpaRepository<Basket, Integer> {
     List<Basket> findProductIdByUserId(int id);
+    void deleteBasketByProductIdAndUserId(int productId, int userId);
 }

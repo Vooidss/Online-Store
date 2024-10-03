@@ -30,4 +30,10 @@ public class BasketController {
     ) {
         return basketService.getProductsByUser(request);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Map<String,Object>> deleteProduct(@PathVariable(name = "id",required = false) int id,HttpServletRequest request){
+        return basketService.deleteProduct(id,request);
+    }
+
 }
