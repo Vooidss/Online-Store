@@ -2,8 +2,11 @@ package ru.org.backend.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+
+import jakarta.ws.rs.DefaultValue;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,4 +49,9 @@ public class MyUser {
     @Column(name = "email", unique = true)
     @Email
     private String email;
+
+    @Column(name = "money")
+    @Min(0)
+    private int money;
+
 }

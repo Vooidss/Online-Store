@@ -50,19 +50,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        log.info("Берем токен из заголовка Authorization...");
+
         jwt = authHeader.substring(7);
 
-        log.info(jwt);
+        log.info("Токен получен \n" + jwt);
 
         try {
-            log.info("2");
+            log.info("Берем логин из токена...");
             userLogin = jwtService.extractLogin(jwt);
-            log.info("1");
+            log.info("Логин получен: " + userLogin);
         } catch (RuntimeException e) {
+            log.error("Ошибка получения Логина.");
             filterChain.doFilter(request, response);
             return;
         }
-        log.info("2");
+        log.info("Проверяем запрещён ли токен...");
 
         if (jwtService.isTokenBlacklisted(jwt)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -70,14 +73,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        log.info("Токен разрешён!");
+
+        log.info("Проверяем есть находиться ли в Security Context пользователь...");
+
         if (
-            userLogin != null &&
             SecurityContextHolder.getContext().getAuthentication() == null
         ) {
+            log.info("Пользователь нет. Продолжаем!");
+
+            log.info("Загружаем пользователя...");
             UserDetails userDetails =
                 this.userDetailService.loadUserByUsername(userLogin);
 
+            log.info("Пользователь загружен!");
+
+            log.info("Проверяем валидный ли токен...");
+
             if (jwtService.isTokenValid(jwt, userDetails)) {
+                log.info("Токен валидный!");
+
+                log.info("Загружаем пользователя в Secutity Context");
                 UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -88,11 +104,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                log.info("Пользователь загружен!");
             } else {
                 filterChain.doFilter(request, response);
-                throw new RuntimeException("Проблема с JWT токеном");
+                log.error("Токен не валидный");
             }
         }
+
+        log.info("Токен прошёл фильтрацию");
         filterChain.doFilter(request, response);
     }
 }

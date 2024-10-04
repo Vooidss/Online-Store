@@ -56,6 +56,11 @@
 .header__mainHeader__side__basket {
   margin-right: 10px;
 }
+.header__mainHeader__side__basket * {
+  font-style: normal;
+  text-decoration: none;
+  color: white;
+}
 .header__mainHeader__side__account {
   margin-right: 15px;
 }

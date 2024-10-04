@@ -40,6 +40,7 @@ public class RegistrationService {
             .email(request.getEmail())
             .age(request.getAge())
             .role(request.getRole())
+                .money(0)
             .build();
 
         if (user.getRole() == null) {

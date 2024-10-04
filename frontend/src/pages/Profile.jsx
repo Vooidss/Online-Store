@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react'
 export default function Profile({ active, setActive, onLogout }) {
     const [user, setUser] = useState({
         name: '',
-        secondName: '',
-        email: '',
         login: '',
+        money: 0
     })
 
     async function getUser() {
@@ -27,9 +26,8 @@ export default function Profile({ active, setActive, onLogout }) {
 
             setUser(user => ({
                 name: data.name,
-                secondName: data.secondName,
-                email: data.email,
                 login: data.login,
+                money: data.money
             }))
         } catch (e) {
             console.log(e)
@@ -57,8 +55,7 @@ export default function Profile({ active, setActive, onLogout }) {
                 </h1>
                 <ul className="main-window__window-profile__info">
                     <li>Имя: {user.name}</li>
-                    <li>Фамилия: {user.secondName}</li>
-                    <li>Почта: {user.email}</li>
+                    <li>Кошелёк: {user.money}</li>
                 </ul>
                 <button
                     className="main-window__window-profile__logout"

@@ -86,7 +86,9 @@ export default function Basket({ isAuthorization }) {
         <div className="main_window_basket" style={{
             gridTemplateColumns: products.length > 0 ? '10% 60% 30%' : '100%'
         }}>
-            <nav></nav>
+            <nav style={{
+                width: products.length > 0 ? 'auto' : '0px'
+            }}> </nav>
             <div className="main_window_basket__basket" style={{
                 width: products.length > 0 ? '900px' : 'auto'
             }}>

@@ -1,6 +1,9 @@
 package ru.org.backend.Controllers;
 
 import java.util.Map;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,4 +26,15 @@ public class UserController {
     public ResponseEntity<MyUser> getResponseCurrentUser() {
         return userService.getResponseCurrentUser();
     }
+
+    @PatchMapping("/update")
+    public ResponseEntity<Map<String,Object>> updateUser(MyUser myUser){
+        return userService.updateUser(myUser);
+    }
+
+    @PatchMapping("/replenishment")
+    public ResponseEntity<Map<String,Object>> replenishmentMoney(@NonNull @RequestBody Integer money){
+        return userService.replenishmentMoney(money);
+    }
+
 }

@@ -1,14 +1,20 @@
 package ru.org.backend.Repositories;
 
 import java.util.Optional;
+
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.org.backend.user.MyUser;
 
 public interface UserRepositories extends JpaRepository<MyUser, Integer> {
     Optional<MyUser> findByName(String name);
     Optional<MyUser> findByLogin(String login);
     Optional<MyUser> findByEmail(String email);
-    boolean existsByName(String name);
-    boolean existsByLogin(String login);
-    boolean existsByEmail(String email);
+    @Modifying
+    @Transactional
+    @Query("UPDATE MyUser u SET u.money = u.money + :amount WHERE u.id = :userId")
+    void addToWallet(@Param("userId") Integer userId, @Param("amount") Integer amount);
 }

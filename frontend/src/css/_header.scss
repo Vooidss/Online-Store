@@ -66,6 +66,11 @@
 
             &__basket {
                 margin-right: 10px;
+                *{
+                    font-style: normal;
+                    text-decoration: none;
+                    color: white;
+                }
             }
 
             &__account {
