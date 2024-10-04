@@ -9,11 +9,12 @@ import ProfilePage from '../pages/Profile'
 
 export default function Main() {
     const [isModelOpen, setModelOpen] = useState(false)
+    const [isAuthorization, setAuthorization] = useState(false);
 
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
 
     const toggleModal = isActive => {
-        setModelOpen(isActive)
+        setModelOpen(isActive);
     }
 
     return (
@@ -26,6 +27,7 @@ export default function Main() {
                 <Header
                     modalActive={isModelOpen}
                     setModalActive={toggleModal}
+                    setAuthorization = {setAuthorization}
                 />
                 <Routes>
                     <Route path="/ShopList/*" element={<ShoppingList />} />
@@ -33,7 +35,9 @@ export default function Main() {
                         path="/:products/:id"
                         element={<ProductSelection />}
                     />
-                    <Route path="/Basket" element={<BasketPage />} />
+                    <Route path="/Basket" element={<BasketPage
+                    isAuthorization={isAuthorization}
+                    />} />
                     <Route path="/Profile" element={<ProfilePage />} />
                 </Routes>
             </Router>

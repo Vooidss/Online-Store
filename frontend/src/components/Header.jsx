@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import Authentication from '../pages/Authorization'
 import Profile from '../pages/Profile'
 
-export default function Header({ modalActive, setModalActive }) {
+export default function Header({ modalActive, setModalActive, setAuthorization }) {
     const [isAuthentication, setAuthentication] = useState(false)
 
     const token = localStorage.getItem('token')
@@ -36,6 +36,11 @@ export default function Header({ modalActive, setModalActive }) {
         setAuthentication(!!token)
         isTokenExpired()
     }, [])
+
+    useEffect(() => {
+        setAuthorization(isAuthentication)
+    }, [isAuthentication]);
+
 
     const handleLogout = async () => {
         localStorage.removeItem('token')

@@ -3,7 +3,7 @@ import ProductUser from '../components/ProductUser'
 import InformationAboutProducts from '../components/InformationAboutProducts'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-export default function Basket() {
+export default function Basket({isAuthorization}) {
     const [products, setProduct] = useState([]);
     const [isDelete, setDelete] = useState(false);
 
@@ -68,21 +68,26 @@ export default function Basket() {
                     </h1>
                 </div>
                 <div className="main_window_basket__basket__items">
-                    {products.length > 0 ? (
-                        <TransitionGroup>
-                            {products.map((product) => (
-                                <CSSTransition
-                                    key={product.id}
-                                    timeout={500}
-                                    classNames="fade"
-                                >
-                                    <ProductUser product={product} onDelete={handleDeleteProduct}/>
-                                </CSSTransition>
-                            ))}
-                        </TransitionGroup>
-                    ) : (
-                        <p>Корзина пуста. Пожалуйста выберите товар.</p>
-                    )}
+                    {isAuthorization ? (
+                                products.length > 0 ? (
+                                        <TransitionGroup>
+                                            {products.map((product) => (
+                                                <CSSTransition
+                                                    key={product.id}
+                                                    timeout={1000}
+                                                    classNames="fade"
+                                                    exit={true}
+                                                >
+                                                    <ProductUser product={product} onDelete={handleDeleteProduct}/>
+                                                </CSSTransition>
+                                            ))}
+                                        </TransitionGroup>
+                                    ) : (
+                                        <p className="_message_">{"Корзина пуста. Пожалуйста выберите товар"}</p>
+                                    )
+                            ) : ( <p className="_message_">{"Пожалуйста войдите в учетную запись"}</p>
+                        )
+                    }
                 </div>
             </div>
             <InformationAboutProducts/>
