@@ -3,19 +3,24 @@
     user-select: none;
     z-index: 1;
     height: 100px;
-    width: 100%;
 
     &__mainHeader {
         height: 100%;
         width: 100%;
         display: grid;
-        grid-template-columns: 10% 80% 10%;
+        grid-template-columns: 15% 65% 20%;
 
         &__logo {
-            color: white;
             position: relative;
-            justify-self: center;
-            align-self: center;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            &__name{
+                color: white;
+                margin-left: 20px;
+                font-size: 30px;
+            }
+
         }
 
         &__items {
@@ -54,28 +59,33 @@
 
             width: 100%;
 
-            display: grid;
-            justify-self: center;
-            grid-auto-flow: column;
-            align-self: center;
+            display: flex;
+            align-items: center;
+            justify-content: right;
 
+            &__components{
+                display: flex;
 
-            :hover {
-                color: salmon;
-                cursor: pointer;
-                transform: scale(1.1);
-            }
-
-            &__basket {
-                margin-right: 10px;
-                *{
-                    font-style: normal;
-                    text-decoration: none;
-                    color: white;
+                *:hover {
+                    color: salmon;
+                    cursor: pointer;
                 }
-            }
 
-            &__account {
+                *{
+                    margin-right: 10px;
+                }
+
+                &__basket {
+                    * {
+                        font-style: normal;
+                        text-decoration: none;
+                        color: white;
+                    }
+
+                }
+
+                &__account {
+                }
             }
         }
     }

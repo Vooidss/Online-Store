@@ -72,7 +72,7 @@ export default function Header({ modalActive, setModalActive, setAuthorization }
     return (
         <header className="header">
             <div className="header__mainHeader">
-                <h1 className="header__mainHeader__logo">Hukising</h1>
+                <div className="header__mainHeader__logo"><p className="header__mainHeader__logo__name">Hukising</p></div>
                 <ul className="header__mainHeader__items">
                     <li className="header__mainHeader__items">
                         <NavLink
@@ -106,15 +106,17 @@ export default function Header({ modalActive, setModalActive, setAuthorization }
                     </li>
                 </ul>
                 <div className="header__mainHeader__side">
-                    <p className="header__mainHeader__side__basket">
-                        <NavLink to="/Basket">Корзина</NavLink>
-                    </p>
-                    <p
-                        className="header__mainHeader__side__account"
-                        onClick={() => setModalActive(true)}
-                    >
-                        {isAuthentication ? 'Профиль' : 'Войти'}
-                    </p>
+                    <div className="header__mainHeader__side__components">
+                        <p className="header__mainHeader__side__components__basket">
+                            <NavLink to="/Basket">Корзина</NavLink>
+                        </p>
+                        <p
+                            className="header__mainHeader__side__components__account"
+                            onClick={() => setModalActive(true)}
+                        >
+                            {isAuthentication ? 'Профиль' : 'Войти'}
+                        </p>
+                    </div>
                 </div>
             </div>
             {isAuthentication ? (

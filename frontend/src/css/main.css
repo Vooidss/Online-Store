@@ -4,19 +4,23 @@
   user-select: none;
   z-index: 1;
   height: 100px;
-  width: 100%;
 }
 .header__mainHeader {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-columns: 10% 80% 10%;
+  grid-template-columns: 15% 65% 20%;
 }
 .header__mainHeader__logo {
-  color: white;
   position: relative;
-  justify-self: center;
-  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+.header__mainHeader__logo__name {
+  color: white;
+  margin-left: 20px;
+  font-size: 30px;
 }
 .header__mainHeader__items {
   color: white;
@@ -46,20 +50,21 @@
 .header__mainHeader__side {
   color: #ffffff;
   width: 100%;
-  display: grid;
-  justify-self: center;
-  grid-auto-flow: column;
-  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: right;
 }
-.header__mainHeader__side :hover {
+.header__mainHeader__side__components {
+  display: flex;
+}
+.header__mainHeader__side__components *:hover {
   color: salmon;
   cursor: pointer;
-  transform: scale(1.1);
 }
-.header__mainHeader__side__basket {
+.header__mainHeader__side__components * {
   margin-right: 10px;
 }
-.header__mainHeader__side__basket * {
+.header__mainHeader__side__components__basket * {
   font-style: normal;
   text-decoration: none;
   color: white;
@@ -158,7 +163,6 @@ html {
    (когда, например, нужно будет "прижать" футер к низу сайта)
   */
   height: 100vh;
-  width: 100vh;
   /**
    Плавный скролл
   */
