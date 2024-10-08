@@ -18,6 +18,6 @@ public class RegistrationController {
     public ResponseEntity<JwtAuthenticationResponse> createUser(
         @RequestBody RegisterRequest request
     ) {
-        return ResponseEntity.ok(registrationService.registration(request));
+        return registrationService.registration(request);
     }
 }

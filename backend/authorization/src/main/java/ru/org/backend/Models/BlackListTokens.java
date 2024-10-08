@@ -3,6 +3,8 @@ package ru.org.backend.Models;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Table(name = "blackListTokens")
@@ -19,5 +21,6 @@ public class BlackListTokens {
     private Integer id;
 
     @Column(name = "token", nullable = false)
+    @Size(max = 400)
     private String token;
 }

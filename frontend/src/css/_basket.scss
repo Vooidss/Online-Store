@@ -8,7 +8,6 @@
     user-select: none;
     &__basket {
         height: auto;
-        width: 900px;
 
         position: relative;
         display: grid;
@@ -31,7 +30,7 @@
             scroll-behavior: smooth;
 
             display: flex;
-            height: 700px;
+            height: 500px;
             width: auto;
 
             flex-direction: column;
@@ -54,6 +53,8 @@
                 display: grid;
                 grid-template-columns: 20% 80%;
                 grid-template-rows: 100% 100%;
+
+                transition: 0.5s;
 
                 &__image {
                     margin: 10px;

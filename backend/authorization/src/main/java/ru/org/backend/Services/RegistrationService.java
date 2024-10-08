@@ -3,7 +3,10 @@ package ru.org.backend.Services;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.org.backend.DTO.JwtAuthenticationResponse;
@@ -22,16 +25,23 @@ public class RegistrationService {
     private final UserService userService;
     private final JwtService jwtService;
 
-    public JwtAuthenticationResponse registration(RegisterRequest request) {
-        JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse();
+    public ResponseEntity<JwtAuthenticationResponse> registration(RegisterRequest request) {
         String jwt = null;
         String error = null;
 
         if (request.getLogin() == null || request.getPassword() == null) {
             error = "Нет логина или пароля";
             log.error(error);
-            return jwtResponse.setError(error);
+            return  ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(JwtAuthenticationResponse
+                            .builder()
+                            .error(error)
+                            .code(HttpStatus.NOT_FOUND.value())
+                            .build()
+                    );
         }
+
         var user = MyUser.builder()
             .login(request.getLogin())
             .password(passwordEncoder.encode(request.getPassword()))
@@ -57,11 +67,25 @@ public class RegistrationService {
                 .getFirst()
                 .getMessage();
             log.error(error);
-            return jwtResponse.setError(error);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(JwtAuthenticationResponse
+                            .builder()
+                            .error(error)
+                            .code(HttpStatus.BAD_REQUEST.value())
+                            .build()
+                    );
         } catch (DataIntegrityViolationException e) {
             error = e.getMostSpecificCause().getLocalizedMessage();
             log.error(error);
-            return jwtResponse.setError(error);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(JwtAuthenticationResponse
+                            .builder()
+                            .error(error)
+                            .code(HttpStatus.BAD_REQUEST.value())
+                            .build()
+                    );
         }
 
         try {
@@ -69,9 +93,22 @@ public class RegistrationService {
         } catch (JwtGenerateTokenExceptions e) {
             error = "Ошибка генерации токена";
             log.error(error);
-            return jwtResponse.setError(error);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(JwtAuthenticationResponse
+                            .builder()
+                            .error(error)
+                            .code(HttpStatus.BAD_REQUEST.value())
+                            .build()
+                    );
         }
 
-        return JwtAuthenticationResponse.builder().token(jwt).build();
+        return ResponseEntity.ok().body(
+                JwtAuthenticationResponse
+                        .builder()
+                        .token(jwt)
+                        .code(200)
+                        .build()
+        );
     }
 }

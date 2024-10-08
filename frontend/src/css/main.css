@@ -1,15 +1,20 @@
 @charset "UTF-8";
 .header {
-  background-color: black;
+  background-color: #cbc5c5;
   user-select: none;
   z-index: 1;
   height: 100px;
+  border-bottom: 2px black solid;
+  border-top: 15px black solid;
 }
 .header__mainHeader {
   height: 100%;
   width: 100%;
   display: grid;
   grid-template-columns: 15% 65% 20%;
+}
+.header__mainHeader * {
+  font-weight: bold;
 }
 .header__mainHeader__logo {
   position: relative;
@@ -18,12 +23,12 @@
   justify-content: left;
 }
 .header__mainHeader__logo__name {
-  color: white;
+  color: black;
   margin-left: 20px;
   font-size: 30px;
 }
 .header__mainHeader__items {
-  color: white;
+  color: black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,24 +36,24 @@
 .header__mainHeader__items :hover {
   cursor: pointer;
   transform: scale(1.1);
-  color: #c5c5c5;
+  color: #000000;
 }
 .header__mainHeader__items__link {
   padding: 10px;
   position: relative;
-  color: white;
+  color: black;
   text-decoration: none;
 }
 .header__mainHeader__items__link--active {
   padding: 10px;
   position: relative;
   text-decoration: underline;
-  text-decoration-color: #4605ff;
+  text-decoration-color: #0e19a1;
   text-decoration-thickness: 3px;
-  color: white;
+  color: black;
 }
 .header__mainHeader__side {
-  color: #ffffff;
+  color: black;
   width: 100%;
   display: flex;
   align-items: center;
@@ -57,18 +62,38 @@
 .header__mainHeader__side__components {
   display: flex;
 }
-.header__mainHeader__side__components *:hover {
-  color: salmon;
-  cursor: pointer;
-}
 .header__mainHeader__side__components * {
   margin-right: 10px;
 }
-.header__mainHeader__side__components__basket * {
-  font-style: normal;
-  text-decoration: none;
-  color: white;
+.header__mainHeader__side__components__basket {
+  display: flex;
+  flex-direction: row;
 }
+.header__mainHeader__side__components__basket * {
+  align-self: center;
+  justify-self: center;
+  font-style: normal;
+  color: black;
+}
+.header__mainHeader__side__components__basket__name {
+  text-decoration: none;
+}
+.header__mainHeader__side__components__basket__logo {
+  font-size: 30px;
+}
+.header__mainHeader__side__components__basket:hover {
+  transform: scale(1.1);
+}
+.header__mainHeader__side__components__account {
+  border: 2px black solid;
+  border-radius: 5px;
+  padding: 6px 16px;
+}
+.header__mainHeader__side__components__account:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
 /**
   Нормализация блочной модели
  */
@@ -176,6 +201,7 @@ body {
   */
   min-height: 100vh;
   min-width: 100vh;
+  background-color: #cbc5c5;
   /**
    Унифицированный интерлиньяж
   */
@@ -223,10 +249,9 @@ svg * {
 }
 
 .nav {
-  background-color: #115402;
+  background-color: #cbc5c5;
   padding: 10px;
-  border-right: 5px solid black;
-  border-top: 5px solid black;
+  border-right: 2px solid black;
 }
 
 .section {
@@ -340,7 +365,6 @@ svg * {
 }
 .main_window_basket__basket {
   height: auto;
-  width: 900px;
   position: relative;
   display: grid;
   grid-template-rows: 10% 90%;
@@ -355,7 +379,7 @@ svg * {
   overflow-y: auto;
   scroll-behavior: smooth;
   display: flex;
-  height: 700px;
+  height: 500px;
   width: auto;
   flex-direction: column;
   align-items: center;
@@ -374,6 +398,7 @@ svg * {
   display: grid;
   grid-template-columns: 20% 80%;
   grid-template-rows: 100% 100%;
+  transition: 0.5s;
 }
 .main_window_basket__basket__items__item__image {
   margin: 10px;
@@ -561,9 +586,9 @@ svg * {
 }
 
 .mainWindow {
-  background-color: rgba(0, 0, 0, 0);
-  height: 100vh;
-  width: 100vw;
+  background-color: rgba(78, 144, 157, 0.44);
+  height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -581,24 +606,51 @@ svg * {
 }
 .mainWindow__authenticationWindow {
   display: grid;
-  justify-content: center;
-  grid-template-rows: 10% 70% 20%;
-  background-color: #ffffff;
-  border: black 2px solid;
-  height: 50%;
-  width: 20%;
-  border-radius: 8%;
+  grid-template-rows: 30% 50% 20%;
+  background-color: #0a8ea9;
+  height: 350px;
+  width: 450px;
+  box-shadow: 0 15px 30px 0 rgba(59, 57, 57, 0.83), 0 5px 15px 0 rgba(31, 31, 31, 0.96);
+  transition: 1s;
+  opacity: 1;
+  border-radius: 7px;
 }
 .mainWindow__authenticationWindow__head {
   padding: 10px;
+  margin: 10px 10px 40px;
   text-align: center;
+  color: white;
+  font-weight: bold;
 }
 .mainWindow__authenticationWindow__inputs {
   display: grid;
-  align-content: center;
+  justify-content: center;
+  font-weight: bold;
+  width: 100%;
+  align-content: space-between;
 }
 .mainWindow__authenticationWindow__input {
-  margin: 10px;
+  align-self: center;
+  text-align: center;
+  display: flex;
+  border-radius: 6px;
+}
+.mainWindow__authenticationWindow__input:nth-child(5) {
+  margin-bottom: 20px;
+}
+.mainWindow__authenticationWindow__input:nth-child(1), .mainWindow__authenticationWindow__input:nth-child(2), .mainWindow__authenticationWindow__input:nth-child(3), .mainWindow__authenticationWindow__input:nth-child(4), .mainWindow__authenticationWindow__input:nth-child(5) {
+  background-color: #0a8ea9;
+  text-align: start;
+  font-size: 16px;
+  transform: scale(1.2);
+  justify-self: center;
+  border: 2px white solid;
+}
+.mainWindow__authenticationWindow__input:nth-child(1)::placeholder, .mainWindow__authenticationWindow__input:nth-child(2)::placeholder, .mainWindow__authenticationWindow__input:nth-child(3)::placeholder, .mainWindow__authenticationWindow__input:nth-child(4)::placeholder, .mainWindow__authenticationWindow__input:nth-child(5)::placeholder {
+  color: white;
+  font-size: 15px;
+  padding: 5px;
+  border: none;
 }
 .mainWindow__authenticationWindow__error {
   margin: 10px;
@@ -608,12 +660,32 @@ svg * {
 .mainWindow__authenticationWindow__error.active {
   transform: scale(1);
 }
-.mainWindow__authenticationWindow__button {
+.mainWindow__authenticationWindow__under {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.mainWindow__authenticationWindow__under__botton {
+  font-weight: bold;
   margin: 10px;
   height: 50%;
   width: 50%;
   justify-self: center;
   cursor: pointer;
+  color: #0a8ea9;
+  border: 2px white solid;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.38), 0 5px 15px 0 rgba(255, 255, 255, 0.31);
+}
+.mainWindow__authenticationWindow__under__botton:hover {
+  transform: scale(1.1);
+}
+.mainWindow__authenticationWindow__under__checkout {
+  color: white;
+  cursor: pointer;
+  margin-bottom: 20px;
 }
 
 .main-window {

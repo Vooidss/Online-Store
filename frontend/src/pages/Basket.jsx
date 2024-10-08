@@ -14,6 +14,21 @@ export default function Basket({ isAuthorization }) {
     const token = localStorage.getItem('token');
     const url = `http://localhost:8050/basket`;
 
+    const blockScroll = () => {
+        document.body.style.overflow = 'hidden'; // Блокируем прокрутку
+    };
+
+    const allowScroll = () => {
+        document.body.style.overflow = ''; // Разрешаем прокрутку
+    };
+
+    useEffect(() => {
+        blockScroll();
+        return () => {
+            allowScroll(); // Разрешаем прокрутку при размонтировании компонента
+        };
+    }, []);
+
     function calculateOrderInfo(products) {
         const totalOrder = products.reduce(
             (acc, product) => {

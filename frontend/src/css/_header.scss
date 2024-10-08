@@ -1,8 +1,10 @@
 .header {
-    background-color: black;
+    background-color: #cbc5c5;
     user-select: none;
     z-index: 1;
     height: 100px;
+    border-bottom: 2px black solid;
+    border-top: 15px black solid;
 
     &__mainHeader {
         height: 100%;
@@ -10,13 +12,17 @@
         display: grid;
         grid-template-columns: 15% 65% 20%;
 
+        *{
+            font-weight: bold;
+        }
+
         &__logo {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: left;
             &__name{
-                color: white;
+                color: black;
                 margin-left: 20px;
                 font-size: 30px;
             }
@@ -24,7 +30,7 @@
         }
 
         &__items {
-            color: white;
+            color: black;
 
             display: flex;
             justify-content: center;
@@ -33,13 +39,13 @@
             :hover {
                 cursor: pointer;
                 transform: scale(1.1);
-                color: #c5c5c5;
+                color: #000000;
             }
 
             &__link {
                 padding: 10px;
                 position: relative;
-                color: white;
+                color: black;
                 text-decoration: none;
 
                 &--active {
@@ -47,15 +53,15 @@
                     position: relative;
 
                     text-decoration: underline;
-                    text-decoration-color: #4605ff;
+                    text-decoration-color: #0e19a1;
                     text-decoration-thickness: 3px;
-                    color: white;
+                    color: black;
                 }
             }
         }
 
         &__side {
-            color: #ffffff;
+            color: black;
 
             width: 100%;
 
@@ -66,25 +72,44 @@
             &__components{
                 display: flex;
 
-                *:hover {
-                    color: salmon;
-                    cursor: pointer;
-                }
-
                 *{
                     margin-right: 10px;
                 }
 
                 &__basket {
-                    * {
+                    display: flex;
+                    flex-direction: row;
+                    *{
+                        align-self: center;
+                        justify-self: center;
                         font-style: normal;
+                        color: black;
+                    }
+
+                    &__name{
                         text-decoration: none;
-                        color: white;
+                    }
+
+                    &__logo{
+                        font-size: 30px;
+                    }
+
+                    &:hover{
+                        transform: scale(1.1);
                     }
 
                 }
 
                 &__account {
+                    border: 2px black solid;
+                    border-radius: 5px;
+
+                    padding: 6px 16px;
+
+                    &:hover{
+                        transform: scale(1.1);
+                        cursor: pointer;
+                    }
                 }
             }
         }

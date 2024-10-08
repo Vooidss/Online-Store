@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Authentication from '../pages/Authorization'
 import Profile from '../pages/Profile'
+import { GiBasketballBasket } from "react-icons/gi";
+
 
 export default function Header({ modalActive, setModalActive, setAuthorization }) {
     const [isAuthentication, setAuthentication] = useState(false)
@@ -50,17 +52,13 @@ export default function Header({ modalActive, setModalActive, setAuthorization }
         const url = 'http://localhost:8060/auth/authentication/logout'
 
         try {
-            const response = await fetch(url, {
+            await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
             })
-
-            const data = response.json()
-
-            console.log(data)
         } catch (e) {
             console.log(e)
         }
@@ -107,9 +105,12 @@ export default function Header({ modalActive, setModalActive, setAuthorization }
                 </ul>
                 <div className="header__mainHeader__side">
                     <div className="header__mainHeader__side__components">
-                        <p className="header__mainHeader__side__components__basket">
-                            <NavLink to="/Basket">Корзина</NavLink>
-                        </p>
+                        <NavLink to="/Basket" className="header__mainHeader__side__components__basket">
+                            <p className="header__mainHeader__side__components__basket__name">
+                                Корзина
+                            </p>
+                            <GiBasketballBasket className="header__mainHeader__side__components__basket__logo" />
+                        </NavLink>
                         <p
                             className="header__mainHeader__side__components__account"
                             onClick={() => setModalActive(true)}
