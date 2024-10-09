@@ -138,7 +138,7 @@ export default function Basket({ isAuthorization }) {
                 </div>
             </div>
             {products.length > 0 && (
-                <OrderInformation orderInformation={orderInformation} />
+                <OrderInformation orderInformation={orderInformation}/>
             )}
         </div>
     );

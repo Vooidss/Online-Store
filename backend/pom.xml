@@ -32,7 +32,8 @@
 		<module>config-server</module>
 		<module>discovery</module>
 		<module>basket</module>
-	</modules>
+        <module>orders</module>
+    </modules>
 	<scm>
 		<connection/>
 		<developerConnection/>

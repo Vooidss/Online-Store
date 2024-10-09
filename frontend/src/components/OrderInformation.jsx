@@ -1,11 +1,39 @@
-import React, {useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function OrderInformation({orderInformation}){
 
-    console.log(orderInformation.count)
+    const [resultPrice,setResultPrice] = useState(0);
+    const [fullOrder, setFullOrder] = useState({
+        price: orderInformation.price,
+        discount: orderInformation.discountPrice,
+        result_price: 0
+    })
 
-    function resultPrice(){
-        return orderInformation.price - orderInformation.discountPrice;
+    useEffect(() => {
+        addResultPrice()
+    }, [])
+
+    function addResultPrice(){
+        setResultPrice(orderInformation.price - orderInformation.discountPrice);
+        setFullOrder(order =>({
+            ...order,
+            result_price: resultPrice
+        }));
+        console.log(fullOrder)
+    }
+
+    async function PlaceAnOrder(){
+        await fetch('http://localhost:8020/order/arrange',{
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: fullOrder
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error))
+
     }
 
     return(
@@ -25,12 +53,12 @@ export default function OrderInformation({orderInformation}){
 
                     <div className="main_window_basket__right-nav__information__description__result">
                         <div className="main_window_basket__right-nav__information__description__result__name">Итого</div>
-                        <div className="main_window_basket__right-nav__information__description__result__price"> {resultPrice()} ₽</div>
+                        <div className="main_window_basket__right-nav__information__description__result__price"> {resultPrice} ₽</div>
                     </div>
 
                 </div>
                 <div className="main_window_basket__right-nav__information__button-chapter">
-                    <button className="main_window_basket__right-nav__information__button-chapter__button">
+                    <button className="main_window_basket__right-nav__information__button-chapter__button" onClick={PlaceAnOrder}>
                         Оформить заказ
                     </button>
                 </div>
