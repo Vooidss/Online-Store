@@ -37,7 +37,7 @@ public class BasketService {
     private final BasketRepositories basketRepositories;
     private final RestTemplate restTemplate;
 
-    private Integer findUserId(String token) {
+    public Integer findUserId(String token) {
         String urlString = "http://localhost:8060/user/id";
         try {
             URL url = new URL(urlString);

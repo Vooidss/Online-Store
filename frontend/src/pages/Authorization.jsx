@@ -51,6 +51,7 @@ export default function Authorization({
                         }
                     }
                 )
+                .then(error => console.error(error))
 
         }
 

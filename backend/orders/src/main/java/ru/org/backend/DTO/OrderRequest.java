@@ -5,7 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class OrderRequest {
+public class
+
+OrderRequest {
     private int orderPrice;
     private int discountPrice;
     private int resultPrice;
