@@ -11,10 +11,9 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class KafkaProducer {
 
-    private final KafkaTemplate<String,String> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendMessage(ProducerRecord<String,String> message){
+    public void sendMessage(ProducerRecord<String, Object> message){
         kafkaTemplate.send(message);
     }
-
 }

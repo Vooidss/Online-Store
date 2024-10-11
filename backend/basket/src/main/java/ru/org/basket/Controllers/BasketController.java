@@ -27,17 +27,6 @@ public class BasketController {
         return basketService.save(request);
     }
 
-    @PostMapping("/test/kafka")
-    public void TestKafka(@RequestBody String message){
-        kafkaProducer.sendMessage(
-                new ProducerRecord<>(
-                        "basket",
-                        1,
-                        "token",
-                        message)
-        );
-    }
-
     @GetMapping
     public ResponseEntity<Map<String, Object>> getProductsByUser(
         HttpServletRequest request
@@ -46,7 +35,7 @@ public class BasketController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String,Object>> deleteProduct(@PathVariable(name = "id",required = false) int id,HttpServletRequest request){
+    public ResponseEntity<Map<String,Object>> deleteProduct(@PathVariable(name = "id",required = false) int id, HttpServletRequest request){
         return basketService.deleteProduct(id,request);
     }
 

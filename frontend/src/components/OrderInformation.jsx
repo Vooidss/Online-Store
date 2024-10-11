@@ -4,10 +4,11 @@ export default function OrderInformation({orderInformation}){
 
     const [resultPrice,setResultPrice] = useState(0);
     const [fullOrder, setFullOrder] = useState({
-        price: orderInformation.price,
-        discount: orderInformation.discountPrice,
-        result_price: 0
+        orderPrice: orderInformation.price,
+        discountPrice: orderInformation.discountPrice,
+        resultPrice: 0
     })
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         addResultPrice()
@@ -17,7 +18,7 @@ export default function OrderInformation({orderInformation}){
         setResultPrice(orderInformation.price - orderInformation.discountPrice);
         setFullOrder(order =>({
             ...order,
-            result_price: resultPrice
+            resultPrice: resultPrice
         }));
         console.log(fullOrder)
     }
@@ -26,9 +27,10 @@ export default function OrderInformation({orderInformation}){
         await fetch('http://localhost:8020/order/arrange',{
             method: 'POST',
             headers: {
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                'Authorization' : `Bearer ${token}`
             },
-            body: fullOrder
+            body: JSON.stringify(fullOrder)
         })
             .then(response => response.json())
             .then(data => console.log(data))

@@ -7,6 +7,7 @@ import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.org.backend.DTO.OrderRequest;
+import ru.org.backend.DTO.OrderResponse;
 import ru.org.backend.Services.OrderService;
 
 import java.util.Map;
@@ -21,7 +22,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/arrange")
-    public ResponseEntity<Map<String,Object>> arrangeOrder(@RequestBody OrderRequest request, HttpServletRequest httpRequest){
+    public ResponseEntity<OrderResponse> arrangeOrder(@RequestBody OrderRequest request, HttpServletRequest httpRequest){
         return orderService.arrangeOrder(request,httpRequest);
     }
 
