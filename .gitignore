@@ -26,3 +26,7 @@ yarn-error.log*
 */.idea
 yarn.lock
 */*/target
+
+.env
+*/.env
+*/*/.env
