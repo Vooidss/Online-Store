@@ -6,6 +6,48 @@
     background-color: #cbc5c5;
 
     user-select: none;
+
+    &__order {
+        height: auto;
+
+        position: relative;
+        display: grid;
+        grid-template-rows: 10% 90%;
+
+        &__head{
+
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+
+            &__name{
+                border-bottom: black 2px solid;
+                justify-self: center;
+            }
+
+            &__exit{
+                position: absolute;
+                left: 0;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+
+                &:hover{
+                    transition: 0.5s;
+                    transform: scale(1.1);
+                    cursor: pointer;
+                }
+
+                &__arrow{
+                    font-size: 26px;
+                }
+
+            }
+        }
+    }
+
     &__basket {
         height: auto;
 

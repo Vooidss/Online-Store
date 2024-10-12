@@ -1,27 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
-export default function OrderInformation({orderInformation}){
+export default function OrderInformation({orderInformation,isOrder,setOrder}){
 
-    const [resultPrice,setResultPrice] = useState(0);
     const [fullOrder, setFullOrder] = useState({
         orderPrice: orderInformation.price,
         discountPrice: orderInformation.discountPrice,
-        resultPrice: 0
-    })
+        resultPrice: orderInformation.price - orderInformation.discountPrice // Вычисляем результат сразу
+    });
+
     const token = localStorage.getItem("token");
-
-    useEffect(() => {
-        addResultPrice()
-    }, [])
-
-    function addResultPrice(){
-        setResultPrice(orderInformation.price - orderInformation.discountPrice);
-        setFullOrder(order =>({
-            ...order,
-            resultPrice: resultPrice
-        }));
-        console.log(fullOrder)
-    }
 
     async function PlaceAnOrder(){
         await fetch('http://localhost:8020/order/arrange',{
@@ -35,7 +22,22 @@ export default function OrderInformation({orderInformation}){
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(error => console.error(error))
+    }
 
+    useEffect(() => {
+        setFullOrder(order => ({
+            ...order,
+            resultPrice: orderInformation.price - orderInformation.discountPrice
+        }));
+    }, [orderInformation]); // Добавляем зависимость от orderInformation
+
+
+    function addOrder(){
+        if(isOrder === false){
+            setOrder(true);
+        }else{
+            setOrder(false);
+        }
     }
 
     return(
@@ -55,14 +57,26 @@ export default function OrderInformation({orderInformation}){
 
                     <div className="main_window_basket__right-nav__information__description__result">
                         <div className="main_window_basket__right-nav__information__description__result__name">Итого</div>
-                        <div className="main_window_basket__right-nav__information__description__result__price"> {resultPrice} ₽</div>
+                        <div className="main_window_basket__right-nav__information__description__result__price">
+                            {fullOrder.resultPrice} ₽
+                        </div>
                     </div>
 
                 </div>
                 <div className="main_window_basket__right-nav__information__button-chapter">
-                    <button className="main_window_basket__right-nav__information__button-chapter__button" onClick={PlaceAnOrder}>
-                        Оформить заказ
-                    </button>
+                    {isOrder
+                        ?
+                        <button className="main_window_basket__right-nav__information__button-chapter__button"
+                                onClick={addOrder}>
+                            Оформить заказ
+                        </button>
+                        :
+                        <button className="main_window_basket__right-nav__information__button-chapter__button"
+                                onClick={addOrder}>
+                            Перейти к оформлению
+                        </button>
+                    }
+
                 </div>
             </div>
         </div>

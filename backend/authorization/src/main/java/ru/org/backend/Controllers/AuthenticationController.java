@@ -20,7 +20,7 @@ public class AuthenticationController {
     public ResponseEntity<JwtAuthenticationResponse> authentication(
         @RequestBody AuthenticationRequest request
     ) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+        return ResponseEntity.ok(authenticationService. authenticate(request));
     }
 
     @GetMapping("/isTokenExpired")

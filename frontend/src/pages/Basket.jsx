@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ProductUser from '../components/ProductUser';
 import OrderInformation from '../components/OrderInformation';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import BasketList from '../components/BasketList'
+import OrderWindow from '../components/OrderWindow'
 
 export default function Basket({ isAuthorization }) {
     const [products, setProducts] = useState([]);
@@ -10,6 +12,7 @@ export default function Basket({ isAuthorization }) {
         price: 0,
         discountPrice: 0
     });
+    const [isOrder, setOrder] = useState(false);
 
     const token = localStorage.getItem('token');
     const url = `http://localhost:8050/basket`;
@@ -104,41 +107,20 @@ export default function Basket({ isAuthorization }) {
             <nav style={{
                 width: products.length > 0 ? 'auto' : '0px'
             }}> </nav>
-            <div className="main_window_basket__basket" style={{
-                width: products.length > 0 ? '900px' : 'auto'
-            }}>
-                <div className="main_window_basket__basket__head">
-                    <h1 className="main_window_basket__basket__head__name">Корзина</h1>
-                </div>
-                <div className="main_window_basket__basket__items">
-                    {isAuthorization ? (
-                        products.length > 0 ? (
-                            <TransitionGroup>
-                                {products.map((product) => (
-                                    <CSSTransition
-                                        key={product.id}
-                                        timeout={1000}
-                                        classNames="fade"
-                                        exit={true}
-                                    >
-                                        <ProductUser
-                                            product={product}
-                                            onDelete={handleDeleteProduct}
-                                            updateProductCount={updateProductCount}
-                                        />
-                                    </CSSTransition>
-                                ))}
-                            </TransitionGroup>
-                        ) : (
-                            <p className="_message_">Корзина пуста. Пожалуйста выберите товар.</p>
-                        )
-                    ) : (
-                        <p className="_message_">Пожалуйста войдите в учетную запись.</p>
-                    )}
-                </div>
-            </div>
+            {isOrder ?
+                <OrderWindow/>
+                :
+                <BasketList
+                    products={products}
+                    handleDeleteProduct={handleDeleteProduct}
+                    isAuthorization={isAuthorization}
+                    updateProductCount={updateProductCount}/>
+            }
             {products.length > 0 && (
-                <OrderInformation orderInformation={orderInformation}/>
+                <OrderInformation
+                    orderInformation={orderInformation}
+                    isOrder={isOrder}
+                    setOrder={setOrder}/>
             )}
         </div>
     );
