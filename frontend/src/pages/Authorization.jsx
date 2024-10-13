@@ -106,6 +106,7 @@ export default function Authorization({
                 </h1>
                 <div className="mainWindow__authenticationWindow__inputs">
                     <input
+                        required
                         className="mainWindow__authenticationWindow__input"
                         placeholder="Логин"
                         value={user.login}
@@ -115,6 +116,7 @@ export default function Authorization({
                         ))}
                     />
                     <input
+                        required
                         className="mainWindow__authenticationWindow__input"
                         placeholder="Пароль"
                         value={user.password}
@@ -124,6 +126,7 @@ export default function Authorization({
                         ))}
                     />
                     <input
+                        required
                         className="mainWindow__authenticationWindow__input"
                         placeholder="Имя"
                         value={user.name}
@@ -134,6 +137,7 @@ export default function Authorization({
                     />
                     <input
                         className="mainWindow__authenticationWindow__input"
+                        required
                         placeholder="Фамилия"
                         value={user.secondName}
                         onChange={e => setUser(user => ({
@@ -142,6 +146,8 @@ export default function Authorization({
                         ))}
                     />
                     <input
+                        required
+                        type="email"
                         className="mainWindow__authenticationWindow__input"
                         placeholder="Почта"
                         value={user.email}

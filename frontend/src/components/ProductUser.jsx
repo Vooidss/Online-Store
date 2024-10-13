@@ -9,8 +9,8 @@ export default function ProductUser({ product, onDelete, updateProductCount }) {
     const [isActive, setActive] = useState(false);
 
     useEffect(() => {
-        setTotalPrice(product.price * count); // Обновляем цену на основе количества
-        updateProductCount(product.id, count); // Обновляем общее количество продуктов в корзине
+        setTotalPrice(product.price * count);
+        updateProductCount(product.id, count);
     }, [count, product.price]);
 
     const addCount = () => {

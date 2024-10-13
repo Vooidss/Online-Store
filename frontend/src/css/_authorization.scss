@@ -1,4 +1,14 @@
+input{
+    font-weight: bolder;
+    &:focus{
+        outline: none;
+    }
+}
+
 .mainWindow {
+    *{
+        font-weight: bolder;
+    }
     background-color: rgba(78, 144, 157, 0.44);
     height: 100%;
     width: 100%;
@@ -65,6 +75,9 @@
             &:nth-child(4),
             &:nth-child(5), {
 
+                color: white;
+                padding-left: 6px;
+
                 background-color: #0a8ea9;
                 text-align: start;
                 font-size: 16px;
@@ -77,7 +90,6 @@
                     color: white;
                     font-size: 15px;
                     padding: 5px;
-                    border: none;
                 }
             }
         }

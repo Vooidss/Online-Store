@@ -369,6 +369,65 @@ svg * {
   display: grid;
   grid-template-rows: 10% 90%;
 }
+.main_window_basket__order__execution {
+  max-height: 95%;
+  margin: 10px;
+  min-height: 400px;
+}
+.main_window_basket__order__execution input {
+  border: none;
+  background-color: #cbc5c5;
+  border-bottom: 2px rgba(68, 66, 66, 0.62) solid;
+  text-decoration-color: white;
+  display: inline-block;
+}
+.main_window_basket__order__execution input:invalid {
+  border-bottom: 2px solid #ff0202;
+}
+.main_window_basket__order__execution input::placeholder {
+  color: rgba(0, 0, 0, 0.67);
+}
+.main_window_basket__order__execution input:focus-visible {
+  border-bottom: 2px solid black;
+  transition: border-bottom-color 1s ease-in-out;
+}
+.main_window_basket__order__execution__components {
+  justify-self: start;
+  align-self: center;
+  display: grid;
+  grid-template-rows: 40% 40%;
+  grid-template-columns: 33% 33% 33%;
+}
+.main_window_basket__order__execution__components__component {
+  position: relative;
+}
+.main_window_basket__order__execution__components__component:nth-child(4), .main_window_basket__order__execution__components__component:nth-child(5) {
+  margin-top: 20px;
+}
+.main_window_basket__order__execution__components__component p {
+  transform: scale(0);
+  font-size: 12px;
+  position: absolute;
+  margin: 0;
+  transition: 0.5s;
+}
+.main_window_basket__order__execution__components__input {
+  margin-top: 10px;
+  font-size: 20px;
+  width: 90%;
+  padding: 10px;
+}
+.main_window_basket__order__execution__info-customer {
+  margin-left: 100px;
+}
+.main_window_basket__order__execution__info-customer__info {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-row: 50% 50%;
+}
+.main_window_basket__order__execution__info-customer__info input {
+  width: 80%;
+}
 .main_window_basket__order__head {
   position: relative;
   display: flex;
@@ -386,10 +445,10 @@ svg * {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  font-weight: bolder;
 }
 .main_window_basket__order__head__exit:hover {
   transition: 0.5s;
-  transform: scale(1.1);
   cursor: pointer;
 }
 .main_window_basket__order__head__exit__arrow {
@@ -403,6 +462,7 @@ svg * {
 }
 .main_window_basket__basket__head {
   border-bottom: black 2px solid;
+  font-weight: bolder;
   display: flex;
   align-self: center;
   justify-self: center;
@@ -527,6 +587,7 @@ svg * {
 }
 .main_window_basket__right-nav__information__head {
   align-content: center;
+  font-weight: bolder;
 }
 .main_window_basket__right-nav__information__head__name {
   align-self: center;
@@ -541,6 +602,7 @@ svg * {
   display: grid;
   grid-template-rows: 40% 60%;
   grid-template-columns: 50% 50%;
+  font-weight: bolder;
   margin-top: 20px;
 }
 .main_window_basket__right-nav__information__description__count-price__count {
@@ -560,6 +622,7 @@ svg * {
 .main_window_basket__right-nav__information__description__result {
   display: grid;
   grid-template-columns: 50% 50%;
+  font-weight: bolder;
 }
 .main_window_basket__right-nav__information__description__result * {
   align-self: center;
@@ -574,6 +637,7 @@ svg * {
 }
 .main_window_basket__right-nav__information__button-chapter {
   position: relative;
+  font-weight: bolder;
 }
 .main_window_basket__right-nav__information__button-chapter__button {
   position: absolute;
@@ -617,6 +681,13 @@ svg * {
   transition: opacity 500ms, transform 500ms;
 }
 
+input {
+  font-weight: bolder;
+}
+input:focus {
+  outline: none;
+}
+
 .mainWindow {
   background-color: rgba(78, 144, 157, 0.44);
   height: 100%;
@@ -631,6 +702,9 @@ svg * {
   opacity: 0;
   transition: 0.5s;
   pointer-events: none;
+}
+.mainWindow * {
+  font-weight: bolder;
 }
 .mainWindow.active {
   opacity: 1;
@@ -671,6 +745,8 @@ svg * {
   margin-bottom: 20px;
 }
 .mainWindow__authenticationWindow__input:nth-child(1), .mainWindow__authenticationWindow__input:nth-child(2), .mainWindow__authenticationWindow__input:nth-child(3), .mainWindow__authenticationWindow__input:nth-child(4), .mainWindow__authenticationWindow__input:nth-child(5) {
+  color: white;
+  padding-left: 6px;
   background-color: #0a8ea9;
   text-align: start;
   font-size: 16px;
@@ -682,7 +758,6 @@ svg * {
   color: white;
   font-size: 15px;
   padding: 5px;
-  border: none;
 }
 .mainWindow__authenticationWindow__error {
   margin: 10px;

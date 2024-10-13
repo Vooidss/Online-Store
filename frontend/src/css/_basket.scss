@@ -14,6 +14,83 @@
         display: grid;
         grid-template-rows: 10% 90%;
 
+        &__execution{
+
+            max-height:95%;
+            margin:10px;
+            min-height:400px;
+
+            input{
+                border:none;
+                background-color: #cbc5c5;
+                border-bottom: 2px rgba(68, 66, 66, 0.62) solid;
+                text-decoration-color: white;
+
+                display: inline-block;
+
+                &:invalid{
+                    border-bottom: 2px solid #ff0202;
+                }
+
+                &::placeholder {
+                    color: rgba(0, 0, 0, 0.67);
+                }
+
+                &:focus-visible{
+                    border-bottom: 2px solid black;
+                    transition: border-bottom-color 1s ease-in-out;
+                }
+
+            }
+
+            &__components{
+                justify-self: start;
+                align-self: center;
+                display: grid;
+                grid-template-rows: 40% 40%;
+                grid-template-columns: 33% 33% 33%;
+
+                &__component{
+                    position: relative;
+                    &:nth-child(4),
+                    &:nth-child(5){
+                        margin-top: 20px;
+                    }
+                    p{
+                        transform: scale(0);
+                        font-size: 12px;
+                        position: absolute;
+                        margin: 0;
+                        transition: 0.5s;
+                    }
+                }
+
+                &__input{
+                    margin-top: 10px;
+                    font-size: 20px;
+                    width: 90%;
+                    padding: 10px;
+                }
+            }
+
+            &__info-customer{
+                margin-left: 100px;
+
+                &__info{
+
+                    display: grid;
+                    grid-template-columns: 50% 50%;
+                    grid-template-row: 50% 50%;
+
+                    input{
+                        width: 80%;
+                    }
+
+                }
+            }
+
+        }
+
         &__head{
 
             position: relative;
@@ -33,10 +110,10 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
+                font-weight: bolder;
 
                 &:hover{
                     transition: 0.5s;
-                    transform: scale(1.1);
                     cursor: pointer;
                 }
 
@@ -57,6 +134,7 @@
 
         &__head {
             border-bottom: black 2px solid;
+            font-weight: bolder;
 
             display: flex;
             align-self: center;
@@ -248,6 +326,7 @@
 
             &__head{
                 align-content: center;
+                font-weight: bolder;
                 &__name{
                     align-self: center;
                     font-size:24px;
@@ -263,6 +342,7 @@
                     display: grid;
                     grid-template-rows: 40% 60%;
                     grid-template-columns: 50% 50%;
+                    font-weight: bolder;
 
                     margin-top: 20px;
 
@@ -290,6 +370,7 @@
                 &__result{
                     display: grid;
                     grid-template-columns: 50% 50%;
+                    font-weight: bolder;
 
                     *{
                         align-self: center;
@@ -311,6 +392,7 @@
 
             &__button-chapter{
                 position: relative;
+                font-weight: bolder;
                 &__button{
 
                     position: absolute;

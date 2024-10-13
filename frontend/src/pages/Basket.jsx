@@ -14,21 +14,35 @@ export default function Basket({ isAuthorization }) {
     });
     const [isOrder, setOrder] = useState(false);
 
+    const [adress, setAdress] = useState({
+        city: '',
+        street: '',
+        numberHouse : 0,
+        numberApartment: 0,
+        numberIntercom: 0
+    });
+
+    const [recipient,setRecipient] = useState({
+        name: '',
+        secondName: '',
+        phone: ''
+    })
+
     const token = localStorage.getItem('token');
     const url = `http://localhost:8050/basket`;
 
     const blockScroll = () => {
-        document.body.style.overflow = 'hidden'; // Блокируем прокрутку
+        document.body.style.overflow = 'hidden';
     };
 
     const allowScroll = () => {
-        document.body.style.overflow = ''; // Разрешаем прокрутку
+        document.body.style.overflow = '';
     };
 
     useEffect(() => {
         blockScroll();
         return () => {
-            allowScroll(); // Разрешаем прокрутку при размонтировании компонента
+            allowScroll();
         };
     }, []);
 
@@ -47,6 +61,14 @@ export default function Basket({ isAuthorization }) {
             price: totalOrder.price,
             discountPrice: 0
         });
+    }
+
+    function addOrder(){
+        if(isOrder === false){
+            setOrder(true);
+        }else{
+            setOrder(false);
+        }
     }
 
     function updateProductCount(productId, newCount) {
@@ -108,7 +130,11 @@ export default function Basket({ isAuthorization }) {
                 width: products.length > 0 ? 'auto' : '0px'
             }}> </nav>
             {isOrder ?
-                <OrderWindow/>
+                <OrderWindow
+                    addOrder = {addOrder}
+                    setAdress = {setAdress}
+                    setRecipient = {setRecipient}
+                />
                 :
                 <BasketList
                     products={products}
@@ -119,8 +145,11 @@ export default function Basket({ isAuthorization }) {
             {products.length > 0 && (
                 <OrderInformation
                     orderInformation={orderInformation}
-                    isOrder={isOrder}
-                    setOrder={setOrder}/>
+                    addOrder = {addOrder}
+                    isOrder = {isOrder}
+                    adress={adress}
+                    recipient={recipient}
+                />
             )}
         </div>
     );

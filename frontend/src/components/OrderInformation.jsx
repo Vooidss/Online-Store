@@ -1,12 +1,30 @@
 import React, { useEffect, useState } from 'react'
 
-export default function OrderInformation({orderInformation,isOrder,setOrder}){
+export default function OrderInformation({orderInformation,isOrder,addOrder,adress,recipient}){
 
     const [fullOrder, setFullOrder] = useState({
         orderPrice: orderInformation.price,
         discountPrice: orderInformation.discountPrice,
-        resultPrice: orderInformation.price - orderInformation.discountPrice // Вычисляем результат сразу
+        resultPrice: orderInformation.price - orderInformation.discountPrice,
+        adress: adress,
+        recipient: recipient
     });
+
+    useEffect(() => {
+        setFullOrder((prev) => ({
+            ...prev,
+            orderPrice: orderInformation.price,
+            discountPrice: orderInformation.discountPrice,
+            resultPrice: orderInformation.price - orderInformation.discountPrice,
+            adress: adress,
+            recipient: recipient,
+        }));
+    }, [orderInformation, adress, recipient]);
+
+    useEffect(() => {
+        console.log(fullOrder)
+    }, [fullOrder,adress,recipient])
+
 
     const token = localStorage.getItem("token");
 
@@ -22,22 +40,6 @@ export default function OrderInformation({orderInformation,isOrder,setOrder}){
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(error => console.error(error))
-    }
-
-    useEffect(() => {
-        setFullOrder(order => ({
-            ...order,
-            resultPrice: orderInformation.price - orderInformation.discountPrice
-        }));
-    }, [orderInformation]); // Добавляем зависимость от orderInformation
-
-
-    function addOrder(){
-        if(isOrder === false){
-            setOrder(true);
-        }else{
-            setOrder(false);
-        }
     }
 
     return(
@@ -66,17 +68,14 @@ export default function OrderInformation({orderInformation,isOrder,setOrder}){
                 <div className="main_window_basket__right-nav__information__button-chapter">
                     {isOrder
                         ?
-                        <button className="main_window_basket__right-nav__information__button-chapter__button"
-                                onClick={addOrder}>
+                        <button className="main_window_basket__right-nav__information__button-chapter__button" onClick={PlaceAnOrder}>
                             Оформить заказ
                         </button>
                         :
-                        <button className="main_window_basket__right-nav__information__button-chapter__button"
-                                onClick={addOrder}>
+                        <button className="main_window_basket__right-nav__information__button-chapter__button" onClick={addOrder}>
                             Перейти к оформлению
                         </button>
                     }
-
                 </div>
             </div>
         </div>

@@ -9,4 +9,6 @@ public class OrderRequest {
     private int orderPrice;
     private int discountPrice;
     private int resultPrice;
+    private AdressDetails adress;
+    private RecipientDetails recipient;
 }

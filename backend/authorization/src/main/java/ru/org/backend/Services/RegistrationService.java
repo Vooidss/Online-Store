@@ -16,6 +16,8 @@ import ru.org.backend.user.MyUser;
 import ru.org.backend.user.MyUserDetails;
 import ru.org.backend.user.Role;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -49,8 +51,10 @@ public class RegistrationService {
             .secondname(request.getSecondName())
             .email(request.getEmail())
             .age(request.getAge())
+            .phone(request.getPhone())
             .role(request.getRole())
-                .money(0)
+            .money(0)
+            .date_registration(LocalDateTime.now())
             .build();
 
         if (user.getRole() == null) {

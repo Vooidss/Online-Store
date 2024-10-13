@@ -1,5 +1,5 @@
 import * as ReactDOMClient from 'react-dom/client'
-import Main from './components/Main'
+import Main from './pages/Main'
 import './css/main.css'
 
 const element = document.getElementById('main')

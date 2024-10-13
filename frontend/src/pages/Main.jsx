@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Header from './Header'
+import Header from '../components/Header'
 import ShoppingList from './ShoppingList'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ScrollToTop from '../util/ScrollToTop'
-import ProductSelection from '../pages/ProductSelection'
-import BasketPage from '../pages/Basket'
-import ProfilePage from '../pages/Profile'
+import ProductSelection from '../components/ProductSelection'
+import BasketPage from './Basket'
+import ProfilePage from './Profile'
 
 export default function Main() {
     const [isModelOpen, setModelOpen] = useState(false)

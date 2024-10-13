@@ -22,6 +22,18 @@ public class Order {
     @Column(name = "user_id")
     private Integer userId;
 
+    @Column(name = "adressId")
+    private Integer adressId;
+
+    @Column(name = "nameRecipient")
+    private String nameRecipient;
+
+    @Column(name = "secondNameRecipient")
+    private String secondNameRecipient;
+
+    @Column(name = "phoneRecipient")
+    private String phoneRecipient;
+
     @Column(name = "orderPrice")
     private Integer orderPrice;
 

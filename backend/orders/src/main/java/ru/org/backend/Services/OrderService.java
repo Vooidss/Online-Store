@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import ru.org.backend.DTO.OrderDetails;
 import ru.org.backend.DTO.OrderRequest;
 import ru.org.backend.DTO.OrderResponse;
+import ru.org.backend.Models.Adress;
 import ru.org.backend.Models.Order;
 import ru.org.backend.Models.Status;
 import ru.org.backend.Repositories.OrderRepository;
@@ -26,6 +27,7 @@ public class OrderService {
     private final KafkaProducer kafkaProducer;
     private final OrderDetails orderDetails;
     private final OrderRepository orderRepository;
+    private final AdressService adressService;
 
     public ResponseEntity<OrderResponse> arrangeOrder(OrderRequest request, HttpServletRequest httpRequest) {
 
@@ -75,7 +77,16 @@ public class OrderService {
 
         orderDetails.setOrderRequest(request);
 
-        Order order = generateOrder(Status.IN_PROCESSING);
+        Adress adress = adressService.generateAdress(
+                orderDetails
+                        .getOrderRequest()
+                        .getAdress(),
+                orderDetails
+                        .getUserId()
+        );
+        adress = adressService.save(adress);
+
+        Order order = generateOrder(Status.IN_PROCESSING,adress);
 
         saveOrder(order);
 
@@ -94,14 +105,44 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public Order generateOrder(Status status){
+    public Order generateOrder(Status status, Adress adress){
         return Order.builder()
-                .userId(orderDetails.getUserId())
-                .orderPrice(orderDetails.getOrderRequest().getOrderPrice())
-                .discountPrice(orderDetails.getOrderRequest().getDiscountPrice())
-                .resultPrice(orderDetails.getOrderRequest().getResultPrice())
-                .status(status.getTitle())
-                .createdAt(LocalDateTime.now())
+                .userId(orderDetails
+                        .getUserId())
+                .adressId(adress.getId())
+                .nameRecipient(orderDetails
+                        .getOrderRequest()
+                        .getRecipient()
+                        .getName()
+                )
+                .secondNameRecipient(orderDetails
+                        .getOrderRequest()
+                        .getRecipient()
+                        .getSecondName()
+                )
+                .phoneRecipient(orderDetails
+                        .getOrderRequest()
+                        .getRecipient()
+                        .getPhone()
+                )
+                .orderPrice(orderDetails
+                        .getOrderRequest()
+                        .getOrderPrice()
+                )
+                .discountPrice(orderDetails
+                        .getOrderRequest()
+                        .getDiscountPrice()
+                )
+                .resultPrice(orderDetails
+                        .getOrderRequest()
+                        .getResultPrice()
+                )
+                .status(status
+                        .getTitle()
+                )
+                .createdAt(LocalDateTime
+                        .now()
+                )
                 .build();
     }
 }
