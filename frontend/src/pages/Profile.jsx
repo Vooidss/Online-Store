@@ -7,24 +7,33 @@ export default function Profile({ active, setActive, onLogout }) {
         money: 0
     });
     const [inputValue, setInputValue] = useState('');
-    const [rawMoneyValue, setRawMoneyValue] = useState(0);
-
-    useEffect(() => {
-        setInputValue(new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(rawMoneyValue));
-    }, [rawMoneyValue]);
+    const token = localStorage.getItem('token');
 
     const handleChange = (e) => {
         const value = e.target.value;
 
         const numericValue = value.replace(/\D/g, '');
-        const numberValue = parseInt(numericValue, 10) || 0;
 
-        setRawMoneyValue(numberValue);
+        setInputValue(numericValue);
     };
+
+    async function topUpBalance(){
+        const url = 'http://localhost:8060/user/topUpBalance'
+
+        await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type' : 'application/json',
+                'Authorization' : `Bearer ${token}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error))
+    }
 
     async function getUser() {
         const url = 'http://localhost:8060/user/current';
-        const token = localStorage.getItem('token');
 
         try {
             const response = await fetch(url, {
@@ -44,8 +53,6 @@ export default function Profile({ active, setActive, onLogout }) {
                 login: data.login,
                 money: data.money
             });
-
-            setRawMoneyValue(data.money); // Установка значения money в состояние
         } catch (e) {
             console.log(e);
         }
@@ -76,7 +83,10 @@ export default function Profile({ active, setActive, onLogout }) {
                 </ul>
                 <div className="main-window__window-profile__buttons">
                     <div className="main-window__window-profile__buttons__replenish">
-                        <button id="replenish">
+                        <button
+                            id="replenish"
+                            onClick={topUpBalance}
+                        >
                             Пополнить
                         </button>
                         <input
