@@ -6,7 +6,7 @@ import Profile from '../pages/Profile'
 import { GiBasketballBasket } from "react-icons/gi";
 
 
-export default function Header({ modalActive, setModalActive, setAuthorization }) {
+export default function Header({ modalActive,setModalActive, setAuthorization }) {
     const [isAuthentication, setAuthentication] = useState(false)
 
     const token = localStorage.getItem('token')
@@ -111,12 +111,12 @@ export default function Header({ modalActive, setModalActive, setAuthorization }
                             </p>
                             <GiBasketballBasket className="header__mainHeader__side__components__basket__logo" />
                         </NavLink>
-                        <p
+                        <div
                             className="header__mainHeader__side__components__account"
-                            onClick={() => setModalActive(true)}
+                            onMouseEnter={() => setModalActive(true)}
                         >
                             {isAuthentication ? 'Профиль' : 'Войти'}
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>

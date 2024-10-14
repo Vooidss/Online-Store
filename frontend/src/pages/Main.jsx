@@ -20,7 +20,9 @@ export default function Main() {
     return (
         <div
             className="App"
-            style={{ pointerEvents: isModelOpen ? 'none' : 'auto' }}
+            style={{
+                pointerEvents: isModelOpen ? 'none' : 'auto' ,
+            }}
         >
             <Router>
                 <ScrollToTop />

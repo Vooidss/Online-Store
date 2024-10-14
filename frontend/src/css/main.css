@@ -88,10 +88,10 @@
   border: 2px black solid;
   border-radius: 5px;
   padding: 6px 16px;
-}
-.header__mainHeader__side__components__account:hover {
-  transform: scale(1.1);
   cursor: pointer;
+}
+.header__mainHeader__side__components__account:focus {
+  transform: scale(1.1);
 }
 
 /**
@@ -796,11 +796,11 @@ input:focus {
 }
 
 .main-window {
-  height: 100vh;
+  height: 100vw;
   width: 100vw;
   display: flex;
   user-select: none;
-  position: fixed;
+  position: absolute;
   opacity: 0;
   pointer-events: none;
   transition: 0.5s;
@@ -812,12 +812,67 @@ input:focus {
   pointer-events: auto;
 }
 .main-window__window-profile {
-  background-color: white;
+  color: white;
+  font-weight: bolder;
+  position: absolute;
+  width: 200px;
+  background-color: #0a8ea9;
   padding: 15px;
   border-radius: 10%;
   margin-right: 5px;
   margin-top: 5px;
-  border: 2px black solid;
+  box-shadow: 0 15px 30px 0 rgba(59, 57, 57, 0.83), 0 5px 15px 0 rgba(31, 31, 31, 0.96);
+}
+.main-window__window-profile__head {
+  border-bottom: 2px white solid;
+  align-self: end;
+}
+.main-window__window-profile__info {
+  font-weight: bolder;
+  font-size: 16px;
+  margin-top: 20px;
+}
+.main-window__window-profile__buttons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.main-window__window-profile__buttons__replenish {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.main-window__window-profile__buttons input {
+  width: 80%;
+  border: none;
+  background-color: rgba(10, 142, 169, 0);
+  border-bottom: 2px rgba(0, 83, 255, 0.96) solid;
+  text-decoration-color: white;
+  color: white;
+}
+.main-window__window-profile__buttons input::placeholder {
+  color: white;
+}
+.main-window__window-profile__buttons button {
+  width: 100%;
+  background-color: rgba(91, 162, 180, 0.46);
+  border-radius: 10px;
+  margin: 2px;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+  border: 2px white solid;
+  box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.38), 0 5px 15px 0 rgba(255, 255, 255, 0.31);
+}
+.main-window__window-profile__buttons button:active {
+  outline: none;
+  transform: scale(0.98);
+}
+.main-window__window-profile__buttons button#logout {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 /*# sourceMappingURL=main.css.map */

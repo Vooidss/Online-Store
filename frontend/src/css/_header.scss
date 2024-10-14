@@ -105,10 +105,11 @@
                     border-radius: 5px;
 
                     padding: 6px 16px;
+                    cursor: pointer;
 
-                    &:hover{
+
+                    &:focus{
                         transform: scale(1.1);
-                        cursor: pointer;
                     }
                 }
             }
