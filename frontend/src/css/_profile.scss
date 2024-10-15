@@ -3,7 +3,7 @@
     width: 100%;
     display: flex;
     user-select: none;
-    position: absolute;
+    position: fixed;
     opacity: 0;
     pointer-events: none;
     transition: 0.5s;
@@ -61,6 +61,7 @@
                 border-bottom: 2px rgba(0, 83, 255, 0.96) solid;
                 text-decoration-color: white;
                 color: white;
+
 
                 &::placeholder{
                     color: white;

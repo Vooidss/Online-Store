@@ -2,8 +2,12 @@
     *{
         font-family: 'Arial','Montserrat', serif;
     }
-    min-height: 100%;
-    min-width: 100%;
+    min-height: 100vh;
     display: grid;
     grid-template-rows: 100px;
+}
+
+#main{
+    min-height: 100%;
+    min-width: 100%;
 }

@@ -6,7 +6,7 @@ export default function Profile({ active, setActive, onLogout }) {
         login: '',
         money: 0
     });
-    const [inputValue, setInputValue] = useState('');
+    const [money, setMoney] = useState('');
     const token = localStorage.getItem('token');
 
     const handleChange = (e) => {
@@ -14,18 +14,19 @@ export default function Profile({ active, setActive, onLogout }) {
 
         const numericValue = value.replace(/\D/g, '');
 
-        setInputValue(numericValue);
+        setMoney(numericValue);
     };
 
     async function topUpBalance(){
-        const url = 'http://localhost:8060/user/topUpBalance'
+        const url = 'http://localhost:8060/user/replenishment'
 
         await fetch(url, {
             method: 'PATCH',
             headers: {
                 'Content-Type' : 'application/json',
-                'Authorization' : `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+            },
+            body: money
         })
             .then(response => response.json())
             .then(data => console.log(data))
@@ -91,7 +92,7 @@ export default function Profile({ active, setActive, onLogout }) {
                         </button>
                         <input
                             placeholder="Сумма"
-                            value={inputValue}
+                            value={money}
                             onChange={handleChange}
                         />
                     </div>
