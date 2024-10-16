@@ -21,4 +21,9 @@ public interface UserRepositories extends JpaRepository<MyUser, Integer> {
     @Transactional
     @Query("UPDATE MyUser u SET u.money = u.money + :amount WHERE u.id = :userId")
     void addToWallet(@Param("userId") Integer userId, @Param("amount") Integer amount);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE MyUser u SET u.money = u.money - :orderPrice WHERE u.id = :userId")
+    void writeOffMoney(@Param("userId") Integer userId, @Param("orderPrice") Integer orderPrice);
 }

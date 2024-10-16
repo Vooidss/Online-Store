@@ -39,10 +39,11 @@ public class KafkaConsumer{
 
             log.info(consumerRecord.value());
 
-            orderDetails.setMoney(parseValueToInt(consumerRecord.value()));
+            orderDetails.setUserMoney(parseValueToInt(consumerRecord.value()));
             log.info("Количество денег получено");
         }else{
-            log.error("Ошибка получения количества денег");
+            orderDetails.setUserMoney(-1);
+            log.error("Произошла ошибка при попытки получить сколько денег у пользователя на счету");
         }
     }
 

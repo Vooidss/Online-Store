@@ -1,11 +1,9 @@
 package ru.org.backend.Services;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,15 +22,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OrderService {
 
-    private final KafkaProducer kafkaProducer;
     private final OrderDetails orderDetails;
     private final OrderRepository orderRepository;
     private final AdressService adressService;
+    private final KafkaService kafkaService;
 
     public ResponseEntity<OrderResponse> arrangeOrder(OrderRequest request, HttpServletRequest httpRequest) {
 
-        log.info("Извлекаем token из заголовка...");
+        orderDetails.setOrderRequest(request);
+
         String token = "";
+
+
+        log.info("Извлекаем token из заголовка...");
 
         try {
             token = httpRequest.getHeader("Authorization").substring(7);
@@ -50,48 +52,23 @@ public class OrderService {
         }
 
         log.info("Токен успешно извлечен");
-        log.info("Отправляем запрос на получение ID корзины...");
+        log.info("Отправляем запрос на получение ID пользователя...");
 
-        kafkaProducer.sendMessage(
-                new ProducerRecord<>(
-                        "order",
-                        "token",
-                        token
-                )
-        );
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        kafkaProducer.sendMessage(
-                new ProducerRecord<>(
-                        "order",
-                        "message",
-                        "money"
-                )
-        );
-
-        log.info("ДЕНЬГИИИИИИИИИИИ: " + orderDetails.getMoney());
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        kafkaService.getUserId(token);
 
         if(orderDetails.getUserId() == null){
-            OrderResponse
-                    .builder()
-                    .status(HttpStatus.NOT_FOUND)
-                    .code(HttpStatus.NOT_FOUND.value())
-                    .message("Пользователь не найден")
-                    .build();
-        }
 
-        orderDetails.setOrderRequest(request);
+            generateOrderError(Status.REJECTED);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                OrderResponse
+                        .builder()
+                        .status(HttpStatus.NOT_FOUND)
+                        .code(HttpStatus.NOT_FOUND.value())
+                        .message("Пользователь не найден")
+                        .build()
+                );
+        }
 
         Adress adress = adressService.generateAdress(
                 orderDetails
@@ -100,9 +77,54 @@ public class OrderService {
                 orderDetails
                         .getUserId()
         );
+
         adress = adressService.save(adress);
 
-        Order order = generateOrder(Status.IN_PROCESSING,adress);
+        log.info("Отправляем запрос на получение количества денег пользователя...");
+
+        kafkaService.getUserMoney(String.valueOf(orderDetails.getUserId()));
+
+        if(orderDetails.getUserMoney() == -1){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    OrderResponse
+                            .builder()
+                            .status(HttpStatus.NOT_FOUND)
+                            .code(HttpStatus.NOT_FOUND.value())
+                            .message("Ошибка при получении денег")
+                            .build()
+            );
+        }
+
+        log.info("Проверяем хватает ли денег...");
+
+        if(isEnoughMoney(orderDetails.getUserMoney(), orderDetails.getOrderRequest().getResultPrice())){
+
+            log.info("Денег хватает");
+
+            log.info("Производим списывание");
+
+            try {
+                kafkaService.writeOffMoney(orderDetails.getUserId(), orderDetails.getOrderRequest().getResultPrice());
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
+        } else{
+
+            log.error("У пользователя не хватает денег");
+            generateOrder(Status.REJECTED, adress);
+
+            return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).body(
+                    OrderResponse
+                            .builder()
+                            .status(HttpStatus.PAYMENT_REQUIRED)
+                            .code(HttpStatus.PAYMENT_REQUIRED.value())
+                            .message("Недостаточно средств.")
+                            .build()
+            );
+        }
+
+        Order order = generateOrder(Status.SUCCESSFULLY, adress);
 
         saveOrder(order);
 
@@ -112,7 +134,7 @@ public class OrderService {
                         .order(order)
                         .status(HttpStatus.OK)
                         .code(HttpStatus.OK.value())
-                        .message("Заказ оформляется.")
+                        .message("Заказ оформлен.")
                         .build()
         );
     }
@@ -121,6 +143,9 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public boolean isEnoughMoney(Integer moneyUser, Integer orderMoney){
+        return moneyUser - orderMoney > 0;
+    }
     public Order generateOrder(Status status, Adress adress){
         return Order.builder()
                 .userId(orderDetails
@@ -161,4 +186,45 @@ public class OrderService {
                 )
                 .build();
     }
+    public Order generateOrderError(Status status){
+        return Order.builder()
+                .userId(orderDetails
+                        .getUserId())
+                .adressId(-1)
+                .nameRecipient(orderDetails
+                        .getOrderRequest()
+                        .getRecipient()
+                        .getName()
+                )
+                .secondNameRecipient(orderDetails
+                        .getOrderRequest()
+                        .getRecipient()
+                        .getSecondName()
+                )
+                .phoneRecipient(orderDetails
+                        .getOrderRequest()
+                        .getRecipient()
+                        .getPhone()
+                )
+                .orderPrice(orderDetails
+                        .getOrderRequest()
+                        .getOrderPrice()
+                )
+                .discountPrice(orderDetails
+                        .getOrderRequest()
+                        .getDiscountPrice()
+                )
+                .resultPrice(orderDetails
+                        .getOrderRequest()
+                        .getResultPrice()
+                )
+                .status(status
+                        .getTitle()
+                )
+                .createdAt(LocalDateTime
+                        .now()
+                )
+                .build();
+    }
+
 }

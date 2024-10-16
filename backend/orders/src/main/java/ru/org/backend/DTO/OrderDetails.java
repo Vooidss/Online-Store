@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class OrderDetails {
 
     private Integer userId;
-    private Integer money;
+    private Integer userMoney;
     private OrderRequest orderRequest;
 
 }

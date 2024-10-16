@@ -17,6 +17,10 @@ export default function Profile({ active, setActive, onLogout }) {
         setMoney(numericValue);
     };
 
+    useEffect(() => {
+        console.log("a");
+    }, [user.money])
+
     async function topUpBalance(){
         const url = 'http://localhost:8060/user/replenishment'
 
@@ -29,7 +33,7 @@ export default function Profile({ active, setActive, onLogout }) {
             body: money
         })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => window.location.reload())
             .catch(error => console.error(error))
     }
 

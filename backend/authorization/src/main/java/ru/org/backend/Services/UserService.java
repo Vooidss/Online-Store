@@ -156,17 +156,15 @@ public class UserService {
                 )
         );
     }
+    public void writeOffMoney(Integer id, Integer orderPrice){
+        userRepository.writeOffMoney(id,orderPrice);
+    }
 
     public Integer findMoneyById(Integer id){
         return userRepository.findMoneyById(id);
     }
 
-    public Integer findMoneyCurrentUser(){
 
 
-        int id = getCurrentUser().getId();
-        log.info(String.valueOf(userRepository.findMoneyById(id)));
-        return userRepository.findMoneyById(id);
-    }
 
 }
