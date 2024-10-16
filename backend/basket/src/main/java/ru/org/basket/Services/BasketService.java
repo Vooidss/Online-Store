@@ -77,6 +77,10 @@ public class BasketService {
         throw new RuntimeException();
     }
 
+    public void deleteBasketsById(Integer userId){
+        basketRepositories.deleteAllByUserId(userId);
+    }
+
     private Basket createBasket(ProductInfoRequest productInfoRequest) {
         return Basket.builder()
             .productId(productInfoRequest.getProductId())
@@ -223,7 +227,6 @@ public class BasketService {
         }
     }
 
-    @Transactional
     public ResponseEntity<Map<String, Object>> deleteProduct(int id, HttpServletRequest request) {
 
         String token = request.getHeader("Authorization").substring(7);

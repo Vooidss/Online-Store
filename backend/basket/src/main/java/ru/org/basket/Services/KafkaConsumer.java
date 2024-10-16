@@ -53,4 +53,24 @@ public class KafkaConsumer {
 
         }
     }
+
+    @KafkaListener(topics = "deleteProduct", groupId = "basket_consumer")
+    public void deleteAllProductInBasket(ConsumerRecord<String,String> consumerRecord){
+
+        log.info("Получаем данные...");
+
+        if(consumerRecord.key().equals("userId")){
+            log.info("Данные получены: {}", consumerRecord);
+            log.info("Получаем id...");
+
+            int userId = Integer.parseInt(consumerRecord.value());
+
+            log.info("Id получен: {}",userId);
+
+            log.info("Удаляем...");
+            basketService.deleteBasketsById(userId);
+            log.info("Удалили.");
+        }
+
+    }
 }

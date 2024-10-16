@@ -58,7 +58,7 @@ public class OrderService {
 
         if(orderDetails.getUserId() == null){
 
-            generateOrderError(Status.REJECTED);
+            orderRepository.save(generateOrderError(Status.REJECTED));
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 OrderResponse
@@ -112,7 +112,7 @@ public class OrderService {
         } else{
 
             log.error("У пользователя не хватает денег");
-            generateOrder(Status.REJECTED, adress);
+            saveOrder(generateOrder(Status.REJECTED, adress));
 
             return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).body(
                     OrderResponse
@@ -124,9 +124,17 @@ public class OrderService {
             );
         }
 
+        log.info("Деньги списались");
+        log.info("сохраняем заказ...");
+
         Order order = generateOrder(Status.SUCCESSFULLY, adress);
 
         saveOrder(order);
+
+        log.info("заказ сохранён");
+        log.info("удаляем из корзины все товары...");
+
+        kafkaService.deleteAllProductsInBasket(orderDetails.getUserId().toString());
 
         return ResponseEntity.ok().body(
                 OrderResponse

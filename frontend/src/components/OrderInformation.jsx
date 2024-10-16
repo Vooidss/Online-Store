@@ -38,7 +38,7 @@ export default function OrderInformation({orderInformation,isOrder,addOrder,adre
             body: JSON.stringify(fullOrder)
         })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => window.location.reload())
             .catch(error => console.error(error))
     }
 

@@ -14,6 +14,18 @@ public class KafkaService {
     private final KafkaProducer kafkaProducer;
     private final ObjectMapper objectMapper;
 
+    public void deleteAllProductsInBasket(String userId){
+
+        kafkaProducer.sendMessage(
+                new ProducerRecord<>(
+                        "deleteProduct",
+                        "userId",
+                        userId
+                )
+        );
+
+    }
+
     public void writeOffMoney(Integer userId, Integer orderPrice) throws JsonProcessingException {
 
         String value = objectMapper.writeValueAsString(new PriceOrderOfUserDTO(userId,orderPrice));
