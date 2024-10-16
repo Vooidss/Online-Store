@@ -6,10 +6,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import ru.org.basket.DTO.ProductResponse;
-
-import java.io.IOException;
-import java.util.List;
 
 @Service
 @Slf4j

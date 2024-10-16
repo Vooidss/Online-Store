@@ -21,14 +21,34 @@ public class KafkaConsumer{
     private final OrderDetails orderDetails;
 
     @KafkaListener(topics = "basket", groupId = "order_consumer")
-    public void listener(ConsumerRecord<String, String> consumerRecord){
+    public void listenerUserId(ConsumerRecord<String, String> consumerRecord){
 
         if(consumerRecord.key().equals("userId")) {
             log.info(consumerRecord.value());
-            orderDetails.setUserId(Integer.parseInt(consumerRecord.value()));
+            orderDetails.setUserId(parseValueToInt(consumerRecord.value()));
             log.info("ID получен");
         }else{
             log.error("Ошибка получения ID");
         }
     }
+
+    @KafkaListener(topics = "authorization", groupId = "order_consumer")
+    public void listenerMoneyUser(ConsumerRecord<String, String> consumerRecord){
+
+        if(consumerRecord.key().equals("money")) {
+
+            log.info(consumerRecord.value());
+
+            orderDetails.setMoney(parseValueToInt(consumerRecord.value()));
+            log.info("Количество денег получено");
+        }else{
+            log.error("Ошибка получения количества денег");
+        }
+    }
+
+
+    private Integer parseValueToInt(String value){
+        return Integer.parseInt(value);
+    }
+
 }

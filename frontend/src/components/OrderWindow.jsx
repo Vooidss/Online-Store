@@ -27,15 +27,21 @@ export default function OrderWindow({ addOrder, setAdress, setRecipient }) {
                         <OrderExecutionComponent
                             text={'Дом'}
                             type={'text'}
-                            setValue={(value) => setAdress((prev) => ({ ...prev, numberHouse: value }))} />
+                            setValue={(value) => setAdress((prev) => ({ ...prev, numberHouse: value }))}
+                            isDigit={true}
+                        />
                         <OrderExecutionComponent
                             text={'Квартира'}
                             type={'text'}
-                            setValue={(value) => setAdress((prev) => ({ ...prev, numberApartment: value }))} />
+                            setValue={(value) => setAdress((prev) => ({ ...prev, numberApartment: value }))}
+                            isDigit={true}
+                        />
                         <OrderExecutionComponent
                             text={'Домофон'}
                             type={'text'}
-                            setValue={(value) => setAdress((prev) => ({ ...prev, numberIntercom: value }))} />
+                            setValue={(value) => setAdress((prev) => ({ ...prev, numberIntercom: value }))}
+                            isDigit={true}
+                        />
                     </div>
                 </div>
                 <div className="main_window_basket__order__execution__info-customer">
@@ -52,7 +58,9 @@ export default function OrderWindow({ addOrder, setAdress, setRecipient }) {
                         <OrderExecutionComponent
                             text={"Телефон"}
                             type={'text'}
-                            setValue={(value) => setRecipient((prev) => ({ ...prev, phone: value }))} />
+                            setValue={(value) => setRecipient((prev) => ({ ...prev, phone: value }))}
+                            isDigit={true}
+                        />
                     </div>
                 </div>
             </div>

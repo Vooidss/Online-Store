@@ -13,6 +13,11 @@ spring:
         show_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  kafka:
+    template:
+      default-topic: authorization
+    bootstrap-servers: localhost:9092
+
   mvc:
     hiddenmethod:
       filter:
@@ -31,3 +36,4 @@ eureka:
 server:
   port:
     8060
+

@@ -52,13 +52,29 @@ public class OrderService {
         log.info("Токен успешно извлечен");
         log.info("Отправляем запрос на получение ID корзины...");
 
-        kafkaProducer.sendToken(
+        kafkaProducer.sendMessage(
                 new ProducerRecord<>(
                         "order",
                         "token",
                         token
                 )
         );
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        kafkaProducer.sendMessage(
+                new ProducerRecord<>(
+                        "order",
+                        "message",
+                        "money"
+                )
+        );
+
+        log.info("ДЕНЬГИИИИИИИИИИИ: " + orderDetails.getMoney());
 
         try {
             Thread.sleep(2000);

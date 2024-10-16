@@ -53,6 +53,7 @@ public class UserService {
         var username = SecurityContextHolder.getContext()
             .getAuthentication()
             .getName();
+        log.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
         return getByLogin(username);
     }
 
@@ -155,4 +156,17 @@ public class UserService {
                 )
         );
     }
+
+    public Integer findMoneyById(Integer id){
+        return userRepository.findMoneyById(id);
+    }
+
+    public Integer findMoneyCurrentUser(){
+
+
+        int id = getCurrentUser().getId();
+        log.info(String.valueOf(userRepository.findMoneyById(id)));
+        return userRepository.findMoneyById(id);
+    }
+
 }

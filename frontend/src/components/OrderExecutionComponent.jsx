@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export default function OrderExecutionComponent({text,setValue}) {
+export default function OrderExecutionComponent({text,setValue,isDigit}) {
 
     const [inputValue, setInputValue] = useState('');
     const [isVision, setIsVision] = useState(false);
@@ -10,8 +10,14 @@ export default function OrderExecutionComponent({text,setValue}) {
     }, [inputValue])
     
     const handleChange = (event) => {
-        setInputValue(event.target.value);
-        setIsVision(event.target.value !== '');
+        let value = event.target.value;
+
+        if(isDigit) {
+            value = value.replace(/\D/g, '');
+        }
+
+        setInputValue(value);
+        setIsVision(value !== '');
     };
 
     return (
@@ -20,6 +26,7 @@ export default function OrderExecutionComponent({text,setValue}) {
                transform: isVision ? 'scale(1)' : 'scale(0)'
            }}>{text}</p>
             <input
+                required
                 type="text"
                 className="main_window_basket__order__execution__components__input"
                 placeholder={`${text}`}
