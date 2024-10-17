@@ -14,6 +14,7 @@ export default function Product({ product, productName }) {
     const handleClickBasket = async () => {
         const token = localStorage.getItem('token')
         const productId = product.id
+        const productCount = 1;
 
         const credentials = { productId, token }
 

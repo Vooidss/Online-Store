@@ -84,6 +84,7 @@ export default function Basket({ isAuthorization }) {
         });
     }
 
+
     async function fetchData() {
         try {
             const response = await fetch(url, {
@@ -99,7 +100,7 @@ export default function Basket({ isAuthorization }) {
             if (data.code === 200) {
                 const productsWithCount = data.products.map((product) => ({
                     ...product,
-                    count: 1
+                    count: product.count
                 }));
                 setProducts(productsWithCount);
                 calculateOrderInfo(productsWithCount);
@@ -140,7 +141,9 @@ export default function Basket({ isAuthorization }) {
                     products={products}
                     handleDeleteProduct={handleDeleteProduct}
                     isAuthorization={isAuthorization}
-                    updateProductCount={updateProductCount}/>
+                    updateProductCount={updateProductCount}
+
+                />
             }
             {products.length > 0 && (
                 <OrderInformation

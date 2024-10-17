@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "basket")
+@Table(name = "basket",uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"userId", "productId"})
+})
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -16,9 +18,12 @@ public class Basket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    private int userId;
+    private Integer userId;
 
-    private int productId;
+    private Integer productId;
+
+    @Column(name = "countProduct", columnDefinition = "int DEFAULT 1")
+    private Integer countProduct;
 }

@@ -8,6 +8,5 @@ import lombok.Data;
 public class ProductInfoRequest {
 
     int productId;
-
     String token;
 }

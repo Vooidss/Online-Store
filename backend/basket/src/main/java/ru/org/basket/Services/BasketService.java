@@ -15,6 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import ru.org.basket.DTO.ProductInfoRequest;
 import ru.org.basket.DTO.ProductResponse;
+import ru.org.basket.DTO.ResponseDTO;
 import ru.org.basket.Model.Basket;
 import ru.org.basket.Repositories.BasketRepositories;
 
@@ -85,6 +88,7 @@ public class BasketService {
         return Basket.builder()
             .productId(productInfoRequest.getProductId())
             .userId(findUserId(productInfoRequest.getToken()))
+                .countProduct(1)
             .build();
     }
 
@@ -118,12 +122,30 @@ public class BasketService {
         return response.toString();
     }
 
+    public List<Basket> findBasketByUserId(Integer id){
+        return basketRepositories
+                .findProductIdByUserId(id);
+    }
+
+    public Basket findBasketByUserIdAndProductId(Integer id, Integer productId){
+        return basketRepositories.findByUserIdAndProductId(id, productId);
+    }
+
+    public Map<Integer,Integer> getBasketIdWithProductId(Integer id, List<Integer> productId){
+        return productId.stream()
+                .map(product -> findBasketByUserIdAndProductId(id, product))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(
+                        Basket::getProductId,
+                        Basket::getId
+                ));
+    }
+
     public List<ProductResponse> productServiceRequest(Integer userId) throws IOException {
 
         String urlString = "http://localhost:8071/products/ids";
 
-        List<Integer> list = basketRepositories
-                .findProductIdByUserId(userId)
+        List<Integer> list = findBasketByUserId(userId)
                 .stream()
                 .map(Basket::getProductId)
                 .toList();
@@ -159,6 +181,26 @@ public class BasketService {
         return basketRepositories.save(createBasket(productInfoRequest));
     }
 
+    public Integer findCountProductById(Integer id){
+        return basketRepositories.findCountProductById(id);
+    }
+    private List<ProductResponse> addBasketIdInProductResponse(List<ProductResponse> products,Map<Integer,Integer> BasketIdWithProductId){
+        for (ProductResponse product : products) {
+            Integer productId = product.getId();
+
+            if (BasketIdWithProductId.containsKey(productId)) {
+                Integer basketId = BasketIdWithProductId.get(productId);
+
+                product.setBasketId(basketId);
+                product.setCount(findCountProductById(basketId));
+
+                System.out.println("Product ID: " + productId + " - Basket ID: " + basketId);
+            }
+        }
+
+        return products;
+    }
+
     public ResponseEntity<Map<String, Object>> getProductsByUser(
         HttpServletRequest request
     ) {
@@ -188,10 +230,15 @@ public class BasketService {
             List<ProductResponse> products = productServiceRequest(userId);
 
             if(products != null) {
+                Map<Integer,Integer> BasketIdWithProductId = getBasketIdWithProductId(userId, products.stream().map(ProductResponse::getId).toList());
+                BasketIdWithProductId.forEach((value,key) -> System.out.println("KEY: "+ key + " - Value: " + value));
+
+                List<ProductResponse> resultProductResponse = addBasketIdInProductResponse(products,BasketIdWithProductId);
+
                 return ResponseEntity.ok(
                         Map.of(
                                 "products",
-                                products,
+                                resultProductResponse,
                                 "status",
                                 HttpStatus.OK,
                                 "message",
@@ -226,7 +273,6 @@ public class BasketService {
             );
         }
     }
-
     public ResponseEntity<Map<String, Object>> deleteProduct(int id, HttpServletRequest request) {
 
         String token = request.getHeader("Authorization").substring(7);
@@ -250,5 +296,30 @@ public class BasketService {
                         "message", "Продукт удален"
                 )
         );
+    }
+
+    public ResponseEntity<ResponseDTO<Map<String,Integer>>> updateCountProductInBasket(int id,Integer count) {
+        try {
+            basketRepositories.updateCountProductById(id,count);
+
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseDTO<>(
+                            HttpStatus.OK.toString(),
+                            HttpStatus.OK.value(),
+                            "Количество продуктов обновлено",
+                            null
+
+                    )
+            );
+        }catch(RuntimeException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+              new ResponseDTO<>(
+                      HttpStatus.NOT_FOUND.toString(),
+                      HttpStatus.NOT_FOUND.value(),
+                      "Не удалось сохраниться данные",
+                      null
+              )
+            );
+        }
     }
 }

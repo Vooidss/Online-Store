@@ -8,6 +8,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.org.basket.DTO.ProductInfoRequest;
+import ru.org.basket.DTO.ResponseDTO;
 import ru.org.basket.Model.Basket;
 import ru.org.basket.Services.BasketService;
 import ru.org.basket.Services.KafkaProducer;
@@ -20,7 +21,6 @@ import ru.org.basket.Services.KafkaProducer;
 public class BasketController {
 
     private final BasketService basketService;
-    private final KafkaProducer kafkaProducer;
 
     @PostMapping("/save")
     public Basket addProductForUser(@RequestBody ProductInfoRequest request) {
@@ -37,6 +37,14 @@ public class BasketController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Map<String,Object>> deleteProduct(@PathVariable(name = "id",required = false) int id, HttpServletRequest request){
         return basketService.deleteProduct(id,request);
+    }
+
+    @PatchMapping("/update/{id}/{count}")
+    public ResponseEntity<ResponseDTO<Map<String,Integer>>> updateCountsProductInBasket(
+            @PathVariable(name = "id") int id,
+            @PathVariable(name = "count") int count
+    )  {
+        return basketService.updateCountProductInBasket(id, count);
     }
 
 }

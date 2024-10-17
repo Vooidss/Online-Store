@@ -11,14 +11,32 @@ export default function ProductUser({ product, onDelete, updateProductCount }) {
     useEffect(() => {
         setTotalPrice(product.price * count);
         updateProductCount(product.id, count);
+        updateCountProduct()
     }, [count, product.price]);
+
+    useEffect(() => {
+        updateCountProduct()
+    }, [count]);
+
+    async function updateCountProduct(){
+        console.log(count)
+        await fetch(`http://localhost:8050/basket/update/${product.basketId}/${count}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
+    }
 
     const addCount = () => {
         setCount((prevCount) => prevCount + 1);
     };
 
     const subCount = () => {
-        if (count > 1) {
+        if (count >= 1) {
             setCount((prevCount) => prevCount - 1);
         }
     };
