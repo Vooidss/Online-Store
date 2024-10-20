@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import LoadingComponent from './LoadingComponent'
+import StatusComponent from './StatusComponent'
 
 export default function OrderInformation({orderInformation,isOrder,addOrder,adress,recipient}){
 
@@ -9,6 +11,9 @@ export default function OrderInformation({orderInformation,isOrder,addOrder,adre
         adress: adress,
         recipient: recipient
     });
+    const [isLoading, setLoading] = useState(false);
+    const [status, setStatus] = useState(false);
+    const [isLoaded, setLoaded] = useState(false);
 
     useEffect(() => {
         setFullOrder((prev) => ({
@@ -25,10 +30,22 @@ export default function OrderInformation({orderInformation,isOrder,addOrder,adre
         console.log(fullOrder)
     }, [fullOrder,adress,recipient])
 
+    useEffect(() => {
+        if (isLoaded) {
+            const timer = setTimeout(() => {
+                setLoaded(false);
+                window.location.reload();
+            }, 1500);
+
+            return () => clearTimeout(timer);
+        }
+    }, [isLoaded]);
+
 
     const token = localStorage.getItem("token");
 
     async function PlaceAnOrder(){
+        setLoading(true)
         await fetch('http://localhost:8020/order/arrange',{
             method: 'POST',
             headers: {
@@ -38,12 +55,26 @@ export default function OrderInformation({orderInformation,isOrder,addOrder,adre
             body: JSON.stringify(fullOrder)
         })
             .then(response => response.json())
-            .then(data => window.location.reload())
+            .then(data => {
+                setLoading(false)
+                setLoaded(true)
+                if(data.code === 200){
+                    setStatus(true)
+                }else{
+                    setStatus(false)
+                }
+            })
             .catch(error => console.error(error))
     }
 
     return(
         <div className="main_window_basket__right-nav">
+            <LoadingComponent isHidden={isLoading}/>
+            <StatusComponent
+                status={status}
+                isLoading={isLoading}
+                isLoaded={isLoaded}
+            />
             <div className="main_window_basket__head"></div>
             <div className="main_window_basket__right-nav__information">
                 <div className="main_window_basket__right-nav__information__head">
@@ -51,28 +82,38 @@ export default function OrderInformation({orderInformation,isOrder,addOrder,adre
                 </div>
                 <div className="main_window_basket__right-nav__information__description">
                     <div className="main_window_basket__right-nav__information__description__count-price">
-                        <div className="main_window_basket__right-nav__information__description__count-price__count">{orderInformation.count} товара</div>
-                        <div className="main_window_basket__right-nav__information__description__count-price__price">{orderInformation.price} ₽</div>
-                        <div className="main_window_basket__right-nav__information__description__count-price__discount">Скидка</div>
-                        <div className="main_window_basket__right-nav__information__description__count-price__discount-price">{orderInformation.discountPrice} ₽</div>
+                        <div
+                            className="main_window_basket__right-nav__information__description__count-price__count">{orderInformation.count} товара
+                        </div>
+                        <div
+                            className="main_window_basket__right-nav__information__description__count-price__price">{orderInformation.price} ₽
+                        </div>
+                        <div
+                            className="main_window_basket__right-nav__information__description__count-price__discount">Скидка
+                        </div>
+                        <div
+                            className="main_window_basket__right-nav__information__description__count-price__discount-price">{orderInformation.discountPrice} ₽
+                        </div>
                     </div>
 
                     <div className="main_window_basket__right-nav__information__description__result">
-                        <div className="main_window_basket__right-nav__information__description__result__name">Итого</div>
+                        <div className="main_window_basket__right-nav__information__description__result__name">Итого
+                        </div>
                         <div className="main_window_basket__right-nav__information__description__result__price">
                             {fullOrder.resultPrice} ₽
                         </div>
                     </div>
-
                 </div>
                 <div className="main_window_basket__right-nav__information__button-chapter">
                     {isOrder
                         ?
-                        <button className="main_window_basket__right-nav__information__button-chapter__button" onClick={PlaceAnOrder}>
+                        <button className="main_window_basket__right-nav__information__button-chapter__button"
+                                onClick={PlaceAnOrder}>
                             Оформить заказ
                         </button>
                         :
-                        <button className="main_window_basket__right-nav__information__button-chapter__button" onClick={addOrder}>
+                        <button className="main_window_basket__right-nav__information__button-chapter__button"
+                                onClick={addOrder}>
                             Перейти к оформлению
                         </button>
                     }

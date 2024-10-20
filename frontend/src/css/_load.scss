@@ -1,0 +1,25 @@
+.Loading{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.49);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &__gif{
+    width: 200px;
+    height: 200px;
+  }
+}

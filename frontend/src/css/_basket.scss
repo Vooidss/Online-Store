@@ -1,6 +1,5 @@
 .main_window_basket {
     display: grid;
-    grid-template-columns: 10% 60% 30%;
     height: 100%;
     width: 100%;
     background-color: #cbc5c5;
@@ -298,7 +297,6 @@
 
         position: relative;
 
-        width: 400px;
         height: auto;
 
         display: grid;
