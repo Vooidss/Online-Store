@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ScrollToTop from '../util/ScrollToTop'
 import ProductSelection from '../components/ProductSelection'
 import BasketPage from './Basket'
-import ProfilePage from './Profile'
+import ProfilePage from '../components/ProfileWindow'
 
 export default function Main() {
     const [isModelOpen, setModelOpen] = useState(false)

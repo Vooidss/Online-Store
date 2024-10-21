@@ -389,7 +389,7 @@ svg * {
   display: inline-block;
 }
 .main_window_basket__order__execution input:invalid {
-  border-bottom: 2px solid #ff0202;
+  border-bottom: 2px solid rgb(245, 36, 36);
 }
 .main_window_basket__order__execution input::placeholder {
   color: rgba(0, 0, 0, 0.67);
@@ -659,6 +659,10 @@ svg * {
 .main_window_basket__right-nav__information__button-chapter__button:hover {
   background-color: rgb(51, 50, 50);
   cursor: pointer;
+}
+.main_window_basket__right-nav__information__button-chapter__button.disable {
+  background-color: rgb(124, 23, 23);
+  pointer-events: none;
 }
 
 ._message_ {

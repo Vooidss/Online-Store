@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ProductUser from '../components/ProductUser';
 import OrderInformation from '../components/OrderInformation';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import BasketList from '../components/BasketList'
 import OrderWindow from '../components/OrderWindow'
 

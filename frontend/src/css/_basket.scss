@@ -28,7 +28,7 @@
                 display: inline-block;
 
                 &:invalid{
-                    border-bottom: 2px solid #ff0202;
+                    border-bottom: 2px solid rgb(245, 36, 36);
                 }
 
                 &::placeholder {
@@ -408,6 +408,11 @@
                     &:hover{
                         background-color: rgb(51, 50, 50);
                         cursor: pointer;
+                    }
+
+                    &.disable{
+                        background-color: rgb(124, 23, 23);
+                        pointer-events: none;
                     }
                 }
             }

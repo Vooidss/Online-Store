@@ -15,7 +15,7 @@ export default function OrderWindow({ addOrder, setAdress, setRecipient }) {
             <div className="main_window_basket__order__execution">
                 <div className="main_window_basket__order__execution__info-customer">
                     <h1>Куда доставить заказ?</h1>
-                    <form className="main_window_basket__order__execution__components">
+                    <form className="main_window_basket__order__execution__components" id="order_form">
                         <OrderExecutionComponent
                             text={'Город'}
                             type={'text'}
@@ -46,7 +46,9 @@ export default function OrderWindow({ addOrder, setAdress, setRecipient }) {
                 </div>
                 <div className="main_window_basket__order__execution__info-customer">
                     <h1>Кто заберёт заказ?</h1>
-                    <form className="main_window_basket__order__execution__info-customer__info">
+                    <form className="main_window_basket__order__execution__info-customer__info"
+                          id="order_form"
+                    >
                         <OrderExecutionComponent
                             text={"Имя"}
                             type={'text'}

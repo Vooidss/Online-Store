@@ -14,6 +14,10 @@ export default function OrderInformation({orderInformation,isOrder,addOrder,adre
     const [isLoading, setLoading] = useState(false);
     const [status, setStatus] = useState(false);
     const [isLoaded, setLoaded] = useState(false);
+    const [isFormValid, setFormValid] = useState(false);
+
+    const defualtLik = "main_window_basket__right-nav__information__button-chapter__button";
+    const disabletLik = "main_window_basket__right-nav__information__button-chapter__button disable";
 
     useEffect(() => {
         setFullOrder((prev) => ({
@@ -41,6 +45,12 @@ export default function OrderInformation({orderInformation,isOrder,addOrder,adre
         }
     }, [isLoaded]);
 
+    useEffect(() => {
+        const isAddressComplete = adress.city && adress.street && adress.numberHouse && adress.numberApartment && adress.numberIntercom;
+        const isRecipientComplete = recipient.name && recipient.secondName && recipient.phone;
+
+        setFormValid(isAddressComplete && isRecipientComplete);
+    }, [adress, recipient]);
 
     const token = localStorage.getItem("token");
 
@@ -107,13 +117,17 @@ export default function OrderInformation({orderInformation,isOrder,addOrder,adre
                 <div className="main_window_basket__right-nav__information__button-chapter">
                     {isOrder
                         ?
-                        <button className="main_window_basket__right-nav__information__button-chapter__button"
-                                onClick={PlaceAnOrder}>
+                        <button className={isFormValid ? defualtLik : disabletLik}
+                                type="submit"
+                                id="order_form"
+                                onClick={PlaceAnOrder}
+                        >
                             Оформить заказ
                         </button>
                         :
                         <button className="main_window_basket__right-nav__information__button-chapter__button"
-                                onClick={addOrder}>
+                                onClick={addOrder}
+                        >
                             Перейти к оформлению
                         </button>
                     }

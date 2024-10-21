@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { NavLink } from 'react-router-dom'
 import Authentication from '../pages/Authorization'
-import Profile from '../pages/Profile'
+import Profile from './ProfileWindow'
 import { GiBasketballBasket } from "react-icons/gi";
 
 
