@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import ru.org.backend.user.MyUser;
 
 public interface UserRepositories extends JpaRepository<MyUser, Integer> {
@@ -26,4 +27,5 @@ public interface UserRepositories extends JpaRepository<MyUser, Integer> {
     @Transactional
     @Query("UPDATE MyUser u SET u.money = u.money - :orderPrice WHERE u.id = :userId")
     void writeOffMoney(@Param("userId") Integer userId, @Param("orderPrice") Integer orderPrice);
+
 }

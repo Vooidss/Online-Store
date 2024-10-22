@@ -7,6 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.org.backend.DTO.UpdateRequest;
 import ru.org.backend.Services.UserService;
 import ru.org.backend.user.MyUser;
 
@@ -28,8 +29,8 @@ public class UserController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<Map<String,Object>> updateUser(MyUser myUser){
-        return userService.updateUser(myUser);
+    public ResponseEntity<Map<String,Object>> updateUser(@RequestBody UpdateRequest newUser){
+        return userService.updateUser(newUser);
     }
 
     @PatchMapping("/replenishment")

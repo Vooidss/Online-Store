@@ -1,13 +1,11 @@
 package ru.org.backend.DTO;
 
-import lombok.*;
+import lombok.Data;
+import org.springframework.stereotype.Component;
 import ru.org.backend.user.Role;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class RegisterRequest{
+public abstract class Request {
 
     private String name;
     private String secondName;
@@ -17,5 +15,6 @@ public class RegisterRequest{
     private Role role;
     private int age;
     private String phone;
+    private int money;
     private String sex;
 }

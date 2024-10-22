@@ -60,6 +60,10 @@ public class MyUser {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "sex")
+    private String sex;
+
+
     @Column(name = "date_registration")
     private LocalDateTime date_registration;
 }

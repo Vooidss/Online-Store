@@ -1,0 +1,40 @@
+.component{
+
+  position: relative;
+
+  p{
+    transform: scale(0);
+    font-size: 12px;
+    position: absolute;
+    margin: 0;
+    transition: 0.5s;
+  }
+
+  &__input{
+    margin-top: 10px;
+    font-size: 20px;
+    width: 90%;
+    padding: 10px;
+
+    border:none;
+    background-color: #cbc5c5;
+    border-bottom: 2px rgba(68, 66, 66, 0.62) solid;
+    text-decoration-color: white;
+
+    display: inline-block;
+
+    &:invalid{
+      border-bottom: 2px solid rgb(245, 36, 36);
+    }
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.67);
+    }
+
+    &:focus-visible{
+      border-bottom: 2px solid black;
+      transition: border-bottom-color 1s ease-in-out;
+    }
+  }
+
+}

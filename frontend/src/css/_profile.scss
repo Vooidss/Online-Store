@@ -31,6 +31,11 @@
         &__head{
             border-bottom: 2px white solid;
             align-self: end;
+            color: white;
+        }
+
+        &__nav{
+            text-decoration: none;
         }
 
         &__info{
@@ -102,5 +107,83 @@
             }
         }
 
+    }
+}
+.profile-main-window{
+    background-color: #cbc5c5;
+    display: flex;
+    user-select: none;
+    font-weight: bold;
+
+    justify-content: center;
+
+    &__profile{
+        display: flex;
+        #my_data{
+            justify-self: end;
+        }
+
+        &__form{
+
+            &__inputs {
+                display: grid;
+                grid-template-columns: 50% 50%;
+                grid-template-rows: 50% 50%;
+            }
+
+            &__radio{
+                width: 40%;
+                margin-top: 20px;
+
+                &__label{
+                    cursor: pointer;
+                    margin: 5px 5px 5px 10px;
+                    width: max-content;
+                }
+
+                &__fieldset{
+                    border: 2px black solid;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                &__legend{
+                    font-size: 20px;
+                    margin-left: 10px;
+                }
+            }
+
+            &__email{
+                margin-top: 30px;
+                label{
+                    color: rgba(16, 16, 16, 0.69);
+                    font-size: 12px;
+                }
+                p{
+                    font-size: 20px;
+                }
+            }
+
+            &__phone{
+                margin-top: 30px;
+            }
+
+            &__save{
+                font-weight: normal;
+                margin-top: 30px;
+                background-color: black;
+                border-radius: 9px;
+                font-size: 18px;
+                color: white;
+                cursor: pointer;
+                padding: 5px 10px 5px 10px;
+
+                &:hover{
+                    background-color: rgba(0, 0, 0, 0.72);
+                }
+
+            }
+
+        }
     }
 }

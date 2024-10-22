@@ -1,0 +1,41 @@
+.custom-radio{
+  position: relative;
+
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+
+  background-color: white;
+  border: 2px darkblue solid;
+  border-radius: 50%;
+  vertical-align: text-top;
+  margin-right: 5px;
+
+  &::before{
+    content: '';
+
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #4605ff;
+
+    box-shadow: 0 0 0  #4605ff;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: none;
+  }
+
+}
+
+.real-radio{
+  display: none;
+}
+
+.real-radio:checked + .custom-radio::before{
+  display: block;
+}

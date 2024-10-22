@@ -52,7 +52,8 @@ export default function OrderWindow({ addOrder, setAdress, setRecipient }) {
                         <OrderExecutionComponent
                             text={"Имя"}
                             type={'text'}
-                            setValue={(value) => setRecipient((prev) => ({ ...prev, name: value }))} />
+                            setValue={(value) => setRecipient((prev) => ({ ...prev, name: value }))}
+                        />
                         <OrderExecutionComponent
                             text={"Фамилия"}
                             type={'text'}

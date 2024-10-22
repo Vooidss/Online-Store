@@ -53,6 +53,7 @@ public class RegistrationService {
             .age(request.getAge())
             .phone(request.getPhone())
             .role(request.getRole())
+            .sex(request.getSex())
             .money(0)
             .date_registration(LocalDateTime.now())
             .build();

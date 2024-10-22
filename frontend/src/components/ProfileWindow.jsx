@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom'
 
 export default function Profile({ active, setActive, onLogout }) {
     const [user, setUser] = useState({
@@ -53,6 +54,7 @@ export default function Profile({ active, setActive, onLogout }) {
 
             console.log(data);
 
+            localStorage.setItem('user', JSON.stringify(data))
             setUser({
                 name: data.name,
                 login: data.login,
@@ -79,9 +81,11 @@ export default function Profile({ active, setActive, onLogout }) {
                 className="main-window__window-profile"
                 onClick={e => e.stopPropagation()}
             >
-                <h1 className="main-window__window-profile__head">
-                    {user.name}
-                </h1>
+                <NavLink to="Profile" className="main-window__window-profile__nav">
+                    <h1 className="main-window__window-profile__head">
+                        {user.name}
+                    </h1>
+                </NavLink>
                 <ul className="main-window__window-profile__info">
                     <li>Логин: {user.login}</li>
                     <li>Кошелёк: {new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(user.money)}</li>

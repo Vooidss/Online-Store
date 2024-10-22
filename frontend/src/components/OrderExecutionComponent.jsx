@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-export default function OrderExecutionComponent({text,setValue,isDigit}) {
+export default function OrderExecutionComponent({text,value,setValue,isDigit,color,width}) {
 
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(value || '');
     const [isVision, setIsVision] = useState(false);
 
     useEffect(() => {
         setValue(inputValue);
+        setIsVision(inputValue !== '');
     }, [inputValue])
     
     const handleChange = (event) => {
@@ -21,17 +22,20 @@ export default function OrderExecutionComponent({text,setValue,isDigit}) {
     };
 
     return (
-        <div className="main_window_basket__order__execution__components__component">
+        <div className="component">
            <p style={{
                transform: isVision ? 'scale(1)' : 'scale(0)'
            }}>{text}</p>
             <input
                 required
                 type="text"
-                className="main_window_basket__order__execution__components__input"
+                className="component__input"
                 placeholder={`${text}`}
                 onChange={handleChange}
-                value={inputValue}
+                value={value ? value : setValue ? inputValue : ''}
+                style={{
+                    maxWidth: width ? width : ''
+                }}
             />
         </div>
     )

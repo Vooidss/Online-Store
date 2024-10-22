@@ -1,5 +1,6 @@
 package ru.org.backend.Services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.UnexpectedTypeException;
@@ -9,6 +10,7 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.org.backend.DTO.Request;
+import ru.org.backend.DTO.UpdateRequest;
 import ru.org.backend.Repositories.UserRepositories;
 import ru.org.backend.user.MyUser;
 import ru.org.backend.user.Role;
@@ -27,6 +31,7 @@ import ru.org.backend.user.Role;
 public class UserService {
 
     private final UserRepositories userRepository;
+    private final ModelMapper modelMapper;
 
     public void save(MyUser user)
         throws ConstraintViolationException, DataIntegrityViolationException, UnexpectedTypeException {
@@ -36,14 +41,6 @@ public class UserService {
     public MyUser getByLogin(String login) {
         return userRepository
             .findByLogin(login)
-            .orElseThrow(() ->
-                new UsernameNotFoundException("Пользователь не найден")
-            );
-    }
-
-    public MyUser getByEmail(String email) {
-        return userRepository
-            .findByEmail(email)
             .orElseThrow(() ->
                 new UsernameNotFoundException("Пользователь не найден")
             );
@@ -67,12 +64,22 @@ public class UserService {
         return ResponseEntity.ok(Map.of("Id", myUser.getId()));
     }
 
-    public  ResponseEntity<Map<String,Object>> updateUser(MyUser myUser) {
+    private void addOtherData(MyUser myUser){
+        myUser.setRole(getCurrentUser().getRole());
+        myUser.setLogin(getCurrentUser().getLogin());
+        myUser.setMoney(getCurrentUser().getMoney());
+        myUser.setEmail(getCurrentUser().getEmail());
+        myUser.setPassword(getCurrentUser().getPassword());
+        myUser.setDate_registration(getCurrentUser().getDate_registration());
+    }
+
+    public  ResponseEntity<Map<String,Object>> updateUser(UpdateRequest updateRequest) {
+        System.out.println(updateRequest);
         log.info("Получаем id залогированного пользователя...");
 
         int id = getCurrentUser().getId();
 
-        log.info("id получен!");
+        log.info("id {} получен!",id);
 
         log.info("Проверяем существует ли пользователь с таким id в базе данных...");
 
@@ -80,8 +87,24 @@ public class UserService {
             log.info("Пользователь существует!");
             log.info("Сохраняем пользователя...");
 
-            MyUser updateUser = userRepository.save(myUser);
+            Optional<MyUser> updateUser;
 
+            try {
+                MyUser myUser = modelMapper.map(updateRequest, MyUser.class);
+                myUser.setId(id);
+                addOtherData(myUser);
+                updateUser = Optional.of(userRepository.save(myUser));
+            }catch (ConstraintViolationException e){
+                log.error(e.toString());
+                log.error("Ошибка обновления пользователя");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                        Map.of(
+                                "user", "",
+                                "code", HttpStatus.NOT_FOUND.value(),
+                                "status", HttpStatus.NOT_FOUND,
+                                "message", "Ошибка обновления"
+                        ));
+            }
             log.info("Пользователь сохранён!");
 
             return ResponseEntity.ok().body(
@@ -163,8 +186,4 @@ public class UserService {
     public Integer findMoneyById(Integer id){
         return userRepository.findMoneyById(id);
     }
-
-
-
-
 }

@@ -19,29 +19,6 @@
             margin:10px;
             min-height:400px;
 
-            input{
-                border:none;
-                background-color: #cbc5c5;
-                border-bottom: 2px rgba(68, 66, 66, 0.62) solid;
-                text-decoration-color: white;
-
-                display: inline-block;
-
-                &:invalid{
-                    border-bottom: 2px solid rgb(245, 36, 36);
-                }
-
-                &::placeholder {
-                    color: rgba(0, 0, 0, 0.67);
-                }
-
-                &:focus-visible{
-                    border-bottom: 2px solid black;
-                    transition: border-bottom-color 1s ease-in-out;
-                }
-
-            }
-
             &__components{
                 justify-self: start;
                 align-self: center;
@@ -49,26 +26,9 @@
                 grid-template-rows: 40% 40%;
                 grid-template-columns: 33% 33% 33%;
 
-                &__component{
-                    position: relative;
-                    &:nth-child(4),
-                    &:nth-child(5){
-                        margin-top: 20px;
-                    }
-                    p{
-                        transform: scale(0);
-                        font-size: 12px;
-                        position: absolute;
-                        margin: 0;
-                        transition: 0.5s;
-                    }
-                }
-
-                &__input{
-                    margin-top: 10px;
-                    font-size: 20px;
-                    width: 90%;
-                    padding: 10px;
+                :nth-child(4),
+                :nth-child(5){
+                    margin-top: 20px;
                 }
             }
 

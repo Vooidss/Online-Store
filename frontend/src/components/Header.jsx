@@ -46,6 +46,7 @@ export default function Header({ modalActive,setModalActive, setAuthorization })
 
     const handleLogout = async () => {
         localStorage.removeItem('token')
+        localStorage.removeItem('user')
         setAuthentication(false)
         setModalActive(false)
 

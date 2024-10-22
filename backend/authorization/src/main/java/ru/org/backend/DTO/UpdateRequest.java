@@ -7,14 +7,10 @@ import ru.org.backend.user.Role;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest{
+public class UpdateRequest{
 
     private String name;
-    private String secondName;
-    private String login;
-    private String password;
-    private String email;
-    private Role role;
+    private String secondname;
     private int age;
     private String phone;
     private String sex;
