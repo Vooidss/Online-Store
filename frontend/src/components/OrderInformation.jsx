@@ -84,6 +84,8 @@ export default function OrderInformation({orderInformation,isOrder,addOrder,adre
                 status={status}
                 isLoading={isLoading}
                 isLoaded={isLoaded}
+                textAccepted="Заказ оформлен успешно"
+                textRefused="Ошибка оформления заказа"
             />
             <div className="main_window_basket__head"></div>
             <div className="main_window_basket__right-nav__information">

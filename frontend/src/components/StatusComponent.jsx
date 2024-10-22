@@ -4,7 +4,7 @@ import { ImCross } from "react-icons/im";
 
 
 
-export default function StatusComponent({status,isLoading,isLoaded}){
+export default function StatusComponent({status,isLoading,isLoaded,textAccepted,textRefused}){
 
     const activeLink = 'Status-main-window active'
     const defaultLink = 'Status-main-window'
@@ -14,7 +14,7 @@ export default function StatusComponent({status,isLoading,isLoaded}){
             <div className="Status-main-window__window" style={{
                 border: status ? '2px green solid' : '2px red solid'
             }}>
-                <p>{status ? "Заказ был успешно оформлен" : "Оформление заказа было отменено"}</p>
+                <p>{status ? textAccepted : textRefused}</p>
                 {status ? <FcCheckmark style={{
                     color : 'green',
                     fontSize: '20px',

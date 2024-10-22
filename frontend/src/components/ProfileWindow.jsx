@@ -87,7 +87,9 @@ export default function Profile({ active, setActive, onLogout }) {
                     </h1>
                 </NavLink>
                 <ul className="main-window__window-profile__info">
-                    <li>Логин: {user.login}</li>
+                    <NavLink to="Profile" className="main-window__window-profile__nav">
+                        <li>Логин: {user.login}</li>
+                    </NavLink>
                     <li>Кошелёк: {new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(user.money)}</li>
                 </ul>
                 <div className="main-window__window-profile__buttons">

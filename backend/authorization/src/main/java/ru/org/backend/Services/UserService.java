@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.UnexpectedTypeException;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -89,13 +91,16 @@ public class UserService {
 
             Optional<MyUser> updateUser;
 
+            MyUser myUser = modelMapper.map(updateRequest, MyUser.class);
+            myUser.setId(id);
+            addOtherData(myUser);
+
             try {
-                MyUser myUser = modelMapper.map(updateRequest, MyUser.class);
-                myUser.setId(id);
-                addOtherData(myUser);
                 updateUser = Optional.of(userRepository.save(myUser));
-            }catch (ConstraintViolationException e){
+            }catch (RuntimeException e){
                 log.error(e.toString());
+                System.out.println(e.getMessage());
+                System.out.println(Arrays.toString(e.getStackTrace()));
                 log.error("Ошибка обновления пользователя");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                         Map.of(

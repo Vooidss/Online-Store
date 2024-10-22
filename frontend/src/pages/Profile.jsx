@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import OrderExecutionComponent from '../components/OrderExecutionComponent'
+import LoadingComponent from '../components/LoadingComponent'
+import StatusComponent from '../components/StatusComponent'
 
 export default function Profile() {
     const [user, setUser] = useState(null);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [isLoading, setLoading] = useState(false);
+    const [status, setStatus] = useState(false);
+    const [isLoaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        if(isLoaded){
+        if (isLoaded) {
             const timer = setTimeout(() => {
-                window.location.reload();
-                setIsLoaded(false);
-            }, 2500);
+                setLoaded(false);
+                window.location.reload()
+            }, 1500);
 
             return () => clearTimeout(timer);
         }
@@ -21,7 +25,7 @@ export default function Profile() {
             const storedUser = localStorage.getItem('user');
             if (storedUser) {
                 const parsedUser = JSON.parse(storedUser);
-                if (parsedUser && parsedUser.name) {
+                if (parsedUser) {
                     setUser(parsedUser);
                 }
             }
@@ -52,8 +56,14 @@ export default function Profile() {
         })
             .then(require => require.json())
             .then(data => {
-                if(data.code === 200){
-                    setIsLoaded(true);
+                console.log(data);
+                setLoading(false)
+                setLoaded(true)
+                if(data.code === 200) {
+                    localStorage.setItem('user', JSON.stringify(data.user))
+                    setStatus(true)
+                }else{
+                        setStatus(false)
                 }
             })
             .catch(error => console.error(error))
@@ -61,6 +71,14 @@ export default function Profile() {
 
     return (
         <div className="profile-main-window">
+            <LoadingComponent isHidden={isLoading}/>
+            <StatusComponent
+                status={status}
+                isLoading={isLoading}
+                isLoaded={isLoaded}
+                textAccepted="Данные успешно обновлены"
+                textRefused = "Ошибка обновления данных"
+            />
             <div className="profile-main-widow__profile">
                 <h1 id = "my_data">Мои данные</h1>
                 <div className="profile-main-window__profile__form">

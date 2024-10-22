@@ -815,6 +815,9 @@ input:focus {
   font-size: 16px;
   margin-top: 20px;
 }
+.main-window__window-profile__info li {
+  color: white;
+}
 .main-window__window-profile__buttons {
   display: flex;
   flex-direction: column;

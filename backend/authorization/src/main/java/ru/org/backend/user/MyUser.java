@@ -1,9 +1,8 @@
 package ru.org.backend.user;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,10 +32,11 @@ public class MyUser {
     private String password;
 
     @NotNull(message = "Логин должен присутствовать обязательно")
-    @Column(name = "login")
+    @Column(name = "login",nullable = false)
     private String login;
 
-    @Column(name = "name")
+    @Column(name = "name",nullable = false)
+    @NotEmpty
     private String name;
 
     @Column(name = "secondname")
@@ -46,18 +46,19 @@ public class MyUser {
     private int age;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
+    @Column(name = "role",nullable = false)
     private Role role;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email", unique = true, nullable = false)
     @Email
     private String email;
 
-    @Column(name = "money")
-    @Min(0)
+    @Column(name = "money", nullable = false)
+    @PositiveOrZero
     private int money;
 
     @Column(name = "phone")
+    @Pattern(regexp = "^\\d{5,15}$", message = "В номере должно присутствовать минимум 5 и максимум 15 цифр")
     private String phone;
 
     @Column(name = "sex")
