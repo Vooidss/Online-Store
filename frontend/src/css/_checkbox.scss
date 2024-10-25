@@ -84,4 +84,10 @@
 .checkbox-content{
   margin-left: 6px;
   font-size: 15px;
+  gap: 6px;
+  display: inline-flex;
+
+  p{
+    color: rgba(75, 75, 75, 0.82);
+  }
 }

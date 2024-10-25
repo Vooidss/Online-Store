@@ -1163,6 +1163,11 @@ input:focus {
 .checkbox-content {
   margin-left: 6px;
   font-size: 15px;
+  gap: 6px;
+  display: inline-flex;
+}
+.checkbox-content p {
+  color: rgba(75, 75, 75, 0.82);
 }
 
 /*# sourceMappingURL=main.css.map */

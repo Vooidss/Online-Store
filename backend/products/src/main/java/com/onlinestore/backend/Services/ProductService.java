@@ -4,10 +4,7 @@ import com.onlinestore.backend.DTO.SpecificationsResponse;
 import com.onlinestore.backend.Models.Products;
 import com.onlinestore.backend.Repositories.ProductRepositories;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
@@ -60,17 +57,29 @@ public class ProductService {
         return ResponseEntity.ok(products);
     }
 
-    private Map<String,Long> getCountSpecification(List<Object[]> specifications, String specificationName){
-        return specifications.stream().filter(x -> x[0].equals(specificationName))
-                .collect(Collectors.toMap(x -> (String) x[1], x -> (Long) x[2]));
+    private List<Map<String, Object>> getCountSpecification(List<Object[]> specifications, String specificationName){
+
+        List<Map<String,Object>> list = new ArrayList<>();
+
+        for(Object[] object : specifications){
+            if(object[0] instanceof String && object[0].equals(specificationName)){
+                list.add(
+                        Map.of(
+                                "name", object[1],
+                                "count", object[2]
+                        )
+                );
+            }
+        }
+        return list;
     }
 
     private SpecificationsResponse buildResponse(List<Object[]> specifications) {
 
-        Map<String,Long> colors = getCountSpecification(specifications, "color");
-        Map<String,Long> brands = getCountSpecification(specifications, "brand");
-        Map<String,Long> sizes = getCountSpecification(specifications, "size");
-        Map<String,Long> materials = getCountSpecification(specifications, "material");
+        List<Map<String,Object>> colors = getCountSpecification(specifications, "color");
+        List<Map<String,Object>> brands = getCountSpecification(specifications, "brand");
+        List<Map<String,Object>> sizes = getCountSpecification(specifications, "size");
+        List<Map<String,Object>> materials = getCountSpecification(specifications, "material");
 
         return SpecificationsResponse
                 .builder()
