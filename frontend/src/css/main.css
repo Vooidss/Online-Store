@@ -248,7 +248,7 @@ svg * {
   min-width: 100vh;
 }
 
-.main-window-shopping-list {
+.main-window-products {
   display: grid;
   grid-template-columns: 200px 1fr;
 }

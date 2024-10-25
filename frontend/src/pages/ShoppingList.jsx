@@ -1,28 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import ProductRequest from '../Requests/ProductRequest'
-import Sidebar from '../components/Sidebar'
+import Products from '../components/Products'
 
 export default function ShoppingList(){
+
         return (
             <div className="main-window-shopping-list">
-                <Sidebar/>
-                <div className="section">
                     <Routes>
                         <Route
                             path="/Sneakers"
-                            element={<ProductRequest product={'sneakers'} />}
+                            element={<Products products={'sneakers'} />}
                         />
                         <Route
                             path="/Shorts"
-                            element={<ProductRequest product={'shorts'} />}
+                            element={<Products products={'shorts'} />}
                         />
                         <Route
                             path="/TShirts"
-                            element={<ProductRequest product={'tshirts'} />}
+                            element={<Products products={'tshirts'} />}
                         />
                     </Routes>
-                </div>
             </div>
         )
 }

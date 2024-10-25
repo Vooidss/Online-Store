@@ -1,7 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BsBasket2Fill } from 'react-icons/bs'
-import { jwtDecode } from 'jwt-decode'
 
 export default function Product({ product, productName }) {
     const navigate = useNavigate()
@@ -14,7 +13,6 @@ export default function Product({ product, productName }) {
     const handleClickBasket = async () => {
         const token = localStorage.getItem('token')
         const productId = product.id
-        const productCount = 1;
 
         const credentials = { productId, token }
 

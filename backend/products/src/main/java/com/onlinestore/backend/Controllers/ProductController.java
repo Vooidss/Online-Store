@@ -1,5 +1,6 @@
 package com.onlinestore.backend.Controllers;
 
+import com.onlinestore.backend.DTO.SpecificationsResponse;
 import com.onlinestore.backend.Models.Products;
 import com.onlinestore.backend.Services.ProductService;
 import java.util.ArrayList;
@@ -21,6 +22,13 @@ public class ProductController {
     @GetMapping
     private Map<String, Object> findAllProducts() {
         return productService.findAll();
+    }
+
+    @GetMapping("/{type}/specifications")
+    private ResponseEntity<SpecificationsResponse> findSpecificationsProducts(
+            @PathVariable("type") String type
+    ){
+        return productService.findSpecificationsProducts(type);
     }
 
     @GetMapping("/{type}")

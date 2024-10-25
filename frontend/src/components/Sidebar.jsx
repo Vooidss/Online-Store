@@ -1,11 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react'
 import Checkbox from '../util/Checkbox'
 import CustomRadio from '../util/CustomRadio'
 import SortComponent from './SortComponent'
 
-export default function Sidebar(){
+export default function Sidebar({products}){
+    const [colors, setColors] = useState();
+    const [brands, setBrands] = useState();
+    const [materials, setMaterials] = useState();
+    const [sizes, setSizes] = useState();
 
+    async function findSpecificationsProducts(){
+        await fetch(`http://localhost:8071/products/${products}/specifications`,{
+            method: 'GET',
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
 
+                console.log(data);
+
+                if(data.code === 200) {
+                    setColors(data.colors);
+                    setBrands(data.brands);
+                    setMaterials(data.materials)
+                    setSizes(data.sizes)
+                }else{
+                    console.error(data.message)
+                }
+
+            })
+            .catch(error => console.error(error))
+    }
+
+    useEffect(() => {
+        findSpecificationsProducts()
+    }, [])
 
     return(
         <div className="Sidebar-main">
@@ -44,7 +75,6 @@ export default function Sidebar(){
                 </div>
             </SortComponent>
             <SortComponent name = "Материал"></SortComponent>
-            <SortComponent name = "Цена"></SortComponent>
             <SortComponent name = "Размер"></SortComponent>
             <SortComponent name = "Бренд"></SortComponent>
         </div>

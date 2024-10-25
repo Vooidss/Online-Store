@@ -16,26 +16,32 @@ public class Products {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
 
     @Column(name = "type")
-    String type; // Например: футболки, шорты...
+    private String type;
 
     @Column(name = "brand")
-    String brand;
+    private String brand;
 
     @Column(name = "size")
-    String size;
+    private String size;
 
     @Column(name = "img")
-    String img;
+    private String img;
 
     @Column(name = "description")
-    String description;
+    private String description;
 
     @Column(name = "model")
-    String model;
+    private String model;
+
+    @Column(name = "material")
+    private String material;;
+
+    @Column(name = "color")
+    private String color;
 
     @Column(name = "price")
-    int price;
+    private int price;
 }

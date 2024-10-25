@@ -6,7 +6,7 @@ export default class ProductRequest extends Component {
         super(props)
 
         this.state = {
-            items: props.product,
+            items: [],
             isLoading: false,
             error: false,
         }
@@ -17,13 +17,13 @@ export default class ProductRequest extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.product !== this.props.product) {
+        if (prevProps.products !== this.props.products) {
             this.fetchData()
         }
     }
 
     fetchData() {
-        const productName = this.props.product
+        const productName = this.props.products
 
         let url = `http://localhost:8071/products/${productName}`
         fetch(url)
@@ -66,7 +66,7 @@ export default class ProductRequest extends Component {
                 <Product
                     key={thisProduct.id}
                     product={thisProduct}
-                    productName={this.props.product}
+                    productName={this.props.products}
                 />
             )
         })
