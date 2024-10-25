@@ -24,6 +24,47 @@ public class ProductController {
         return productService.findAll();
     }
 
+    @GetMapping("/sort/{type}/default/{typeSort}")
+    private ResponseEntity<Map<String, Object>> sortProductByDefault(
+            @PathVariable("type") String type,
+            @PathVariable("typeSort") String typeSort
+    ){
+        return productService.sortProductByDefault(type, typeSort);
+    }
+
+    @GetMapping("/sort/{type}/material/{typeSort}")
+    private ResponseEntity<String> sortProductByMaterial(
+            @PathVariable("type") String type,
+            @PathVariable("typeSort") String typeSort
+    ){
+        return productService.sortProductByMaterial(type, typeSort);
+    }
+
+    @GetMapping("/sort/{type}/size/{typeSort}")
+    private ResponseEntity<String> sortProductBySize(
+            @PathVariable("type") String type,
+            @PathVariable("typeSort") String typeSort
+    ){
+        return productService.sortProductBySize(type, typeSort);
+    }
+
+    @GetMapping("/sort/{type}/color/{typeSort}")
+    private ResponseEntity<String> sortProductByColor(
+            @PathVariable("type") String type,
+            @PathVariable("typeSort") String typeSort
+    ){
+        return productService.sortProductByColor(type, typeSort);
+    }
+    @GetMapping("/sort/{type}/brand/{typeSort}")
+    private ResponseEntity<String> sortProductByBrand(
+            @PathVariable("type") String type,
+            @PathVariable("typeSort") String typeSort
+    ){
+        return productService.sortProductByBrand(type, typeSort);
+    }
+
+
+
     @GetMapping("/{type}/specifications")
     private ResponseEntity<SpecificationsResponse> findSpecificationsProducts(
             @PathVariable("type") String type

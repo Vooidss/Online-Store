@@ -23,5 +23,15 @@ public interface ProductRepositories extends JpaRepository<Products, Integer> {
         UNION ALL
         SELECT 'size' AS attribute, p.size as value, count(*) as count  FROM Products p WHERE p.type = :type GROUP BY p.size
         """)
-    List<Object[]> findSpecificationsProducts(@Param("type") String type);
+    public List<Object[]> findSpecificationsProducts(@Param("type") String type);
+
+    @Query("""
+     SELECT p FROM Products p WHERE p.type = :type ORDER BY p.price DESC
+     """)
+    public List<Products> findDescPriceByType(@Param("type") String type);
+
+    @Query("""
+     SELECT p FROM Products p WHERE p.type = :type ORDER BY p.price ASC
+     """)
+    public List<Products> findAscPriceByType(@Param("type") String type);
 }

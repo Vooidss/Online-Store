@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Checkbox from '../util/Checkbox';
 import CustomRadio from '../util/CustomRadio';
 import SortComponent from './SortComponent';
+import DefualtSort from './DefualtSort'
 
-export default function Sidebar({ products }) {
+export default function Sidebar({ products, sort, setSort }) {
     const [colors, setColors] = useState([]);
     const [brands, setBrands] = useState([]);
     const [materials, setMaterials] = useState([]);
@@ -39,12 +40,11 @@ export default function Sidebar({ products }) {
     return (
         <div className="Sidebar-main">
             <SortComponent name="Сортировать">
-                <div className="Sidebar-main__sorting__outstanding-window__chooses">
-                    <CustomRadio name="sort" content="Новинки" />
-                    <CustomRadio name="sort" content="Сначала дорогие" />
-                    <CustomRadio name="sort" content="Сначала дешёвые" />
-                    <CustomRadio name="sort" content="Со скидкой" />
-                </div>
+                <DefualtSort
+                    products={products}
+                    sort={sort}
+                    setSort={setSort}
+                />
             </SortComponent>
             <SortComponent name="Цена">
                 <div className="Sidebar-main__sorting__outstanding-window__gap">

@@ -115,4 +115,37 @@ public class ProductService {
             );
         }
     }
+
+    public ResponseEntity<Map<String, Object>> sortProductByDefault(String type, String typeSort) {
+        if(typeSort.equals("expensive")){
+            return ResponseEntity.ok().body(
+                    Map.of("products",
+                    productRepositories.findDescPriceByType(type))
+            );
+        }else if(typeSort.equals("cheap")){
+            return ResponseEntity.ok().body(
+                    Map.of("products",
+                            productRepositories.findAscPriceByType(type))
+            );
+        }
+        return null;
+    }
+
+    public ResponseEntity<String> sortProductByMaterial(String type, String typeSort) {
+
+        return null;
+    }
+
+    public ResponseEntity<String> sortProductBySize(String type, String typeSort) {
+
+        return null;
+    }
+
+    public ResponseEntity<String> sortProductByColor(String type, String typeSort) {
+        return null;
+    }
+
+    public ResponseEntity<String> sortProductByBrand(String type, String typeSort) {
+        return null;
+    }
 }
