@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import OrderExecutionComponent from '../components/OrderExecutionComponent'
+import CustomInput from '../util/CustomInput'
+import CustomRadio from '../util/CustomRadio'
 import LoadingComponent from '../components/LoadingComponent'
-import StatusComponent from '../components/StatusComponent'
+import StatusComponent from '../util/StatusComponent'
 
 export default function Profile() {
     const [user, setUser] = useState(null);
@@ -83,19 +84,19 @@ export default function Profile() {
                 <h1 id = "my_data">Мои данные</h1>
                 <div className="profile-main-window__profile__form">
                     <div className="profile-main-window__profile__form__inputs">
-                        <OrderExecutionComponent
+                        <CustomInput
                             text = "Имя"
                             value={user.name}
                             setValue={(value) =>
                                 setUser((prev) => ({ ...prev, name: value }))}
                         />
-                        <OrderExecutionComponent
+                        <CustomInput
                             text = "Фамилия"
                             value={user.secondname}
                             setValue={(value) =>
                                 setUser((prev) => ({ ...prev, secondname: value }))}
                         />
-                        <OrderExecutionComponent
+                        <CustomInput
                             text = "Возраст"
                             setValue={(value) =>
                                 setUser((prev) => ({ ...prev, age: value }))}
@@ -106,30 +107,21 @@ export default function Profile() {
                     <div className="profile-main-window__profile__form__radio">
                         <fieldset className="profile-main-window__profile__form__radio__fieldset">
                             <legend className="profile-main-window__profile__form__radio__legend">Ваш пол</legend>
+                            <CustomRadio
+                                name="sex"
+                                checked={user.sex === 'male'}
+                                setValue={() => setUser((prev) => ({ ...prev, sex: 'male' }))}
+                                content="Мужской"
+                                margin="5px 5px 5px 10px"
+                            />
 
-                            <label className="profile-main-window__profile__form__radio__label">
-                                <input
-                                    className="real-radio"
-                                    type="radio"
-                                    name="sex"
-                                    checked={user.sex === 'male'}
-                                    onChange={() => setUser((prev) => ({ ...prev, sex: 'male' }))}
-                                />
-                                <span className="custom-radio"></span>
-                                <span>Мужской</span>
-                            </label>
-
-                            <label className="profile-main-window__profile__form__radio__label">
-                                <input
-                                    className="real-radio"
-                                    type="radio"
-                                    name="sex"
-                                    checked={user.sex === 'female'}
-                                    onChange={() => setUser((prev) => ({ ...prev, sex: 'female' }))}
-                                />
-                                <span className="custom-radio"></span>
-                                <span>Женский</span>
-                            </label>
+                            <CustomRadio
+                                name="sex"
+                                checked={user.sex === 'female'}
+                                setValue={() => setUser((prev) => ({ ...prev, sex: 'female' }))}
+                                content="Женский"
+                                margin="5px 5px 5px 10px"
+                            />
                         </fieldset>
                     </div>
                     <div className="profile-main-window__profile__form__email">
@@ -137,7 +129,7 @@ export default function Profile() {
                         <p>{user.email}</p>
                     </div>
                     <div className="profile-main-window__profile__form__phone">
-                        <OrderExecutionComponent
+                        <CustomInput
                             text="Телефон"
                             setValue ={(value) =>
                             setUser((prev) => ({ ...prev, phone: value }))}

@@ -1,0 +1,43 @@
+.Sidebar-main{
+  background-color: #cbc5c5;
+  border-right: 2px solid black;
+  user-select: none;
+  height: 100vh;
+
+
+  &__sorting{
+    border-bottom: 1px black solid;
+    padding: 10px;
+    &__name{
+      cursor: pointer;
+
+    }
+    &__outstanding-window{
+      margin-top: 5px;
+      margin-bottom: 5px;
+      &__gap{
+        display: inline-flex;
+        flex-direction: row;
+        gap: 5px;
+
+        &__input{
+          width: 50%;
+          font-size: 0.8em;
+
+          padding: 6px;
+          border: 0;
+          border-radius: 5px;
+
+          &::placeholder{
+          }
+
+        }
+      }
+      &__chooses{
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+      }
+    }
+  }
+}

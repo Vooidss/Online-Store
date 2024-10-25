@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import ProductRequest from '../Requests/ProductRequest'
+import Sidebar from '../components/Sidebar'
 
-class ShoppingList extends React.Component {
-    render() {
+export default function ShoppingList(){
         return (
             <div className="main-window-shopping-list">
-                <div className="nav">БУДУЩАЯ ФИЛЬТРАЦИЯ</div>
+                <Sidebar/>
                 <div className="section">
                     <Routes>
                         <Route
@@ -25,7 +25,4 @@ class ShoppingList extends React.Component {
                 </div>
             </div>
         )
-    }
 }
-
-export default ShoppingList

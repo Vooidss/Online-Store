@@ -6,7 +6,7 @@ export default class ProductRequest extends Component {
         super(props)
 
         this.state = {
-            items: [],
+            items: props.product,
             isLoading: false,
             error: false,
         }

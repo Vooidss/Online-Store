@@ -1,12 +1,6 @@
 .main-window-shopping-list {
     display: grid;
-    grid-template-columns: 10% 90%;
-}
-
-.nav {
-    background-color: #cbc5c5;
-    padding: 10px;
-    border-right: 2px solid black;
+    grid-template-columns: 200px 1fr;
 }
 
 .section {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export default function OrderExecutionComponent({text,value,setValue,isDigit,color,width}) {
+export default function CustomInput({text,value,setValue,isDigit,color,width}) {
 
     const [inputValue, setInputValue] = useState(value || '');
     const [isVision, setIsVision] = useState(false);

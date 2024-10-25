@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import LoadingComponent from './LoadingComponent'
-import StatusComponent from './StatusComponent'
+import StatusComponent from '../util/StatusComponent'
 
 export default function OrderInformation({orderInformation,isOrder,addOrder,adress,recipient}){
 

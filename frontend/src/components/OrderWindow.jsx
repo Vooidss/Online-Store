@@ -1,6 +1,6 @@
 import React from 'react';
 import { IoIosArrowRoundBack } from "react-icons/io";
-import OrderExecutionComponent from './OrderExecutionComponent';
+import CustomInput from '../util/CustomInput';
 
 export default function OrderWindow({ addOrder, setAdress, setRecipient }) {
     return (
@@ -16,27 +16,27 @@ export default function OrderWindow({ addOrder, setAdress, setRecipient }) {
                 <div className="main_window_basket__order__execution__info-customer">
                     <h1>Куда доставить заказ?</h1>
                     <form className="main_window_basket__order__execution__components" id="order_form">
-                        <OrderExecutionComponent
+                        <CustomInput
                             text={'Город'}
                             type={'text'}
                             setValue={(value) => setAdress((prev) => ({ ...prev, city: value }))} />
-                        <OrderExecutionComponent
+                        <CustomInput
                             text={'Улица'}
                             type={'text'}
                             setValue={(value) => setAdress((prev) => ({ ...prev, street: value }))} />
-                        <OrderExecutionComponent
+                        <CustomInput
                             text={'Дом'}
                             type={'text'}
                             setValue={(value) => setAdress((prev) => ({ ...prev, numberHouse: value }))}
                             isDigit={true}
                         />
-                        <OrderExecutionComponent
+                        <CustomInput
                             text={'Квартира'}
                             type={'text'}
                             setValue={(value) => setAdress((prev) => ({ ...prev, numberApartment: value }))}
                             isDigit={true}
                         />
-                        <OrderExecutionComponent
+                        <CustomInput
                             text={'Домофон'}
                             type={'text'}
                             setValue={(value) => setAdress((prev) => ({ ...prev, numberIntercom: value }))}
@@ -49,16 +49,16 @@ export default function OrderWindow({ addOrder, setAdress, setRecipient }) {
                     <form className="main_window_basket__order__execution__info-customer__info"
                           id="order_form"
                     >
-                        <OrderExecutionComponent
+                        <CustomInput
                             text={"Имя"}
                             type={'text'}
                             setValue={(value) => setRecipient((prev) => ({ ...prev, name: value }))}
                         />
-                        <OrderExecutionComponent
+                        <CustomInput
                             text={"Фамилия"}
                             type={'text'}
                             setValue={(value) => setRecipient((prev) => ({ ...prev, secondName: value }))} />
-                        <OrderExecutionComponent
+                        <CustomInput
                             text={"Телефон"}
                             type={'text'}
                             setValue={(value) => setRecipient((prev) => ({ ...prev, phone: value }))}
