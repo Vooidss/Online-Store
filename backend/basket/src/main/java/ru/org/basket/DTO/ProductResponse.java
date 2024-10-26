@@ -15,6 +15,8 @@ public class ProductResponse {
     private String description;
     private String model;
     private int price;
+    private int discount;
+    private int priceWithDiscount;
 
     private int basketId;
     private int count;

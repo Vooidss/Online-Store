@@ -1,19 +1,20 @@
 package com.onlinestore.backend.Services;
 
+import com.onlinestore.backend.DTO.ProductResponse;
+import com.onlinestore.backend.DTO.ProductsResponse;
 import com.onlinestore.backend.DTO.SpecificationsResponse;
 import com.onlinestore.backend.Models.Products;
 import com.onlinestore.backend.Repositories.ProductRepositories;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ProductService {
 
     private final ProductRepositories productRepositories;
+    private final ObjectMapper objectMapper;
 
     @Cacheable(value = "product", unless = "#result = null")
     public Map<String, Object> findAll() {
@@ -29,15 +31,57 @@ public class ProductService {
         return Map.of("product", products, "isEmpty", products.isEmpty());
     }
 
-    @Cacheable(value = "product", unless = "#result = null")
-    public Map<String, Object> findByType(String type) {
-        List<Products> products = productRepositories.findByType(type);
-
-        return Map.of(type, products, "isEmpty", products.isEmpty());
+    private void addDiscountProduct(List<Products> products){
+        products.stream().filter(x-> x.getDiscount() != 0).forEach(x -> x.setDiscount(x.getDiscount() * x.getPrice() / 100));
+        products.stream().filter(x-> x.getDiscount() != 0).forEach(x -> x.setPriceWithDiscount(x.getPrice() - x.getDiscount()));
     }
 
-    public Products save(Products products) {
-        return productRepositories.save(products);
+    @Cacheable(value = "product", unless = "#result = null")
+    public ResponseEntity<ProductsResponse> findByType(String type) {
+        List<Products> products = productRepositories.findByType(type);
+        addDiscountProduct(products);
+
+        ProductsResponse productsResponse = ProductsResponse
+                .builder()
+                .status(HttpStatus.OK)
+                .code(HttpStatus.OK.value())
+                .message("Продукты успешно были возвращены")
+                .products(products)
+                .build();
+
+        return ResponseEntity.ok().body(productsResponse);
+    }
+
+    public ResponseEntity<ProductResponse> save(Products product) {
+
+        try {
+            product = productRepositories.save(product);
+        }catch (RuntimeException e){
+            log.error(e.getMessage());
+            log.error(Arrays.toString(e.getStackTrace()));
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    ProductResponse
+                            .builder()
+                            .status(HttpStatus.BAD_REQUEST)
+                            .code(HttpStatus.BAD_REQUEST.value())
+                            .message("Продукт не сохранён. Ошибка при получении данных")
+                            .product(null)
+                            .build()
+            );
+
+        }
+
+
+        ProductResponse productsResponse = ProductResponse
+                .builder()
+                .status(HttpStatus.OK)
+                .code(HttpStatus.OK.value())
+                .message("Продукт успешно сохранён")
+                .product(product)
+                .build();
+
+        return ResponseEntity.ok().body(productsResponse);
     }
 
     public Optional<Products> deleteProduct(int id) {
@@ -49,6 +93,7 @@ public class ProductService {
 
     public ResponseEntity<List<Products>> findAllById(List<Integer> ids) {
         List<Products> products = productRepositories.findAllById(ids);
+        addDiscountProduct(products);
 
         if (products.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -117,35 +162,52 @@ public class ProductService {
     }
 
     public ResponseEntity<Map<String, Object>> sortProductByDefault(String type, String typeSort) {
-        if(typeSort.equals("expensive")){
+        List<Products> products = switch (typeSort) {
+            case "cheap" -> productRepositories.findAscPriceByType(type);
+            case "discount" -> productRepositories.findOnlyDiscount(type);
+            case "expensive" -> productRepositories.findDescPriceByType(type);
+            default -> null;
+        };
+
+        if(products != null){
+            addDiscountProduct(products);
+
             return ResponseEntity.ok().body(
                     Map.of("products",
-                    productRepositories.findDescPriceByType(type))
-            );
-        }else if(typeSort.equals("cheap")){
-            return ResponseEntity.ok().body(
-                    Map.of("products",
-                            productRepositories.findAscPriceByType(type))
+                            products
+                    )
             );
         }
-        return null;
-    }
-
-    public ResponseEntity<String> sortProductByMaterial(String type, String typeSort) {
 
         return null;
     }
 
-    public ResponseEntity<String> sortProductBySize(String type, String typeSort) {
+    public ResponseEntity<ProductsResponse> sortProducts(String typeProduct, String color, String brand, String material, String size, String defaultSort) {
+        List<Products> products = switch (defaultSort) {
+            case "cheap" -> productRepositories.findAscPriceByType(typeProduct);
+            case "discount" -> productRepositories.findOnlyDiscount(typeProduct);
+            case "expensive" -> productRepositories.findDescPriceByType(typeProduct);
+            default -> productRepositories.findByType(typeProduct);
+        };
 
-        return null;
-    }
+        products = products
+                .stream()
+                .filter(product ->
+                        (color == null || color.contains(product.getColor())) &&
+                        (brand == null || brand.contains(product.getBrand())) &&
+                        (material == null || material.contains(product.getMaterial())) &&
+                        (size == null || size.contains(product.getSize()))
+                )
+                .toList();
 
-    public ResponseEntity<String> sortProductByColor(String type, String typeSort) {
-        return null;
-    }
+        ProductsResponse productsResponse = ProductsResponse
+                .builder()
+                .status(HttpStatus.OK)
+                .code(HttpStatus.OK.value())
+                .message("Продукты по заданным характеристикам получены")
+                .products(products)
+                .build();
 
-    public ResponseEntity<String> sortProductByBrand(String type, String typeSort) {
-        return null;
+        return ResponseEntity.ok().body(productsResponse);
     }
 }

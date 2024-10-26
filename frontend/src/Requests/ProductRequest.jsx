@@ -32,7 +32,7 @@ export default class ProductRequest extends Component {
                 result => {
                     this.setState({
                         isLoading: true,
-                        items: result[productName],
+                        items: result.products,
                     })
                 },
                 error => {
@@ -50,15 +50,15 @@ export default class ProductRequest extends Component {
         console.log(items)
 
         if (error) {
-            return <h1>Ошибка</h1>
+            return <h1 id="empty">Ошибка</h1>
         }
 
         if (!isLoading) {
-            return <h1>Loading...</h1>
+            return <h1 id="empty">Loading...</h1>
         }
 
         if (JSON.stringify(items) === '[]') {
-            return <h1>Пусто</h1>
+            return <h1 id="empty">Пусто</h1>
         }
 
         return items.map(thisProduct => {

@@ -44,7 +44,7 @@ export default function Product({ product, productName }) {
                 </div>
                 <div className="section__item__components__items">
                     <div className="section__item__components__items__component">
-                        Название: {product.brand}
+                        Бренд: {product.brand}
                     </div>
                     <div className="section__item__components__items__component">
                         Модель: {product.model}
@@ -53,7 +53,13 @@ export default function Product({ product, productName }) {
                         Размер: {product.size}
                     </div>
                     <div className="section__item__components__items__component">
-                        Цена: {product.price}
+                       Цена:  {
+                        product.priceWithDiscount ?
+                            <p id = "discount"> {product.priceWithDiscount}</p>:
+                            product.price}
+                        {product.priceWithDiscount
+                            ? <p id = "oldPrice"> {product.price} </p>
+                            : ''}
                     </div>
                 </div>
             </div>

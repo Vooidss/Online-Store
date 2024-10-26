@@ -3,63 +3,37 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 
 export default function ProductUser({ product, onDelete, updateProductCount }) {
     const [count, setCount] = useState(product.count);
-    const [totalPrice, setTotalPrice] = useState(product.price);
-
     const [isBlack, setBlack] = useState(false);
     const [isActive, setActive] = useState(false);
 
+    const totalPrice =  product.price * count;
+
     useEffect(() => {
-        setTotalPrice(product.price * count);
         updateProductCount(product.id, count);
-        updateCountProduct()
-    }, [count, product.price]);
+        updateCountProduct();
+    }, [count, product.id]);
 
-    useEffect(() => {
-        updateCountProduct()
-    }, [count]);
-
-    async function updateCountProduct(){
-        console.log(count)
-        await fetch(`http://localhost:8050/basket/update/${product.basketId}/${count}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type' : 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error(error));
+    async function updateCountProduct() {
+        try {
+            const response = await fetch(`http://localhost:8050/basket/update/${product.basketId}/${count}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    const addCount = () => {
-        setCount((prevCount) => prevCount + 1);
-    };
+    const addCount = () => setCount((prevCount) => prevCount + 1);
 
     const subCount = () => {
-        if (count >= 1) {
-            setCount((prevCount) => prevCount - 1);
-        }
+        if (count > 1) setCount((prevCount) => prevCount - 1);
     };
 
-    const isMouseEnter = () => {
-        setActive(true);
-    };
-
-    const isMouseLeave = () => {
-        setActive(false);
-    };
-
-    const MouseEnter = () => {
-        setBlack(true);
-    };
-
-    const MouseLeave = () => {
-        setBlack(false);
-    };
-
-    async function deleteItem() {
-        const id = product.id;
-        const url = `http://localhost:8050/basket/delete/${id}`;
+    const deleteItem = async () => {
+        const url = `http://localhost:8050/basket/delete/${product.id}`;
         const token = localStorage.getItem('token');
 
         try {
@@ -70,38 +44,40 @@ export default function ProductUser({ product, onDelete, updateProductCount }) {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-
-            onDelete(id); // Удаление товара после ответа
+            onDelete(product.id);
         } catch (e) {
             console.log(e);
         }
-    }
+    };
+
+    const deleteStyle = {
+        color: isBlack ? 'black' : 'rgba(0, 0, 0, 0.32)',
+        transform: isActive ? 'scale(1)' : 'scale(0)',
+    };
 
     return (
-        <div className="main_window_basket__basket__items__item" onMouseEnter={isMouseEnter} onMouseLeave={isMouseLeave}>
+        <div className="main_window_basket__basket__items__item"
+             onMouseEnter={() => setActive(true)}
+             onMouseLeave={() => setActive(false)}>
             <img className="main_window_basket__basket__items__item__image" src={product.img} alt="product" />
             <div className="main_window_basket__basket__items__item__info">
                 <p className="main_window_basket__basket__items__item__info__brand">{product.description}</p>
                 <div className="main_window_basket__basket__items__item__info__price_count">
                     <p className="main_window_basket__basket__items__item__info__price_count__price">{totalPrice} ₽</p>
-
                     <div className="main_window_basket__basket__items__item__info__price_count__count">
                         <div className="main_window_basket__basket__items__item__info__price_count__count__minus" onClick={subCount}>-</div>
-                        <div className="main_window_basket__basket__items__item__info__price_count__count__number">{count}</div>
+                        <div>{count}</div>
                         <div className="main_window_basket__basket__items__item__info__price_count__count__plus" onClick={addCount}>+</div>
                     </div>
                 </div>
                 <p className="main_window_basket__basket__items__item__info__size">Размер: {product.size}</p>
             </div>
-            <div className="main_window_basket__basket__items__item__info__delete" onMouseEnter={MouseEnter} onMouseLeave={MouseLeave} onClick={deleteItem}>
-                <p className="main_window_basket__basket__items__item__info__delete__name" style={{
-                    color: isBlack ? 'black' : 'rgba(0, 0, 0, 0.32)',
-                    transform: isActive ? 'scale(1)' : 'scale(0)',
-                }}>Удалить</p>
-                <RiDeleteBin6Line className="main_window_basket__basket__items__item__info__delete__icon" style={{
-                    color: isBlack ? 'black' : 'rgba(0, 0, 0, 0.32)',
-                    transform: isActive ? 'scale(1)' : 'scale(0)',
-                }} />
+            <div className="main_window_basket__basket__items__item__info__delete"
+                 onMouseEnter={() => setBlack(true)}
+                 onMouseLeave={() => setBlack(false)}
+                 onClick={deleteItem}>
+                <p className="main_window_basket__basket__items__item__info__delete__name" style={deleteStyle}>Удалить</p>
+                <RiDeleteBin6Line style={deleteStyle} />
             </div>
         </div>
     );

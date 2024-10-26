@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Checkbox from '../util/Checkbox';
 import CustomRadio from '../util/CustomRadio';
 import SortComponent from './SortComponent';
-import DefualtSort from './DefualtSort'
+import DefualtSort from './DefualtSort';
 
-export default function Sidebar({ products, sort, setSort }) {
+export default function Sidebar({ products, sort, setSort, defaultSort, setDefaultSort }) {
     const [colors, setColors] = useState([]);
     const [brands, setBrands] = useState([]);
     const [materials, setMaterials] = useState([]);
@@ -34,17 +34,48 @@ export default function Sidebar({ products, sort, setSort }) {
     }
 
     useEffect(() => {
+        console.log(sort);
+    }, [sort]);
+
+    useEffect(() => {
         findSpecificationsProducts();
     }, [products]);
+
+    const handleCheckboxChange = (itemKey, value, isChecked) => {
+        setSort((prevSort) => {
+            // Создаем новый объект для хранения состояния сортировки
+            const newSort = { ...prevSort };
+
+            // Проверяем, существует ли ключ в новом объекте
+            if (!newSort[itemKey]) {
+                newSort[itemKey] = []; // Если нет, создаем новый массив
+            }
+
+            if (isChecked) {
+                // Добавляем значение в массив, если его там нет
+                if (!newSort[itemKey].includes(value)) {
+                    newSort[itemKey].push(value);
+                }
+            } else {
+                // Удаляем значение из массива
+                newSort[itemKey] = newSort[itemKey].filter((v) => v !== value);
+                // Если массив пустой, можно удалить ключ
+                if (newSort[itemKey].length === 0) {
+                    delete newSort[itemKey];
+                }
+            }
+
+            return newSort; // Возвращаем обновленный объект
+        });
+    };
+
 
     return (
         <div className="Sidebar-main">
             <SortComponent name="Сортировать">
                 <DefualtSort
-                    products={products}
-                    sort={sort}
-                    setSort={setSort}
-                />
+                    sort={defaultSort}
+                    setSort={setDefaultSort}/>
             </SortComponent>
             <SortComponent name="Цена">
                 <div className="Sidebar-main__sorting__outstanding-window__gap">
@@ -58,61 +89,61 @@ export default function Sidebar({ products, sort, setSort }) {
                     />
                 </div>
                 <div className="Sidebar-main__sorting__outstanding-window__chooses">
-                    <Checkbox text="от 2000" />
-                    <Checkbox text="от 5000" />
-                    <Checkbox text="от 10000" />
-                    <Checkbox text="от 100000" />
+                    <Checkbox text="от 2000" value="2000" onChange={handleCheckboxChange} />
+                    <Checkbox text="от 5000" value="5000" onChange={handleCheckboxChange} />
+                    <Checkbox text="от 10000" value="10000" onChange={handleCheckboxChange} />
+                    <Checkbox text="от 100000" value="100000" onChange={handleCheckboxChange} />
                 </div>
             </SortComponent>
             <SortComponent name="Материал">
                 <div className="Sidebar-main__sorting__outstanding-window__chooses">
-                    {
-                        materials.map(material => {
-                            return(
-                                <Checkbox
-                                    text = {material.name}
-                                    count = {material.count}
-                                />
-                            )
-                        })
-                    }
+                    {materials.map((material) => (
+                        <Checkbox
+                            key={material.name}
+                            text={material.name}
+                            count={material.count}
+                            value={material.name}
+                            onChange={handleCheckboxChange}
+                            name = "material"
+                        />
+                    ))}
                 </div>
             </SortComponent>
             <SortComponent name="Размер">
-                {
-                    sizes.map(size => {
-                        return(
-                            <Checkbox
-                                text = {size.name}
-                                count = {size.count}
-                            />
-                        )
-                    })
-                }
+                {sizes.map((size) => (
+                    <Checkbox
+                        key={size.name}
+                        text={size.name}
+                        count={size.count}
+                        value={size.name}
+                        onChange={handleCheckboxChange}
+                        name = "size"
+                    />
+                ))}
             </SortComponent>
             <SortComponent name="Бренд">
-                {
-                    brands.map(brand => {
-                        return(
-                            <Checkbox
-                                text = {brand.name}
-                                count = {brand.count}
-                            />
-                        )
-                    })
-                }
+                {brands.map((brand) => (
+                    <Checkbox
+                        key={brand.name}
+                        text={brand.name}
+                        count={brand.count}
+                        value={brand.name}
+                        onChange={handleCheckboxChange}
+                        name = "brand"
+                    />
+                ))}
             </SortComponent>
             <SortComponent name="Цвет">
-                {
-                    colors.map(color => {
-                        return(
-                            <Checkbox
-                                text = {color.name}
-                                count = {color.count}
-                            />
-                        )
-                    })
-                }
+                {colors.map((color) => (
+                    <Checkbox
+                        key={color.name}
+                        text={color.name}
+                        count={color.count}
+                        value={color.name}
+                        onChange={handleCheckboxChange}
+                        name = "color"
+                    />
+                ))}
             </SortComponent>
         </div>
     );

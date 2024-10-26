@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CustomRadio({name,checked,setValue,content,margin}){
+export default function CustomRadio({name,checked,setValue,content,margin,value}){
     return (
         <label
             className="radio"
@@ -13,7 +13,7 @@ export default function CustomRadio({name,checked,setValue,content,margin}){
                 type="radio"
                 name={name}
                 checked={checked}
-                onChange={setValue}
+                onChange={() => setValue(value)}
             />
             <span className="custom-radio"></span>
             <span>{content}</span>

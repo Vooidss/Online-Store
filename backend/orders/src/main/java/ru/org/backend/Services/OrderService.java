@@ -152,7 +152,7 @@ public class OrderService {
     }
 
     public boolean isEnoughMoney(Integer moneyUser, Integer orderMoney){
-        return moneyUser - orderMoney > 0;
+        return moneyUser - orderMoney >= 0;
     }
     public Order generateOrder(Status status, Adress adress){
         return Order.builder()

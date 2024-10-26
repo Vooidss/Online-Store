@@ -256,8 +256,9 @@ svg * {
 .section {
   background-color: #cbc5c5;
   display: flex;
+  position: relative;
   user-select: none;
-  justify-content: space-around;
+  justify-content: start;
   align-items: flex-start;
   flex-flow: row wrap;
   word-wrap: break-word;
@@ -291,7 +292,7 @@ svg * {
 }
 .section__item__components__basket {
   color: black;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   padding: 10px;
@@ -312,19 +313,45 @@ svg * {
   box-shadow: black 0px 1px;
 }
 .section__item__components__items {
-  display: flex;
+  display: grid;
+  grid-template-columns: 50% 50%;
   color: black;
 }
 .section__item__components__items__component {
   padding: 4px;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  display: inline-flex;
+  gap: 5px;
+}
+.section__item__components__items__component p[id=discount] {
+  color: red;
+  margin: 0;
+}
+.section__item__components__items__component p[id=oldPrice] {
+  position: relative;
+  text-decoration: none;
+}
+.section__item__components__items__component p[id=oldPrice]:before {
+  content: "";
+  border-bottom: 2px solid red;
+  transform: rotate(340deg);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
 }
 .asside__main {
   background-color: #000000;
   padding: 10px;
   border-left: 5px solid black;
   border-top: 5px solid black;
+}
+
+h1[id=empty] {
+  position: absolute;
+  right: 50%;
 }
 
 .App {

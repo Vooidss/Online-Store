@@ -1,39 +1,42 @@
 import CustomRadio from '../util/CustomRadio'
-import React, { useEffect, useState } from 'react'
 
 export default function DefualtSort({sort,setSort}){
-
     return (
         <div className="Sidebar-main__sorting__outstanding-window__chooses">
             <CustomRadio
                 name="sort"
                 content="Без сортировки"
-                checked={sort === 'none'}
-                setValue={() => setSort('none')}
+                setValue={setSort}
+                value="none"
+                checked={sort === "none"}
             />
             <CustomRadio
                 name="sort"
                 content="Новинки"
-                checked={sort === 'novelty'}
-                setValue={() => setSort('novelty')}
+                setValue={setSort}
+                value="novelty"
+                checked={sort === "novelty"}
             />
             <CustomRadio
                 name="sort"
                 content="Сначала дорогие"
-                checked={sort === 'expensive'}
-                setValue={() => setSort('expensive')}
+                setValue={setSort}
+                value="expensive"
+                checked={sort === "expensive"}
             />
             <CustomRadio
                 name="sort"
                 content="Сначала дешёвые"
-                checked={sort === 'cheap'}
-                setValue={() => setSort('cheap')}
+                setValue={setSort}
+                value="cheap"
+                checked={sort === "cheap"}
             />
             <CustomRadio
                 name="sort"
                 content="Со скидкой"
-                checked={sort === 'discount'}
-                setValue={() => setSort('discount')}
+                setValue={setSort}
+                value="discount"
+                checked={sort === "discount"}
             />
         </div>
     )

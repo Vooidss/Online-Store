@@ -1,13 +1,17 @@
 package com.onlinestore.backend.Controllers;
 
+import com.onlinestore.backend.DTO.ProductResponse;
+import com.onlinestore.backend.DTO.ProductsResponse;
 import com.onlinestore.backend.DTO.SpecificationsResponse;
 import com.onlinestore.backend.Models.Products;
 import com.onlinestore.backend.Services.ProductService;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,46 +28,17 @@ public class ProductController {
         return productService.findAll();
     }
 
-    @GetMapping("/sort/{type}/default/{typeSort}")
-    private ResponseEntity<Map<String, Object>> sortProductByDefault(
+    @GetMapping("/sort/{type}")
+    private ResponseEntity<ProductsResponse> sortProducts(
             @PathVariable("type") String type,
-            @PathVariable("typeSort") String typeSort
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String material,
+            @RequestParam(required = false) String size,
+            @RequestParam(required = false) String defaultSort
     ){
-        return productService.sortProductByDefault(type, typeSort);
+        return productService.sortProducts(type,color,brand,material,size,defaultSort);
     }
-
-    @GetMapping("/sort/{type}/material/{typeSort}")
-    private ResponseEntity<String> sortProductByMaterial(
-            @PathVariable("type") String type,
-            @PathVariable("typeSort") String typeSort
-    ){
-        return productService.sortProductByMaterial(type, typeSort);
-    }
-
-    @GetMapping("/sort/{type}/size/{typeSort}")
-    private ResponseEntity<String> sortProductBySize(
-            @PathVariable("type") String type,
-            @PathVariable("typeSort") String typeSort
-    ){
-        return productService.sortProductBySize(type, typeSort);
-    }
-
-    @GetMapping("/sort/{type}/color/{typeSort}")
-    private ResponseEntity<String> sortProductByColor(
-            @PathVariable("type") String type,
-            @PathVariable("typeSort") String typeSort
-    ){
-        return productService.sortProductByColor(type, typeSort);
-    }
-    @GetMapping("/sort/{type}/brand/{typeSort}")
-    private ResponseEntity<String> sortProductByBrand(
-            @PathVariable("type") String type,
-            @PathVariable("typeSort") String typeSort
-    ){
-        return productService.sortProductByBrand(type, typeSort);
-    }
-
-
 
     @GetMapping("/{type}/specifications")
     private ResponseEntity<SpecificationsResponse> findSpecificationsProducts(
@@ -73,15 +48,15 @@ public class ProductController {
     }
 
     @GetMapping("/{type}")
-    private Map<String, Object> findProductByType(
+    private ResponseEntity<ProductsResponse> findProductByType(
         @PathVariable("type") String type
     ) {
         return productService.findByType(type);
     }
 
     @PostMapping("/save")
-    private Products save(@RequestBody Products products) {
-        return productService.save(products);
+    private ResponseEntity<ProductResponse> save(@RequestBody Products product) {
+        return productService.save(product);
     }
 
     @DeleteMapping("/{id}")

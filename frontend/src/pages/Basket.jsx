@@ -27,7 +27,6 @@ export default function Basket({ isAuthorization }) {
     })
 
     const token = localStorage.getItem('token');
-    const url = `http://localhost:8050/basket`;
 
     const blockScroll = () => {
         document.body.style.overflow = 'hidden';
@@ -49,15 +48,16 @@ export default function Basket({ isAuthorization }) {
             (acc, product) => {
                 acc.count += product.count;
                 acc.price += product.count * product.price;
+                acc.discount += product.discount * product.count
                 return acc;
             },
-            { count: 0, price: 0 }
+            { count: 0, price: 0, discount: 0 }
         );
 
         setOrderInformation({
             count: totalOrder.count,
             price: totalOrder.price,
-            discountPrice: 0
+            discountPrice: totalOrder.discount
         });
     }
 
@@ -84,6 +84,8 @@ export default function Basket({ isAuthorization }) {
 
 
     async function fetchData() {
+        const url = `http://localhost:8050/basket`;
+
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -102,6 +104,8 @@ export default function Basket({ isAuthorization }) {
                 }));
                 setProducts(productsWithCount);
                 calculateOrderInfo(productsWithCount);
+                console.log(data.products)
+                console.log(products)
             } else {
                 console.log(`Status: ${data.status}\nCode: ${data.code}\nMessage: ${data.message}`);
             }
