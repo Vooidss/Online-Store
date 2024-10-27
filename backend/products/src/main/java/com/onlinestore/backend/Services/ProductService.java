@@ -161,33 +161,12 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Map<String, Object>> sortProductByDefault(String type, String typeSort) {
-        List<Products> products = switch (typeSort) {
-            case "cheap" -> productRepositories.findAscPriceByType(type);
-            case "discount" -> productRepositories.findOnlyDiscount(type);
-            case "expensive" -> productRepositories.findDescPriceByType(type);
-            default -> null;
-        };
-
-        if(products != null){
-            addDiscountProduct(products);
-
-            return ResponseEntity.ok().body(
-                    Map.of("products",
-                            products
-                    )
-            );
-        }
-
-        return null;
-    }
-
     public ResponseEntity<ProductsResponse> sortProducts(String typeProduct, String color, String brand, String material, String size, String defaultSort) {
         List<Products> products = switch (defaultSort) {
             case "cheap" -> productRepositories.findAscPriceByType(typeProduct);
             case "discount" -> productRepositories.findOnlyDiscount(typeProduct);
             case "expensive" -> productRepositories.findDescPriceByType(typeProduct);
-            default -> productRepositories.findByType(typeProduct);
+            case null, default -> productRepositories.findByType(typeProduct);
         };
 
         products = products
@@ -199,6 +178,8 @@ public class ProductService {
                         (size == null || size.contains(product.getSize()))
                 )
                 .toList();
+
+        addDiscountProduct(products);
 
         ProductsResponse productsResponse = ProductsResponse
                 .builder()

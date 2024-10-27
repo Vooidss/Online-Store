@@ -4,7 +4,7 @@ import CustomRadio from '../util/CustomRadio';
 import SortComponent from './SortComponent';
 import DefualtSort from './DefualtSort';
 
-export default function Sidebar({ products, sort, setSort, defaultSort, setDefaultSort }) {
+export default function Sidebar({ products, sort, setSort, defaultSort, setDefaultSort, handleClick}) {
     const [colors, setColors] = useState([]);
     const [brands, setBrands] = useState([]);
     const [materials, setMaterials] = useState([]);
@@ -34,38 +34,30 @@ export default function Sidebar({ products, sort, setSort, defaultSort, setDefau
     }
 
     useEffect(() => {
-        console.log(sort);
-    }, [sort]);
-
-    useEffect(() => {
         findSpecificationsProducts();
     }, [products]);
 
     const handleCheckboxChange = (itemKey, value, isChecked) => {
         setSort((prevSort) => {
-            // Создаем новый объект для хранения состояния сортировки
+
             const newSort = { ...prevSort };
 
-            // Проверяем, существует ли ключ в новом объекте
             if (!newSort[itemKey]) {
-                newSort[itemKey] = []; // Если нет, создаем новый массив
+                newSort[itemKey] = [];
             }
 
             if (isChecked) {
-                // Добавляем значение в массив, если его там нет
                 if (!newSort[itemKey].includes(value)) {
                     newSort[itemKey].push(value);
                 }
             } else {
-                // Удаляем значение из массива
                 newSort[itemKey] = newSort[itemKey].filter((v) => v !== value);
-                // Если массив пустой, можно удалить ключ
                 if (newSort[itemKey].length === 0) {
                     delete newSort[itemKey];
                 }
             }
 
-            return newSort; // Возвращаем обновленный объект
+            return newSort;
         });
     };
 
@@ -145,6 +137,13 @@ export default function Sidebar({ products, sort, setSort, defaultSort, setDefau
                     />
                 ))}
             </SortComponent>
+            <div className="button-sort">
+                <button
+                    onClick={handleClick}
+                >
+                    Принять
+                </button>
+            </div>
         </div>
     );
 }

@@ -1113,6 +1113,27 @@ input:focus {
   margin-top: 10px;
 }
 
+.button-sort {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+.button-sort button {
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  background-color: #5809bb;
+  color: white;
+  padding: 5px 15px 5px 15px;
+  cursor: pointer;
+}
+.button-sort button:active {
+  transform: scale(0.96);
+}
+.button-sort button:hover {
+  box-shadow: 2px 2px 10px 20px rgb(49, 8, 152) inset;
+}
+
 .checkbox {
   cursor: pointer;
   display: flex;

@@ -4,14 +4,15 @@ import { useEffect, useState } from 'react'
 import SortedProduct from './SortedProduct'
 
 export default function Products({products}){
-    const [isSorted, setIsSorted] = useState(true);
-    const [sort, setSort] = useState('');
+    const [isSorted, setIsSorted] = useState(false);
+    const [sort, setSort] = useState([]);
     const [defaultSort, setDefaultSort] = useState("none");
+    const [isClick, setClick] = useState(false);
 
-    useEffect(() => {
-        setIsSorted(defaultSort === "none");
-        console.log(defaultSort)
-    }, [defaultSort])
+    function handleClick(){
+        setClick(true)
+        setIsSorted(!(defaultSort==='none' && Object.values(sort).length === 0))
+    }
 
     return(
         <div className="main-window-products">
@@ -21,15 +22,22 @@ export default function Products({products}){
                 defaultSort = {defaultSort}
                 setDefaultSort = {setDefaultSort}
                 setSort = {setSort}
+                setIsSorted = {setIsSorted}
+                handleClick = {handleClick}
             />
             <div className="section">
-                {isSorted
+                {!isSorted
                 ?
                     <ProductRequest products={products}/>
                 :
                     <SortedProduct
                     typeProduct={products}
                     typeSort={sort}
+                    isSorted = {isSorted}
+                    setIsSorted = {setIsSorted}
+                    defaultSort={defaultSort}
+                    isClick={isClick}
+                    setClick = {setClick}
                     />
                 }
             </div>
