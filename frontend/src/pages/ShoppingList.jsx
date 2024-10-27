@@ -9,7 +9,7 @@ export default function ShoppingList(){
                     <Routes>
                         <Route
                             path="/Sneakers"
-                            element={<Products products={'sneakers'} />}
+                            element={<Products products={'sneakers'}/>}
                         />
                         <Route
                             path="/Shorts"

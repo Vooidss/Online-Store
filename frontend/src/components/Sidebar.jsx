@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Checkbox from '../util/Checkbox';
-import CustomRadio from '../util/CustomRadio';
 import SortComponent from './SortComponent';
 import DefualtSort from './DefualtSort';
 
-export default function Sidebar({ products, sort, setSort, defaultSort, setDefaultSort, handleClick}) {
+export default function Sidebar({ products, setSort, defaultSort, setDefaultSort, handleClick}) {
     const [colors, setColors] = useState([]);
     const [brands, setBrands] = useState([]);
     const [materials, setMaterials] = useState([]);
