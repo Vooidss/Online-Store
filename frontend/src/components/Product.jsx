@@ -36,6 +36,13 @@ export default function Product({ product, productName }) {
                 onClick={() => handleClick()}
             >
                 <div className="section__item__components__image">
+                    <div className="section__item__components__image__discount-baner"
+                    style = {{
+                        display: product.discount > 0 ? 'flex' : 'none'
+                    }}
+                    >
+                        <h1 className="section__item__components__image__discount-baner__baner">{product.discount}</h1>
+                    </div>
                     <img
                         className="section__item__components__image__self"
                         src={product.img}
@@ -53,12 +60,12 @@ export default function Product({ product, productName }) {
                         Размер: {product.size}
                     </div>
                     <div className="section__item__components__items__component">
-                       Цена:  {
+                        Цена: {
                         product.priceWithDiscount ?
-                            <p id = "discount"> {product.priceWithDiscount}</p>:
+                            <p id="discount"> {product.priceWithDiscount}</p> :
                             product.price}
                         {product.priceWithDiscount
-                            ? <p id = "oldPrice"> {product.price} </p>
+                            ? <p id="oldPrice"> {product.price} </p>
                             : ''}
                     </div>
                 </div>

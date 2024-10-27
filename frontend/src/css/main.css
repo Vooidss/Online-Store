@@ -300,6 +300,26 @@ svg * {
 .section__item__components__image {
   width: 100%;
   min-height: 80%;
+  position: relative;
+  overflow: hidden;
+}
+.section__item__components__image__discount-baner {
+  position: absolute;
+  width: 300px;
+  height: 50px;
+  transform: rotate(328deg) translateX(-90px) translateY(-40px);
+  background: #c22626;
+  top: 0;
+  z-index: 100;
+  justify-content: center;
+}
+.section__item__components__image__discount-baner:hover {
+  background: #c22626;
+  cursor: default;
+}
+.section__item__components__image__discount-baner :hover {
+  background: #c22626;
+  cursor: default;
 }
 .section__item__components__image__self {
   border-radius: 10px;

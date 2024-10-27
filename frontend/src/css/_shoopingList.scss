@@ -25,7 +25,7 @@
         color: aliceblue;
         border-radius: 10px;
 
-        :hover {
+        :hover{
             background-color: #eae9e9;
             cursor: pointer;
             border-radius: 10px;
@@ -59,6 +59,30 @@
             &__image {
                 width: 100%;
                 min-height: 80%;
+                position: relative;
+                overflow: hidden;
+
+                &__discount-baner{
+                    position: absolute;
+                    width: 300px;
+                    height: 50px;
+                    transform: rotate(328deg) translateX(-90px) translateY(-40px);
+                    background: #c22626;
+                    top:0;
+                    z-index: 100;
+
+                    justify-content: center;
+
+                    &:hover{
+                        background: #c22626;
+                        cursor: default;
+                    }
+
+                    :hover{
+                        background: #c22626;
+                        cursor: default;
+                    }
+                }
 
                 &__self {
                     border-radius: 10px;
