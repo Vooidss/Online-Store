@@ -190,4 +190,37 @@ public class ProductService {
 
         return ResponseEntity.ok().body(productsResponse);
     }
+
+    public ResponseEntity<ProductResponse> findProductById(int id) {
+
+        Optional<Products> products;
+
+        try{
+            products = productRepositories.findById(id);
+        }catch (RuntimeException e){
+            log.error(e.getMessage());
+            log.error(Arrays.toString(e.getStackTrace()));
+            log.error("Ошибка при получении ID пользовтеля");
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    ProductResponse
+                            .builder()
+                            .status(HttpStatus.BAD_REQUEST)
+                            .code(HttpStatus.BAD_REQUEST.value())
+                            .message("Ошибка при получении ID пользовтеля")
+                            .product(null)
+                            .build()
+            );
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ProductResponse
+                        .builder()
+                        .status(HttpStatus.OK)
+                        .code(HttpStatus.OK.value())
+                        .message("Продукт по ID успешно получен")
+                        .product(products.orElseThrow())
+                        .build()
+        );
+    }
 }

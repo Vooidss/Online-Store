@@ -12,13 +12,6 @@ export default function DefualtSort({sort,setSort}){
             />
             <CustomRadio
                 name="sort"
-                content="Новинки"
-                setValue={setSort}
-                value="novelty"
-                checked={sort === "novelty"}
-            />
-            <CustomRadio
-                name="sort"
                 content="Сначала дорогие"
                 setValue={setSort}
                 value="expensive"

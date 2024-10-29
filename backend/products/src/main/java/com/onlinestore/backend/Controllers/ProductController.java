@@ -66,6 +66,11 @@ public class ProductController {
         return productService.deleteProduct(id);
     }
 
+    @GetMapping("/id/{id}")
+    private ResponseEntity<ProductResponse> findProductById(@PathVariable("id") int id) {
+        return productService.findProductById(id);
+    }
+
     @PostMapping("/ids")
     public ResponseEntity<List<Products>> findProductsByIds(
         @RequestBody List<Integer> ids

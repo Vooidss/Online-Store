@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BsBasket2Fill } from 'react-icons/bs'
 
-export default function Product({ product, productName }) {
+export default function Product({product, productName }) {
     const navigate = useNavigate()
-    const type = productName
 
     const handleClick = () => {
-        navigate(`/${type}/${product.product.id}`)
+        navigate(`/${product.type}/${product.id}`)
     }
 
     const handleClickBasket = async () => {
@@ -17,7 +15,7 @@ export default function Product({ product, productName }) {
         const credentials = { productId, token }
 
         try {
-            const res = await fetch('http://localhost:8050/basket/save', {
+            await fetch('http://localhost:8050/basket/save', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
