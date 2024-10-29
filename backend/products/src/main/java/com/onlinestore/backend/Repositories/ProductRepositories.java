@@ -10,10 +10,6 @@ import org.springframework.data.repository.query.Param;
 public interface ProductRepositories extends JpaRepository<Products, Integer> {
     public List<Products> findByType(String type);
 
-    public Optional<Products> findByBrand(String brand);
-
-    public Optional<Products> findBySize(String size);
-
     @Query("""
         SELECT 'color' AS attribute, p.color as value, count(*) as count  FROM Products p WHERE p.type = :type GROUP BY p.color
         UNION ALL
@@ -35,9 +31,15 @@ public interface ProductRepositories extends JpaRepository<Products, Integer> {
      """)
     public List<Products> findAscPriceByType(@Param("type") String type);
 
-
     @Query("""
     SELECT p FROM Products p WHERE p.discount > 0 AND p.type = :type
     """)
     List<Products> findOnlyDiscount(@Param("type") String type);
+
+    @Query("Select min(p.priceWithDiscount) FROM Products p WHERE p.type = :type")
+    Integer findProductWithMinPriceByType(@Param("type") String type);
+
+    @Query("Select max(p.priceWithDiscount) FROM Products p WHERE p.type = :type")
+    Integer findProductWithMaxPriceByType(@Param("type") String type);
+
 }

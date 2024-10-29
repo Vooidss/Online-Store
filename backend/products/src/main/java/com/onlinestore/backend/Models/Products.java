@@ -59,4 +59,8 @@ public class Products {
     @Column(name = "priceWithDiscount", columnDefinition = "int default 0")
     @PositiveOrZero
     private int priceWithDiscount;
+
+    @Column(name = "priceDiscount", columnDefinition = "int default 0")
+    @PositiveOrZero
+    private int priceDiscount;
 }

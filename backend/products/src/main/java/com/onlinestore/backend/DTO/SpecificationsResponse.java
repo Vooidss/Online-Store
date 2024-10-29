@@ -15,4 +15,6 @@ public class SpecificationsResponse extends Response{
     private List<Map<String,Object>> materials;
     private List<Map<String,Object>> colors;
     private List<Map<String,Object>> brands;
+    private Integer minPrice;
+    private Integer maxPrice;
 }

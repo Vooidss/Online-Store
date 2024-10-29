@@ -4,10 +4,14 @@ import SortComponent from './SortComponent';
 import DefualtSort from './DefualtSort';
 
 export default function Sidebar({ products, setSort, defaultSort, setDefaultSort, handleClick}) {
-    const [colors, setColors] = useState([]);
-    const [brands, setBrands] = useState([]);
-    const [materials, setMaterials] = useState([]);
-    const [sizes, setSizes] = useState([]);
+    const [specifications, setSpecifications] = useState({
+        colors: [],
+        brands: [],
+        materials: [],
+        sizes: [],
+        minPrice: 2000,
+        maxPrice: 999999
+    })
 
     async function findSpecificationsProducts() {
         await fetch(`http://localhost:8071/products/${products}/specifications`, {
@@ -21,10 +25,17 @@ export default function Sidebar({ products, setSort, defaultSort, setDefaultSort
                 console.log(data);
 
                 if (data.code === 200) {
-                    setColors(data.colors || []);
-                    setBrands(data.brands || []);
-                    setMaterials(data.materials || []);
-                    setSizes(data.sizes || []);
+                    setSpecifications(
+                        {
+                            colors: data.colors,
+                            brands: data.brands,
+                            materials: data.materials,
+                            sizes: data.sizes,
+                            minPrice: data.minPrice,
+                            maxPrice: data.maxPrice
+                        }
+                    )
+                    console.error(specifications);
                 } else {
                     console.error(data.message);
                 }
@@ -35,6 +46,26 @@ export default function Sidebar({ products, setSort, defaultSort, setDefaultSort
     useEffect(() => {
         findSpecificationsProducts();
     }, [products]);
+
+    const handelInput = (key,value ) => {
+        setSort((prevStore) => {
+            const newSort= {...prevStore}
+
+            console.log(value)
+
+            if (!newSort[key]) {
+                newSort[key] = [];
+            }
+
+            if(!(newSort[key].length > 0)){
+                delete newSort[key]
+            }
+
+            newSort[key] = value
+
+            return newSort
+        })
+    }
 
     const handleCheckboxChange = (itemKey, value, isChecked) => {
         setSort((prevSort) => {
@@ -69,26 +100,39 @@ export default function Sidebar({ products, setSort, defaultSort, setDefaultSort
                     setSort={setDefaultSort}/>
             </SortComponent>
             <SortComponent name="Цена">
-                <div className="Sidebar-main__sorting__outstanding-window__gap">
+                <label className="Sidebar-main__sorting__outstanding-window__gap">
                     <input
                         className="Sidebar-main__sorting__outstanding-window__gap__input"
-                        placeholder="от 2000"
+                        placeholder={`от ${specifications.minPrice}`}
+                        onBlur ={(event) => handelInput("minPrice", event.target.value)}
                     />
                     <input
                         className="Sidebar-main__sorting__outstanding-window__gap__input"
-                        placeholder="до 999.999"
+                        placeholder={`до ${specifications.maxPrice}`}
+                        onBlur ={(event) => handelInput("maxPrice", event.target.value)}
                     />
-                </div>
+                </label>
                 <div className="Sidebar-main__sorting__outstanding-window__chooses">
-                    <Checkbox text="от 2000" value="2000" onChange={handleCheckboxChange} />
-                    <Checkbox text="от 5000" value="5000" onChange={handleCheckboxChange} />
-                    <Checkbox text="от 10000" value="10000" onChange={handleCheckboxChange} />
-                    <Checkbox text="от 100000" value="100000" onChange={handleCheckboxChange} />
+                    <Checkbox
+                        name = "minPrice"
+                        text={`от ${(((specifications.minPrice + specifications.maxPrice) / 2) + specifications.minPrice) / 2}`}
+                        value={(((specifications.minPrice + specifications.maxPrice) / 2) + specifications.minPrice) / 2}
+                        onChange={handleCheckboxChange} />
+                    <Checkbox
+                        name = "minPrice"
+                        text={`от ${(specifications.minPrice + specifications.maxPrice) / 2}`}
+                        value={(specifications.minPrice + specifications.maxPrice) / 2}
+                        onChange={handleCheckboxChange} />
+                    <Checkbox
+                        name = "minPrice"
+                        text={`от ${(((specifications.minPrice + specifications.maxPrice) / 2) + specifications.maxPrice) / 2}`}
+                        value={(((specifications.minPrice + specifications.maxPrice) / 2) + specifications.maxPrice) / 2}
+                        onChange={handleCheckboxChange} />
                 </div>
             </SortComponent>
             <SortComponent name="Материал">
                 <div className="Sidebar-main__sorting__outstanding-window__chooses">
-                    {materials.map((material) => (
+                    {specifications.materials.map((material) => (
                         <Checkbox
                             key={material.name}
                             text={material.name}
@@ -101,7 +145,7 @@ export default function Sidebar({ products, setSort, defaultSort, setDefaultSort
                 </div>
             </SortComponent>
             <SortComponent name="Размер">
-                {sizes.map((size) => (
+                {specifications.sizes.map((size) => (
                     <Checkbox
                         key={size.name}
                         text={size.name}
@@ -113,7 +157,7 @@ export default function Sidebar({ products, setSort, defaultSort, setDefaultSort
                 ))}
             </SortComponent>
             <SortComponent name="Бренд">
-                {brands.map((brand) => (
+                {specifications.brands.map((brand) => (
                     <Checkbox
                         key={brand.name}
                         text={brand.name}
@@ -125,7 +169,7 @@ export default function Sidebar({ products, setSort, defaultSort, setDefaultSort
                 ))}
             </SortComponent>
             <SortComponent name="Цвет">
-                {colors.map((color) => (
+                {specifications.colors.map((color) => (
                     <Checkbox
                         key={color.name}
                         text={color.name}
@@ -140,7 +184,7 @@ export default function Sidebar({ products, setSort, defaultSort, setDefaultSort
                 <button
                     onClick={handleClick}
                 >
-                    Принять
+                    Применить
                 </button>
             </div>
         </div>

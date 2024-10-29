@@ -44,8 +44,6 @@ export default function Products({products}){
                     <SortedProduct
                     typeProduct={products}
                     typeSort={sort}
-                    isSorted = {isSorted}
-                    setIsSorted = {setIsSorted}
                     defaultSort={defaultSort}
                     isClick={isClick}
                     setClick = {setClick}

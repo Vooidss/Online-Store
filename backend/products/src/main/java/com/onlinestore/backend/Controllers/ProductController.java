@@ -35,9 +35,11 @@ public class ProductController {
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) String material,
             @RequestParam(required = false) String size,
-            @RequestParam(required = false) String defaultSort
+            @RequestParam(required = false) String defaultSort,
+            @RequestParam(required = false) Integer minPrice,
+            @RequestParam(required = false) Integer maxPrice
     ){
-        return productService.sortProducts(type,color,brand,material,size,defaultSort);
+        return productService.sortProducts(type,color,brand,material,size,defaultSort,minPrice,maxPrice);
     }
 
     @GetMapping("/{type}/specifications")

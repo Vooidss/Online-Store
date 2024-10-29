@@ -41,7 +41,7 @@ export default function Product({ product, productName }) {
                         display: product.discount > 0 ? 'flex' : 'none'
                     }}
                     >
-                        <h1 className="section__item__components__image__discount-baner__baner">{product.discount}</h1>
+                        <h1 className="section__item__components__image__discount-baner__baner">{product.discount}%</h1>
                     </div>
                     <img
                         className="section__item__components__image__self"

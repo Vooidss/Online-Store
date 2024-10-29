@@ -24,22 +24,14 @@ public class ProductService {
     private final ProductRepositories productRepositories;
     private final ObjectMapper objectMapper;
 
-    @Cacheable(value = "product", unless = "#result = null")
     public Map<String, Object> findAll() {
         List<Products> products = productRepositories.findAll();
 
         return Map.of("product", products, "isEmpty", products.isEmpty());
     }
 
-    private void addDiscountProduct(List<Products> products){
-        products.stream().filter(x-> x.getDiscount() != 0).forEach(x -> x.setDiscount(x.getDiscount() * x.getPrice() / 100));
-        products.stream().filter(x-> x.getDiscount() != 0).forEach(x -> x.setPriceWithDiscount(x.getPrice() - x.getDiscount()));
-    }
-
-    @Cacheable(value = "product", unless = "#result = null")
     public ResponseEntity<ProductsResponse> findByType(String type) {
         List<Products> products = productRepositories.findByType(type);
-        addDiscountProduct(products);
 
         ProductsResponse productsResponse = ProductsResponse
                 .builder()
@@ -55,6 +47,8 @@ public class ProductService {
     public ResponseEntity<ProductResponse> save(Products product) {
 
         try {
+            product.setPriceDiscount(product.getDiscount() * product.getPrice() / 100);
+            product.setPriceWithDiscount(product.getPrice() - product.getPriceDiscount());
             product = productRepositories.save(product);
         }catch (RuntimeException e){
             log.error(e.getMessage());
@@ -93,7 +87,6 @@ public class ProductService {
 
     public ResponseEntity<List<Products>> findAllById(List<Integer> ids) {
         List<Products> products = productRepositories.findAllById(ids);
-        addDiscountProduct(products);
 
         if (products.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -119,12 +112,14 @@ public class ProductService {
         return list;
     }
 
-    private SpecificationsResponse buildResponse(List<Object[]> specifications) {
+    private SpecificationsResponse buildResponse(List<Object[]> specifications, String type) {
 
         List<Map<String,Object>> colors = getCountSpecification(specifications, "color");
         List<Map<String,Object>> brands = getCountSpecification(specifications, "brand");
         List<Map<String,Object>> sizes = getCountSpecification(specifications, "size");
         List<Map<String,Object>> materials = getCountSpecification(specifications, "material");
+        Integer minPrice = productRepositories.findProductWithMinPriceByType(type);
+        Integer maxPrice = productRepositories.findProductWithMaxPriceByType(type);
 
         return SpecificationsResponse
                 .builder()
@@ -135,6 +130,8 @@ public class ProductService {
                 .brands(brands)
                 .sizes(sizes)
                 .materials(materials)
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
                 .build();
     }
 
@@ -144,7 +141,7 @@ public class ProductService {
         try {
 
             List<Object[]> specifications = productRepositories.findSpecificationsProducts(type);
-            SpecificationsResponse specificationsResponse = buildResponse(specifications);
+            SpecificationsResponse specificationsResponse = buildResponse(specifications, type);
             return ResponseEntity.ok().body(specificationsResponse);
 
         }catch (RuntimeException e){
@@ -161,7 +158,9 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<ProductsResponse> sortProducts(String typeProduct, String color, String brand, String material, String size, String defaultSort) {
+    public ResponseEntity<ProductsResponse> sortProducts(String typeProduct, String color, String brand,
+                                                         String material, String size, String defaultSort,
+                                                         Integer minPrice, Integer maxPrice) {
         List<Products> products = switch (defaultSort) {
             case "cheap" -> productRepositories.findAscPriceByType(typeProduct);
             case "discount" -> productRepositories.findOnlyDiscount(typeProduct);
@@ -175,11 +174,11 @@ public class ProductService {
                         (color == null || color.contains(product.getColor())) &&
                         (brand == null || brand.contains(product.getBrand())) &&
                         (material == null || material.contains(product.getMaterial())) &&
-                        (size == null || size.contains(product.getSize()))
+                        (size == null || size.contains(product.getSize())) &&
+                        (minPrice == null || product.getPriceWithDiscount() >= minPrice) &&
+                        (maxPrice == null || product.getPriceWithDiscount() <= maxPrice)
                 )
                 .toList();
-
-        addDiscountProduct(products);
 
         ProductsResponse productsResponse = ProductsResponse
                 .builder()
