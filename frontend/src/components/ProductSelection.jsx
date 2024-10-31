@@ -1,32 +1,38 @@
 import { useParams} from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import SizeBlock from './SizeBlock'
 
 export default function ProductSelection() {
     const { type,id } = useParams()
-    const [info, setProducts] = useState({
+    const [info, setInfo] = useState({
         img: '',
         brand: '',
         description: '',
         price: 0,
         priceWithDiscount: 0,
         color: '',
-        size: ''
+        sizes: {}
     })
     const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        console.log(info)
+    }, [info])
 
     useEffect(() => {
         setLoading(true)
         fetch(`http://localhost:8071/products/id/${id}`)
             .then(res => res.json())
             .then(data => {
-                setProducts({
-                    img: data.product.img,
-                    brand: data.product.brand,
-                    description: data.product.description,
-                    price: data.product.price,
-                    priceWithDiscount: data.product.priceWithDiscount,
-                    color: data.product.color,
-                    size: data.product.size
+                console.log(data)
+                setInfo({
+                    img: data.product.img || '',
+                    brand: data.product.brand || '',
+                    description: data.product.description || '',
+                    price: data.product.price || 0,
+                    priceWithDiscount: data.product.priceWithDiscount || '',
+                    color: data.product.color || '',
+                    sizes: data.product.listSizes || {}
                 })
                 setLoading(false)
             })
@@ -62,36 +68,11 @@ export default function ProductSelection() {
                         Выберите размер:
                     </p>
                     <div className="main-selection-product__info__sizes__components">
-                        <div className="main-selection-product__info__sizes__components__size">
-                            <p>{info.size}</p>
-                        </div>
-                        <div className="main-selection-product__info__sizes__components__size">
-                            <p>{info.size}</p>
-                        </div>
-                        <div className="main-selection-product__info__sizes__components__size">
-                            <p>{info.size}</p>
-                        </div>
-                        <div className="main-selection-product__info__sizes__components__size">
-                            <p>{info.size}</p>
-                        </div>
-                        <div className="main-selection-product__info__sizes__components__size">
-                            <p>{info.size}</p>
-                        </div>
-                        <div className="main-selection-product__info__sizes__components__size">
-                            <p>{info.size}</p>
-                        </div>
-                        <div className="main-selection-product__info__sizes__components__size">
-                            <p>{info.size}</p>
-                        </div>
-                        <div className="main-selection-product__info__sizes__components__size">
-                            <p>{info.size}</p>
-                        </div>
-                        <div className="main-selection-product__info__sizes__components__size">
-                            <p>{info.size}</p>
-                        </div>
-                        <div className="main-selection-product__info__sizes__components__size">
-                            <p>{info.size}</p>
-                        </div>
+                            {info.sizes.map((size) =>{
+                                return(
+                                    <SizeBlock size={size}/>
+                                )
+                            })}
                     </div>
                 </div>
                 <button>Добавить в корзину</button>

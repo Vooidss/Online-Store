@@ -1,5 +1,6 @@
 package com.onlinestore.backend.Services;
 
+import com.onlinestore.backend.DTO.ProductDTO;
 import com.onlinestore.backend.DTO.ProductResponse;
 import com.onlinestore.backend.DTO.ProductsResponse;
 import com.onlinestore.backend.DTO.SpecificationsResponse;
@@ -8,10 +9,9 @@ import com.onlinestore.backend.Repositories.ProductRepositories;
 
 import java.util.*;
 
+import com.onlinestore.backend.util.Mapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductRepositories productRepositories;
-    private final ObjectMapper objectMapper;
+    private final Mapper mapper;
 
     public Map<String, Object> findAll() {
         List<Products> products = productRepositories.findAll();
@@ -31,7 +31,7 @@ public class ProductService {
     }
 
     public ResponseEntity<ProductsResponse> findByType(String type) {
-        List<Products> products = productRepositories.findByType(type);
+        List<ProductDTO> products = mapper.mapProductsInDTO(productRepositories.findByType(type));
 
         ProductsResponse productsResponse = ProductsResponse
                 .builder()
@@ -66,13 +66,14 @@ public class ProductService {
 
         }
 
+        ProductDTO productDTO = mapper.mapProductInDTO(product);
 
         ProductResponse productsResponse = ProductResponse
                 .builder()
                 .status(HttpStatus.OK)
                 .code(HttpStatus.OK.value())
                 .message("Продукт успешно сохранён")
-                .product(product)
+                .product(productDTO)
                 .build();
 
         return ResponseEntity.ok().body(productsResponse);
@@ -85,8 +86,8 @@ public class ProductService {
         return deleteProduct;
     }
 
-    public ResponseEntity<List<Products>> findAllById(List<Integer> ids) {
-        List<Products> products = productRepositories.findAllById(ids);
+    public ResponseEntity<List<ProductDTO>> findAllById(List<Integer> ids) {
+        List<ProductDTO> products = mapper.mapProductsInDTO(productRepositories.findAllById(ids));
 
         if (products.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -116,7 +117,7 @@ public class ProductService {
 
         List<Map<String,Object>> colors = getCountSpecification(specifications, "color");
         List<Map<String,Object>> brands = getCountSpecification(specifications, "brand");
-        List<Map<String,Object>> sizes = getCountSpecification(specifications, "size");
+        //TODO:СДЕЛАТЬ ДЛЯ SIZES
         List<Map<String,Object>> materials = getCountSpecification(specifications, "material");
         Integer minPrice = productRepositories.findProductWithMinPriceByType(type);
         Integer maxPrice = productRepositories.findProductWithMaxPriceByType(type);
@@ -128,7 +129,7 @@ public class ProductService {
                 .message("Все характеристики продукта и их количество получены")
                 .colors(colors)
                 .brands(brands)
-                .sizes(sizes)
+                //TODO:СДЕЛАТЬ ДЛЯ SIZES
                 .materials(materials)
                 .minPrice(minPrice)
                 .maxPrice(maxPrice)
@@ -174,18 +175,20 @@ public class ProductService {
                         (color == null || color.contains(product.getColor())) &&
                         (brand == null || brand.contains(product.getBrand())) &&
                         (material == null || material.contains(product.getMaterial())) &&
-                        (size == null || size.contains(product.getSize())) &&
+                                //TODO:СДЕЛАТЬ ДЛЯ SIZES
                         (minPrice == null || product.getPriceWithDiscount() >= minPrice) &&
                         (maxPrice == null || product.getPriceWithDiscount() <= maxPrice)
                 )
                 .toList();
+
+        List<ProductDTO> productsDTO = mapper.mapProductsInDTO(products);
 
         ProductsResponse productsResponse = ProductsResponse
                 .builder()
                 .status(HttpStatus.OK)
                 .code(HttpStatus.OK.value())
                 .message("Продукты по заданным характеристикам получены")
-                .products(products)
+                .products(productsDTO)
                 .build();
 
         return ResponseEntity.ok().body(productsResponse);
@@ -193,10 +196,14 @@ public class ProductService {
 
     public ResponseEntity<ProductResponse> findProductById(int id) {
 
-        Optional<Products> products;
+        Optional<ProductDTO> productDTO;
 
         try{
-            products = productRepositories.findById(id);
+            productDTO = Optional.ofNullable(
+                    mapper.mapProductInDTO(
+                            productRepositories.findById(id).orElseThrow()
+                    )
+            );
         }catch (RuntimeException e){
             log.error(e.getMessage());
             log.error(Arrays.toString(e.getStackTrace()));
@@ -219,7 +226,7 @@ public class ProductService {
                         .status(HttpStatus.OK)
                         .code(HttpStatus.OK.value())
                         .message("Продукт по ID успешно получен")
-                        .product(products.orElseThrow())
+                        .product(productDTO.orElseThrow())
                         .build()
         );
     }

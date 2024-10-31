@@ -10,14 +10,13 @@ import org.springframework.data.repository.query.Param;
 public interface ProductRepositories extends JpaRepository<Products, Integer> {
     public List<Products> findByType(String type);
 
+    //TODO:ДОБАВИТЬ ДЛЯ SIZES
     @Query("""
         SELECT 'color' AS attribute, p.color as value, count(*) as count  FROM Products p WHERE p.type = :type GROUP BY p.color
         UNION ALL
         SELECT 'brand' AS attribute, p.brand as value, count(*) as count  FROM Products p WHERE p.type = :type GROUP BY p.brand
         UNION ALL
         SELECT 'material' AS attribute, p.material as value, count(*) as count  FROM Products p WHERE p.type = :type GROUP BY p.material
-        UNION ALL
-        SELECT 'size' AS attribute, p.size as value, count(*) as count  FROM Products p WHERE p.type = :type GROUP BY p.size
         """)
     public List<Object[]> findSpecificationsProducts(@Param("type") String type);
 

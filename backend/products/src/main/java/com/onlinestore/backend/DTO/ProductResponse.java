@@ -1,7 +1,5 @@
 package com.onlinestore.backend.DTO;
 
-import com.onlinestore.backend.Models.Products;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -11,6 +9,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class ProductResponse extends Response{
 
-    Products product;
+    ProductDTO product;
 
 }

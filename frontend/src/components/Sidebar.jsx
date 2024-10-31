@@ -145,7 +145,7 @@ export default function Sidebar({ products, setSort, defaultSort, setDefaultSort
                 </div>
             </SortComponent>
             <SortComponent name="Размер">
-                {specifications.sizes.map((size) => (
+                {specifications.sizes ? specifications.sizes.map((size) => (
                     <Checkbox
                         key={size.name}
                         text={size.name}
@@ -154,7 +154,7 @@ export default function Sidebar({ products, setSort, defaultSort, setDefaultSort
                         onChange={handleCheckboxChange}
                         name = "size"
                     />
-                ))}
+                )) : ''}
             </SortComponent>
             <SortComponent name="Бренд">
                 {specifications.brands.map((brand) => (

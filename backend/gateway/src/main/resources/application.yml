@@ -5,26 +5,52 @@ spring:
     config:
         import: optional:configserver:http://localhost:8888
 
-cloud:
-    gateway:
-        discovery:
-            locator:
-                enabled: true
-        routes:
-            - id: products
-              uri: lb://PRODUCTS
-              predicates:
-                  - Path=/products/**
-              filters:
-                  - AddRequestHeader=Method, POST
-                  - AddRequestHeader=Method, DELETE
-            - id: authentication
-              uri: lb://AUTHORIZATION
-              predicates:
-                  - Path=/auth/**,/login
-              filters:
-                  - AddRequestHeader=Method, POST
-                  - RewritePath=/auth/login, /login
+    cloud:
+        gateway:
+            discovery:
+                locator:
+                    enabled: true
+            globalcors:
+              add-to-simple-url-handler-mapping: true
+              cors-configurations:
+                '[*//]':
+                  allowed-origins:
+                    - "*"
+                  allowed-methods:
+                    - "*"
+                  allowed-headers:
+                    - "*"
+            routes:
+                - id: products
+                  uri: lb://PRODUCTS
+                  predicates:
+                      - Path=/products/**
+                - id: authentication
+                  uri: lb://AUTHORIZATION
+                  predicates:
+                      - Path=/auth/**,/login
+                  filters:
+                      - RewritePath=/auth/login, /login
+                - id: basket
+                  uri: lb://BASKET
+                  predicates:
+                    - Path=/basket/**
+                - id: order
+                  uri: lb://ORDER
+                  predicates:
+                    - Path=/order/**
+            httpserver:
+              wiretap: true
+            httpclient:
+              wiretap: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    org.springframework.boot.autoconfigure.web: DEBUG
+    reactor.netty: DEBUG
 
 eureka:
     client:

@@ -26,4 +26,7 @@ public class Basket {
 
     @Column(name = "countProduct", columnDefinition = "int DEFAULT 1")
     private Integer countProduct;
+
+    @Column(name = "sizeProduct")
+    private String sizeProduct;
 }

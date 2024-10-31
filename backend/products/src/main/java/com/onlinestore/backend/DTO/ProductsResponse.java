@@ -12,6 +12,6 @@ import java.util.List;
 @SuperBuilder
 public class ProductsResponse extends Response{
 
-    private List<Products> products;
+    private List<ProductDTO> products;
 
 }

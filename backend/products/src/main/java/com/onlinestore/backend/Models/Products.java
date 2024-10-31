@@ -9,13 +9,15 @@ import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "products")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Products {
 
     @Id
@@ -27,9 +29,6 @@ public class Products {
 
     @Column(name = "brand", nullable = false)
     private String brand;
-
-    @Column(name = "size", nullable = false)
-    private String size;
 
     @Column(name = "img",nullable = false)
     private String img;
@@ -63,4 +62,7 @@ public class Products {
     @Column(name = "priceDiscount", columnDefinition = "int default 0")
     @PositiveOrZero
     private int priceDiscount;
+
+    @ManyToMany(mappedBy = "products")
+    private List<Sizes> sizes;
 }

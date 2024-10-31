@@ -45,9 +45,6 @@ public class KafkaConsumer {
         orderPriceOfUserDTO = objectMapper.readValue(message, OrderPriceOfUserDTO.class);
 
         userService.writeOffMoney(orderPriceOfUserDTO.getUserId(), orderPriceOfUserDTO.getOrderPrice());
-
-
-
     }
 
 }

@@ -1,5 +1,6 @@
 package com.onlinestore.backend.Controllers;
 
+import com.onlinestore.backend.DTO.ProductDTO;
 import com.onlinestore.backend.DTO.ProductResponse;
 import com.onlinestore.backend.DTO.ProductsResponse;
 import com.onlinestore.backend.DTO.SpecificationsResponse;
@@ -72,7 +73,7 @@ public class ProductController {
     }
 
     @PostMapping("/ids")
-    public ResponseEntity<List<Products>> findProductsByIds(
+    public ResponseEntity<List<ProductDTO>> findProductsByIds(
         @RequestBody List<Integer> ids
     ) {
         return productService.findAllById(ids);
