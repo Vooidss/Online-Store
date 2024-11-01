@@ -13,6 +13,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,10 +28,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import ru.org.basket.DTO.BasketResponse;
 import ru.org.basket.DTO.ProductInfoRequest;
 import ru.org.basket.DTO.ProductResponse;
 import ru.org.basket.DTO.ResponseDTO;
 import ru.org.basket.Model.Basket;
+import ru.org.basket.Model.Status;
 import ru.org.basket.Repositories.BasketRepositories;
 
 @Service
@@ -89,6 +92,8 @@ public class BasketService {
             .productId(productInfoRequest.getProductId())
             .userId(findUserId(productInfoRequest.getToken()))
                 .countProduct(1)
+                .sizeProduct(productInfoRequest.getSizeProduct())
+                .status(Status.PROCESS_PURCHASED.getTitle())
             .build();
     }
 
@@ -171,7 +176,7 @@ public class BasketService {
 
             return getProducts(response);
         }else{
-            log.error("BAD REQUEST");
+            log.error("BAD REQUEST. Не удалость получить продукты");
         }
 
         return null;
@@ -191,8 +196,11 @@ public class BasketService {
             if (BasketIdWithProductId.containsKey(productId)) {
                 Integer basketId = BasketIdWithProductId.get(productId);
 
+
+
                 product.setBasketId(basketId);
                 product.setCount(findCountProductById(basketId));
+                product.setSize(basketRepositories.findBasketById(basketId).getSizeProduct());
 
                 System.out.println("Product ID: " + productId + " - Basket ID: " + basketId);
             }
@@ -321,5 +329,35 @@ public class BasketService {
               )
             );
         }
+    }
+
+    public ResponseEntity<BasketResponse> updateStatus(int id, String status) {
+        try{
+            log.info(id + " " + status + "ФЫАФЫАФЫАФ");
+            basketRepositories.updateStatus(id, status);
+        }catch (RuntimeException e){
+            log.error(e.getMessage());
+            log.error(Arrays.toString(e.getStackTrace()));
+            log.error("Произошла ошибка при обновлении статуса");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    BasketResponse
+                            .builder()
+                            .status(HttpStatus.BAD_REQUEST)
+                            .code(HttpStatus.BAD_REQUEST.value())
+                            .message("Ошибка при обновлении статуса")
+                            .basket(basketRepositories.findBasketById(id))
+                            .build()
+            );
+        }
+
+        return ResponseEntity.ok().body(
+                BasketResponse
+                        .builder()
+                        .status(HttpStatus.OK)
+                        .code(HttpStatus.OK.value())
+                        .message("Статус обновлён")
+                        .basket(basketRepositories.findBasketById(id))
+                        .build()
+        );
     }
 }

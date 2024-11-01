@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
 import ru.org.backend.DTO.PriceOrderOfUserDTO;
+import ru.org.backend.Models.BasketStatus;
+
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -14,16 +17,19 @@ public class KafkaService {
     private final KafkaProducer kafkaProducer;
     private final ObjectMapper objectMapper;
 
-    public void deleteAllProductsInBasket(String userId){
+    public void deleteAllProductsInBasket(String userId, BasketStatus status){
 
         kafkaProducer.sendMessage(
                 new ProducerRecord<>(
-                        "deleteProduct",
-                        "userId",
-                        userId
+                        "updateStatus",
+                        Map.of(
+                                "userId",
+                                userId,
+                                "status",
+                                status.getTitle()
+                        )
                 )
         );
-
     }
 
     public void writeOffMoney(Integer userId, Integer orderPrice) throws JsonProcessingException {

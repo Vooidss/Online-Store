@@ -337,9 +337,11 @@ svg * {
   display: grid;
   grid-template-columns: 50% 50%;
   color: black;
+  min-height: initial;
 }
 .section__item__components__items__component {
   padding: 4px;
+  position: relative;
   justify-content: start;
   align-items: center;
   display: inline-flex;
@@ -1315,6 +1317,16 @@ input:focus {
 }
 .checkbox-content p {
   color: rgba(75, 75, 75, 0.82);
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.select {
+  border-radius: 10px;
+  padding: 3px;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -7,9 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.org.basket.DTO.BasketResponse;
 import ru.org.basket.DTO.ProductInfoRequest;
 import ru.org.basket.DTO.ResponseDTO;
 import ru.org.basket.Model.Basket;
+import ru.org.basket.Model.Status;
 import ru.org.basket.Services.BasketService;
 import ru.org.basket.Services.KafkaProducer;
 
@@ -37,6 +39,13 @@ public class BasketController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Map<String,Object>> deleteProduct(@PathVariable(name = "id",required = false) int id, HttpServletRequest request){
         return basketService.deleteProduct(id,request);
+    }
+
+    @PatchMapping("/update/{id}/status/{status}")
+    public ResponseEntity<BasketResponse> updateStatus(
+            @PathVariable(name = "id") int id,
+            @PathVariable(name = "status") String status){
+        return basketService.updateStatus(id,status);
     }
 
     @PatchMapping("/update/{id}/{count}")

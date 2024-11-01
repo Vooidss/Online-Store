@@ -9,4 +9,5 @@ public class ProductInfoRequest {
 
     int productId;
     String token;
+    String sizeProduct;
 }

@@ -7,6 +7,8 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -54,23 +56,30 @@ public class KafkaConsumer {
         }
     }
 
-    @KafkaListener(topics = "deleteProduct", groupId = "basket_consumer")
-    public void deleteAllProductInBasket(ConsumerRecord<String,String> consumerRecord){
+    @KafkaListener(topics = "updateStatus", groupId = "basket_consumer")
+    public void updateStatusBasket(ConsumerRecord<String, Map<String,String>> consumerRecord){
 
         log.info("Получаем данные...");
 
-        if(consumerRecord.key().equals("userId")){
             log.info("Данные получены: {}", consumerRecord);
-            log.info("Получаем id...");
+            Map<String,String> value = consumerRecord.value();
 
-            int userId = Integer.parseInt(consumerRecord.value());
+            if(value.get("userId") != null && !value.get("userId").isEmpty() &&
+                    value.get("status") != null && !value.get("status").isEmpty()
+            ) {
 
-            log.info("Id получен: {}",userId);
+                log.info("Получаем id...");
 
-            log.info("Удаляем...");
-            basketService.deleteBasketsById(userId);
-            log.info("Удалили.");
+                int userId = Integer.parseInt(value.get("userId"));
+                log.info("Id получен: {}", userId);
+
+                log.info("Получаем статус...");
+                String status = value.get("status");
+                log.info("Статус получен: {}", status);
+
+                log.info("Обновляем...");
+                basketService.updateStatus(userId, status);
+                log.info("Обновили.");
+            }
         }
-
-    }
 }

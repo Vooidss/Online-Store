@@ -3,14 +3,13 @@ package ru.org.backend.Models;
 import lombok.Getter;
 
 @Getter
-public enum Status {
-
-    SUCCESSFULLY ("Успешно"),
-    REJECTED ("Отклонен");
+public enum BasketStatus {
+    PURCHASED ("Куплен"),
+    PROCESS_PURCHASED ("В процессе покупки");
 
     private final String title;
 
-    Status(String title) {
+    BasketStatus(String title) {
         this.title = title;
     }
 
@@ -18,5 +17,4 @@ public enum Status {
     public String toString() {
         return "Статус: " + title;
     }
-
 }

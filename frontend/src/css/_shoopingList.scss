@@ -102,9 +102,11 @@
                 display: grid;
                 grid-template-columns: 50% 50%;
                 color: black;
+                min-height: initial;
 
                 &__component {
                     padding: 4px;
+                    position: relative;
 
                     justify-content: start;
                     align-items: center;

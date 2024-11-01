@@ -1,12 +1,11 @@
-package ru.org.backend.Models;
-
+package ru.org.basket.Model;
 import lombok.Getter;
 
 @Getter
 public enum Status {
 
-    SUCCESSFULLY ("Успешно"),
-    REJECTED ("Отклонен");
+    PURCHASED ("Куплен"),
+    PROCESS_PURCHASED ("В процессе покупки");
 
     private final String title;
 

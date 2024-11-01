@@ -11,6 +11,7 @@ import ru.org.backend.DTO.OrderDetails;
 import ru.org.backend.DTO.OrderRequest;
 import ru.org.backend.DTO.OrderResponse;
 import ru.org.backend.Models.Adress;
+import ru.org.backend.Models.BasketStatus;
 import ru.org.backend.Models.Order;
 import ru.org.backend.Models.Status;
 import ru.org.backend.Repositories.OrderRepository;
@@ -134,7 +135,7 @@ public class OrderService {
         log.info("заказ сохранён");
         log.info("удаляем из корзины все товары...");
 
-        kafkaService.deleteAllProductsInBasket(orderDetails.getUserId().toString());
+        kafkaService.deleteAllProductsInBasket(orderDetails.getUserId().toString(), BasketStatus.PURCHASED);
 
         return ResponseEntity.ok().body(
                 OrderResponse

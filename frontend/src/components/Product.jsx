@@ -1,8 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 import { BsBasket2Fill } from 'react-icons/bs'
+import DropDownBlock from '../util/DropDownBlock'
+import React, { useEffect, useState } from 'react'
 
 export default function Product({product, productName }) {
     const navigate = useNavigate()
+    const [sizeProduct,setSize] = useState(product.listSizes[0]);
+
+    useEffect(() => {
+    }, [sizeProduct])
 
     const handleClick = () => {
         navigate(`/${product.type}/${product.id}`)
@@ -12,7 +18,7 @@ export default function Product({product, productName }) {
         const token = localStorage.getItem('token')
         const productId = product.id
 
-        const credentials = { productId, token }
+        const credentials = { productId, token, sizeProduct }
 
         try {
             await fetch('http://localhost:8050/basket/save', {
@@ -31,9 +37,8 @@ export default function Product({product, productName }) {
         <div className="section__item">
             <div
                 className="section__item__components"
-                onClick={() => handleClick()}
             >
-                <div className="section__item__components__image">
+                <div className="section__item__components__image" onClick={() => handleClick()}>
                     <div className="section__item__components__image__discount-baner"
                     style = {{
                         display: product.discount > 0 ? 'flex' : 'none'
@@ -55,7 +60,21 @@ export default function Product({product, productName }) {
                         Модель: {product.model}
                     </div>
                     <div className="section__item__components__items__component">
-                        Размер: {product.size}
+                        <div className="dropdown">
+                            <label htmlFor = "size">Размер: </label>
+                            <select
+                                className="select"
+                                value={sizeProduct}
+                                onChange={(e) => setSize(e.target.value)}>
+                                {product.listSizes.map((size) =>{
+                                    return(
+                                        <DropDownBlock
+                                            value={size}
+                                        />
+                                    )
+                                })}
+                            </select>
+                        </div>
                     </div>
                     <div className="section__item__components__items__component">
                         Цена: {

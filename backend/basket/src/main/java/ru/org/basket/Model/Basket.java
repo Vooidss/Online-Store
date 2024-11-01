@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "basket",uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"userId", "productId"})
-})
+@Table(name = "basket")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -29,4 +27,7 @@ public class Basket {
 
     @Column(name = "sizeProduct")
     private String sizeProduct;
+
+    @Column(name = "stutus")
+    private String status;
 }

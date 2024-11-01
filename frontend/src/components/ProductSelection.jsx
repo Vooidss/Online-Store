@@ -1,6 +1,6 @@
 import { useParams} from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import SizeBlock from './SizeBlock'
+import SizeBlock from '../util/SizeBlock'
 
 export default function ProductSelection() {
     const { type,id } = useParams()
