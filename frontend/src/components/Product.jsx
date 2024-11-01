@@ -78,10 +78,10 @@ export default function Product({product, productName }) {
                     </div>
                     <div className="section__item__components__items__component">
                         Цена: {
-                        product.priceWithDiscount ?
+                        product.priceDiscount || product.priceDiscount !== 0 ?
                             <p id="discount"> {product.priceWithDiscount}</p> :
                             product.price}
-                        {product.priceWithDiscount
+                        { product.priceDiscount || product.priceDiscount !== 0
                             ? <p id="oldPrice"> {product.price} </p>
                             : ''}
                     </div>

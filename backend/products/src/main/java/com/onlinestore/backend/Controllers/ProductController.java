@@ -35,7 +35,7 @@ public class ProductController {
             @RequestParam(required = false) String color,
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) String material,
-            @RequestParam(required = false) String size,
+            @RequestParam(required = false) List<String> size,
             @RequestParam(required = false) String defaultSort,
             @RequestParam(required = false) Integer minPrice,
             @RequestParam(required = false) Integer maxPrice

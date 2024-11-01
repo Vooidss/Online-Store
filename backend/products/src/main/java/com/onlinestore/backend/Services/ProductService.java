@@ -5,6 +5,7 @@ import com.onlinestore.backend.DTO.ProductResponse;
 import com.onlinestore.backend.DTO.ProductsResponse;
 import com.onlinestore.backend.DTO.SpecificationsResponse;
 import com.onlinestore.backend.Models.Products;
+import com.onlinestore.backend.Models.Sizes;
 import com.onlinestore.backend.Repositories.ProductRepositories;
 
 import java.util.*;
@@ -161,7 +162,7 @@ public class ProductService {
     }
 
     public ResponseEntity<ProductsResponse> sortProducts(String typeProduct, String color, String brand,
-                                                         String material, String size, String defaultSort,
+                                                         String material, List<String> size, String defaultSort,
                                                          Integer minPrice, Integer maxPrice) {
         List<Products> products = switch (defaultSort) {
             case "cheap" -> productRepositories.findAscPriceByType(typeProduct);
@@ -170,15 +171,14 @@ public class ProductService {
             case null, default -> productRepositories.findByType(typeProduct);
         };
 
-        products = products
-                .stream()
+        products = products.stream()
                 .filter(product ->
-                        (color == null || color.contains(product.getColor())) &&
-                        (brand == null || brand.contains(product.getBrand())) &&
-                        (material == null || material.contains(product.getMaterial())) &&
-                                //TODO:СДЕЛАТЬ ДЛЯ SIZES
-                        (minPrice == null || product.getPriceWithDiscount() >= minPrice) &&
-                        (maxPrice == null || product.getPriceWithDiscount() <= maxPrice)
+                                (color == null || color.contains(product.getColor())) &&
+                                (brand == null || brand.contains(product.getBrand())) &&
+                                (material == null || material.contains(product.getMaterial())) &&
+                                (size == null || product.getSizes().stream().map(Sizes::getSize_value).anyMatch(size::contains)) &&
+                                (minPrice == null || product.getPriceWithDiscount() >= minPrice) &&
+                                (maxPrice == null || product.getPriceWithDiscount() <= maxPrice)
                 )
                 .toList();
 

@@ -22,7 +22,9 @@ public interface ProductRepositories extends JpaRepository<Products, Integer> {
         UNION ALL
         SELECT 'size' AS attribute, s.size_value AS value, COUNT(*) AS count
         FROM ProductSize ps
-        JOIN Sizes s on s.id = ps.size.id
+        JOIN Sizes s on s.id = ps.sizeId
+        JOIN Products p ON p.id = ps.productId
+        WHERE p.type = :type
         GROUP BY s.size_value
         """)
     public List<Object[]> findSpecificationsProducts(@Param("type") String type);

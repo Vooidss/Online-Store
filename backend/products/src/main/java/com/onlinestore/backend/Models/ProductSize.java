@@ -17,7 +17,7 @@ import java.util.Objects;
 public class ProductSize {
 
     @Id
-    @Column(name = "product_id") 
+    @Column(name = "product_id")
     private Integer productId;
 
     @Id
