@@ -393,7 +393,7 @@ h1[id=empty] {
 
 .main-selection-product {
   display: grid;
-  grid-template-columns: 60% 25%;
+  grid-template-columns: 60% 30%;
 }
 .main-selection-product__left {
   display: grid;
@@ -415,6 +415,8 @@ h1[id=empty] {
 .main-selection-product__info {
   display: flex;
   flex-direction: column;
+  max-width: 500px;
+  min-width: 400px;
 }
 .main-selection-product__info__brand {
   font-family: "Playfair Display", serif;
@@ -481,6 +483,33 @@ h1[id=empty] {
 .main-selection-product__info__sizes__components__size:hover {
   border: 2px rgba(112, 23, 199, 0.75) solid;
   cursor: pointer;
+}
+.main-selection-product__info__sizes__components__size.active {
+  border: 2px rgba(112, 23, 199, 0.75) solid;
+}
+.main-selection-product__info__button-window {
+  margin-top: 20px;
+  margin-left: 20px;
+  width: auto;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.main-selection-product__info__button-window__button {
+  width: 50%;
+  border: 2px black solid;
+  border-radius: 10px;
+  padding: 10px 12px 10px 12px;
+  background-color: rgb(0, 0, 0);
+  color: #ffffff;
+}
+.main-selection-product__info__button-window__button:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.main-selection-product__info__button-window__button:active {
+  transition: 1.3s;
+  transform: scale(0.9);
 }
 .main-selection-product__info h1, .main-selection-product__info h2, .main-selection-product__info h3 {
   margin: 20px 20px 10px 20px;

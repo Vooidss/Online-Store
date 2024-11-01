@@ -2,7 +2,7 @@
 
 .main-selection-product {
     display: grid;
-    grid-template-columns: 60% 25%;
+    grid-template-columns: 60% 30%;
 
     &__left{
         display: grid;
@@ -27,6 +27,8 @@
     &__info {
         display: flex;
         flex-direction: column;
+        max-width: 500px;
+        min-width: 400px;
 
         &__brand{
             font-family: "Playfair Display", serif;
@@ -103,10 +105,42 @@
                         border: 2px rgba(112, 23, 199, 0.75) solid;
                         cursor: pointer;
                     }
+
+                    &.active{
+                        border: 2px rgba(112, 23, 199, 0.75) solid;
+                    }
+
                 }
 
             }
 
+        }
+
+        &__button-window{
+            margin-top: 20px;
+            margin-left: 20px;
+            width: auto;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            &__button{
+                width: 50%;
+                border: 2px black solid;
+                border-radius: 10px;
+                padding: 10px 12px 10px 12px;
+                background-color: rgb(0, 0, 0);
+                color: #ffffff;
+                
+                &:hover{
+                    cursor: pointer;
+                    background-color: rgba(0, 0, 0, 0.8);
+                }
+
+                &:active{
+                    transition: 1.3s;
+                    transform: scale(0.9);
+                }
+            }
         }
 
         h1,h2,h3{
