@@ -117,7 +117,7 @@ public class ProductService {
 
         List<Map<String,Object>> colors = getCountSpecification(specifications, "color");
         List<Map<String,Object>> brands = getCountSpecification(specifications, "brand");
-        //TODO:СДЕЛАТЬ ДЛЯ SIZES
+        List<Map<String,Object>> sizes = getCountSpecification(specifications, "size");
         List<Map<String,Object>> materials = getCountSpecification(specifications, "material");
         Integer minPrice = productRepositories.findProductWithMinPriceByType(type);
         Integer maxPrice = productRepositories.findProductWithMaxPriceByType(type);
@@ -129,7 +129,7 @@ public class ProductService {
                 .message("Все характеристики продукта и их количество получены")
                 .colors(colors)
                 .brands(brands)
-                //TODO:СДЕЛАТЬ ДЛЯ SIZES
+                .sizes(sizes)
                 .materials(materials)
                 .minPrice(minPrice)
                 .maxPrice(maxPrice)
@@ -142,6 +142,7 @@ public class ProductService {
         try {
 
             List<Object[]> specifications = productRepositories.findSpecificationsProducts(type);
+            specifications.forEach(System.out::println);
             SpecificationsResponse specificationsResponse = buildResponse(specifications, type);
             return ResponseEntity.ok().body(specificationsResponse);
 
