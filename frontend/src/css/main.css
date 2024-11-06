@@ -5,8 +5,10 @@
   user-select: none;
   z-index: 1;
   height: 100px;
+  width: 100%;
   border-bottom: 2px black solid;
   border-top: 15px black solid;
+  position: unset;
 }
 .header__mainHeader {
   height: 100%;
@@ -252,6 +254,41 @@ svg * {
 .main-window-products {
   display: grid;
   grid-template-columns: 200px 1fr;
+  height: 100%;
+}
+
+.section-pagination {
+  display: grid;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  user-select: none;
+}
+.pagination__numbers {
+  display: flex;
+  gap: 5px;
+  margin: 20px;
+}
+.pagination__numbers__page-item {
+  display: flex;
+  background-color: black;
+  color: white;
+  border: 2px black solid;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+}
+.pagination__numbers__page-item.active {
+  background-color: rgb(65, 64, 64);
+}
+.pagination__numbers__page-item:hover {
+  background-color: rgb(65, 64, 64);
 }
 
 .section {
@@ -303,6 +340,7 @@ svg * {
   min-height: 80%;
   position: relative;
   overflow: hidden;
+  z-index: 0;
 }
 .section__item__components__image__discount-baner {
   position: absolute;
@@ -311,7 +349,7 @@ svg * {
   transform: rotate(328deg) translateX(-90px) translateY(-40px);
   background: #c22626;
   top: 0;
-  z-index: 100;
+  z-index: 1;
   justify-content: center;
 }
 .section__item__components__image__discount-baner:hover {
@@ -381,6 +419,7 @@ h1[id=empty] {
   min-height: 100vh;
   display: grid;
   grid-template-rows: 100px;
+  position: relative;
 }
 .App * {
   font-family: "Arial", "Montserrat", serif;
@@ -819,6 +858,7 @@ input:focus {
 }
 
 .mainWindow {
+  z-index: 10;
   background-color: rgba(78, 144, 157, 0.44);
   height: 100%;
   width: 100%;
@@ -1212,11 +1252,21 @@ input:focus {
   background-color: #cbc5c5;
   border-right: 2px solid black;
   user-select: none;
-  height: 100vh;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+.Sidebar-main__all-components {
+  top: 0;
+  position: sticky;
+  width: 100%;
 }
 .Sidebar-main__sorting {
   border-bottom: 1px black solid;
   padding: 10px;
+}
+.Sidebar-main__sorting:nth-child(1) {
+  border-top: 1px black solid;
 }
 .Sidebar-main__sorting__name {
   cursor: pointer;

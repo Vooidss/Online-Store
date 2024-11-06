@@ -36,20 +36,23 @@ export default function Products({products}){
                 setIsSorted = {setIsSorted}
                 handleClick = {handleClick}
             />
-            <div className="section">
                 {!isSorted
                 ?
-                    <ProductRequest products={products}/>
-                :
-                    <SortedProduct
-                    typeProduct={products}
-                    typeSort={sort}
-                    defaultSort={defaultSort}
-                    isClick={isClick}
-                    setClick = {setClick}
+                    <ProductRequest
+                        products={products}
                     />
+                :
+
+                    <div className="section">
+                        <SortedProduct
+                        typeProduct={products}
+                        typeSort={sort}
+                        defaultSort={defaultSort}
+                        isClick={isClick}
+                        setClick = {setClick}
+                        />
+                    </div>
                 }
             </div>
-        </div>
     )
 }

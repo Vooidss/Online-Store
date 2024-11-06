@@ -2,11 +2,21 @@
   background-color: #cbc5c5;
   border-right: 2px solid black;
   user-select: none;
-  height: 100vh;
+  height: 100%;
+  position: relative;
+  width: 100%;
 
+  &__all-components{
+    top:0;
+    position: sticky;
+    width: 100%;
+  }
 
   &__sorting{
     border-bottom: 1px black solid;
+    &:nth-child(1){
+      border-top: 1px black solid;
+    }
     padding: 10px;
     &__name{
       cursor: pointer;

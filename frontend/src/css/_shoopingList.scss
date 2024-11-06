@@ -1,6 +1,48 @@
 .main-window-products {
     display: grid;
     grid-template-columns: 200px 1fr;
+    height: 100%;
+}
+
+.section-pagination{
+    display: grid;
+}
+
+.pagination{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    user-select: none;
+
+    &__numbers{
+        display: flex;
+        gap: 5px;
+        margin: 20px;
+
+        &__page-item{
+            display: flex;
+            background-color: black;
+            color: white;
+            border: 2px black solid;
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            cursor: pointer;
+
+            justify-content: center;
+            align-items: center;
+
+            &.active{
+                background-color: rgb(65, 64, 64);
+            }
+
+            &:hover{
+                background-color: rgb(65, 64, 64);
+            }
+
+        }
+    }
+
 }
 
 .section {
@@ -61,6 +103,7 @@
                 min-height: 80%;
                 position: relative;
                 overflow: hidden;
+                z-index: 0;
 
                 &__discount-baner{
                     position: absolute;
@@ -69,7 +112,7 @@
                     transform: rotate(328deg) translateX(-90px) translateY(-40px);
                     background: #c22626;
                     top:0;
-                    z-index: 100;
+                    z-index: 1;
 
                     justify-content: center;
 

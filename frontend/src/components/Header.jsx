@@ -70,6 +70,9 @@ export default function Header({ modalActive,setModalActive, setAuthorization })
 
     return (
         <header className="header">
+            <div className="header__all-components">
+
+            </div>
             <div className="header__mainHeader">
                 <div className="header__mainHeader__logo"><p className="header__mainHeader__logo__name">Hukising</p></div>
                 <ul className="header__mainHeader__items">

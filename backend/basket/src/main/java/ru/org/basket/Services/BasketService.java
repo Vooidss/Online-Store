@@ -196,8 +196,6 @@ public class BasketService {
             if (BasketIdWithProductId.containsKey(productId)) {
                 Integer basketId = BasketIdWithProductId.get(productId);
 
-
-
                 product.setBasketId(basketId);
                 product.setCount(findCountProductById(basketId));
                 product.setSize(basketRepositories.findBasketById(basketId).getSizeProduct());
