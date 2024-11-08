@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: telegrambot
+
+bot:
+  name: HukisingBot
+  token: 7875396019:AAEA7ACi0FA-9bkyuBiDd8yrnE6XZcKJKqk
