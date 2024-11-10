@@ -1,5 +1,6 @@
-package ru.org.basket.Config;
+package com.hukising.telegrambot.Configuration;
 
+import com.hukising.telegrambot.Deserializer.ProductsDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -16,7 +17,9 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.TopicBuilder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 @Configuration
 @EnableKafka
@@ -30,8 +33,9 @@ public class KafkaConfig {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ProductsDeserializer.class);
         configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        configProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, String.class);
         return new DefaultKafkaConsumerFactory<>(configProps);
     }
 
@@ -58,16 +62,16 @@ public class KafkaConfig {
     }
 
     @Bean
-    public <T> KafkaTemplate<String, Object> kafkaTemplate(
-            ProducerFactory<String, Object> producerFactory
+    public <T> KafkaTemplate<String, T> kafkaTemplate(
+            ProducerFactory<String, T> producerFactory
     ) {
-        return new KafkaTemplate<>(producerFactory());
+        return new KafkaTemplate<>(producerFactory);
     }
 
     @Bean
     public NewTopic topic() {
         return TopicBuilder
-                .name("basket")
+                .name("telegram")
                 .partitions(1)
                 .replicas(1)
                 .build();

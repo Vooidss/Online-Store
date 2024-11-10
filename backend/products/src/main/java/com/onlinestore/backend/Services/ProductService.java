@@ -26,9 +26,13 @@ public class ProductService {
     private final Mapper mapper;
 
     public Map<String, Object> findAll() {
-        List<Products> products = productRepositories.findAll();
+        List<Products> products = findAllList();
 
         return Map.of("product", products, "isEmpty", products.isEmpty());
+    }
+
+    public List<Products> findAllList() {
+        return productRepositories.findAll();
     }
 
     public ResponseEntity<ProductsResponse> findByType(String type) {

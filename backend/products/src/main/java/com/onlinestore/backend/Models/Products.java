@@ -1,11 +1,13 @@
 package com.onlinestore.backend.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
+import org.apache.kafka.common.serialization.Serializer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -64,5 +66,6 @@ public class Products {
     private int priceDiscount;
 
     @ManyToMany(mappedBy = "products")
+    @JsonManagedReference
     private List<Sizes> sizes;
 }

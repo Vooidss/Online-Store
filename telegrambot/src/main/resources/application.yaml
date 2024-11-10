@@ -1,6 +1,10 @@
 spring:
   application:
     name: telegrambot
+  kafka:
+    template:
+      default-topic: telegram
+    bootstrap-servers: localhost:9092
 
 bot:
   name: HukisingBot

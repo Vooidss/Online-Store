@@ -1,5 +1,7 @@
 package com.onlinestore.backend.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,5 +28,6 @@ public class Sizes {
             joinColumns = @JoinColumn(name = "size_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
+    @JsonBackReference
     private List<Products> products;
 }

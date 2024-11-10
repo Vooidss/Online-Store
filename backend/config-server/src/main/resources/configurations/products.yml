@@ -18,6 +18,11 @@ spring:
       filter:
         enabled: true
 
+  kafka:
+    template:
+      default-topic: product
+    bootstrap-servers: localhost:9092
+
 eureka:
   instance:
     hostname: localhost

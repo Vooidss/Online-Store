@@ -2,12 +2,12 @@ package com.hukising.telegrambot.Services;
 
 import com.hukising.telegrambot.Bot.Message;
 import com.hukising.telegrambot.Bot.TelegramBot;
-import com.hukising.telegrambot.Models.DecorationProductStep;
+import com.hukising.telegrambot.DTO.ProductDTO;
 import com.hukising.telegrambot.Models.Product;
 import com.hukising.telegrambot.Models.ProductStep;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,16 +15,15 @@ import java.util.Map;
 @Service
 public class TelegramService {
 
+    private final KafkaProducer kafkaProducer;
+    private final ProductDTO productDTO;
+
     private final Message message;
     public final Map<Long, ProductStep> userSteps = new HashMap<>();
-    public final Map<Long, DecorationProductStep> decorationProductSteps = new HashMap<>();
-    public final List<String> listProductOnDecoration = new ArrayList<>();
     public final Map<ProductStep, String> products = new HashMap<>();
-    private Integer count = 0;
-    private Integer countDecoration = 1;
-    private Integer currentDecoration = 0;
-
-    public TelegramService(Message message) {
+    public TelegramService(KafkaProducer kafkaProducer, ProductDTO productDTO, Message message) {
+        this.kafkaProducer = kafkaProducer;
+        this.productDTO = productDTO;
         this.message = message;
     }
 
@@ -35,27 +34,6 @@ public class TelegramService {
         message.sendMessage("""
                 Тип продукта:
                 """, chatId, null, telegramBot);
-    }
-
-    public void addProducts(Long chatId, TelegramBot telegramBot){
-        decorationProductSteps.put(chatId, DecorationProductStep.COUNT_PRODUCTS);
-        message.sendMessage("Введите количество продуктов, которые хотите добавить: ", chatId, null, telegramBot);
-    }
-
-    public void handleStepForDecorationProduct(Long chatId, String input, TelegramBot telegramBot){
-        count++;
-        if(count == 1){
-            countDecoration = Integer.parseInt(input);
-            decorationProductSteps.put(chatId, DecorationProductStep.PRODUCT);
-        }
-        while (currentDecoration != countDecoration){
-            message.sendMessage("Введите характеристики для продукта: ", chatId, null, telegramBot);
-            listProductOnDecoration.add(input);
-            currentDecoration++;
-        }
-
-        decorationProductSteps.remove(chatId);
-
     }
 
     public void handleStep(Long chatId, String input, TelegramBot telegramBot) {
@@ -116,5 +94,27 @@ public class TelegramService {
             default:
                 message.sendMessage("Неизвестный шаг!", chatId, null, telegramBot);
         }
+    }
+
+    public void seeProduct(Long chatId, TelegramBot telegramBot) {
+        kafkaProducer.sendMessage(new ProducerRecord<>(
+                "telegram",
+                "getProduct",
+                "getProduct"
+        ));
+
+        try{
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Product> products = productDTO.getProducts();
+
+        int countProducts = 0;
+        while(countProducts < products.size()){
+            message.sendMessage(products.get(countProducts++).toString(),chatId,null,telegramBot);
+        }
+
     }
 }

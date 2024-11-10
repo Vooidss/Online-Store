@@ -21,7 +21,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private static final String START = "/start";
     private static final String ADD_PRODUCT = "Добавить новый продукт 👟";
-    private static final String ADD_PRODUCTS = "Добавить новые продукты 🔜";
+    private static final String SEE_ALL_PRODUCTS = "Посмотреть все продукты 📙";
 
     @Value("${bot.name}")
     private String botName;
@@ -36,15 +36,15 @@ public class TelegramBot extends TelegramLongPollingBot {
             Long chatId = update.getMessage().getChatId();
             String receivedText = update.getMessage().getText();
 
+            log.info("Пользователь отправил в чат " + chatId + " сообщение: " + receivedText);
+
             if (telegramService.userSteps.containsKey(chatId)) {
                 telegramService.handleStep(chatId, receivedText, this);
-            } else if(telegramService.decorationProductSteps.containsKey(chatId)){
-                telegramService.handleStepForDecorationProduct(chatId, receivedText, this);
             } else {
                 switch (receivedText) {
                     case START -> message.startMessage(chatId, this);
                     case ADD_PRODUCT -> telegramService.addProduct(chatId, this);
-                    case ADD_PRODUCTS -> telegramService.addProducts(chatId, this);
+                    case SEE_ALL_PRODUCTS -> telegramService.seeProduct(chatId, this);
                     default -> message.sendMessage("Такой команды нет", chatId, null, this);
                 }
             }
