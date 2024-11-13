@@ -5,14 +5,15 @@ import com.hukising.telegrambot.Bot.TelegramBot;
 import com.hukising.telegrambot.DTO.ProductDTO;
 import com.hukising.telegrambot.Models.Product;
 import com.hukising.telegrambot.Models.ProductStep;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.KafkaException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
+@Slf4j
 public class TelegramService {
 
     private final KafkaProducer kafkaProducer;
@@ -97,24 +98,41 @@ public class TelegramService {
     }
 
     public void seeProduct(Long chatId, TelegramBot telegramBot) {
-        kafkaProducer.sendMessage(new ProducerRecord<>(
-                "telegram",
-                "getProduct",
-                "getProduct"
-        ));
+        try{
+            kafkaProducer.sendMessage(new ProducerRecord<>(
+                    "telegram",
+                    "getProduct",
+                    "getProduct"
+            ));
+        }catch (KafkaException e){
+            log.error("Проблема с kafka. Нельзя отправить сообщение.");
+            log.error(e.getMessage());
+            log.error(Arrays.toString(e.getStackTrace()));
+            message.sendMessage("Произошла ошибка 😓. Попробуйте позже.",chatId,null,telegramBot);
+            throw new KafkaException("Проблема с kafka. Нельзя отправить сообщение.");
+        }
+
+        message.sendMessage("Немного подождите...",chatId,null,telegramBot);
 
         try{
             Thread.sleep(2000);
+            if(productDTO.getProducts() == null){
+                Thread.sleep(28000);
+            }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        List<Product> products = productDTO.getProducts();
-
-        int countProducts = 0;
-        while(countProducts < products.size()){
-            message.sendMessage(products.get(countProducts++).toString(),chatId,null,telegramBot);
+        try {
+            List<Product> product = productDTO.getProducts();
+            int countProducts = 0;
+            while(countProducts < product.size()){
+                message.sendMessage(product.get(countProducts++).toString(),chatId,null,telegramBot);
+            }
+        } catch (NullPointerException e){
+            log.error("Product пустой.");
+            log.error(e.getMessage());
+            message.sendMessage("Произошла ошибка 😓. Попробуйте позже.",chatId,null,telegramBot);
         }
-
     }
 }

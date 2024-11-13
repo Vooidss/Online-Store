@@ -58,6 +58,21 @@ public class KafkaConfig {
         configProps.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 JsonSerializer.class);
+        configProps.put(
+                ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, 20000
+        );
+        configProps.put(
+                ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, 30000
+        );
+        configProps.put(
+                ProducerConfig.RETRIES_CONFIG, 5
+        );
+        configProps.put(
+                ProducerConfig.RETRY_BACKOFF_MS_CONFIG, 1000
+        );
+        configProps.put(
+                ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 40000
+        );
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 

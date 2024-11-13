@@ -1,11 +1,5 @@
-FROM maven:3.9.8-eclipse-temurin-21 as builder
-WORKDIR /opt/app
-COPY mvnw pom.xml ./
-COPY products/src/src ./src
-RUN mvn clean install -DskipTests
-
-FROM eclipse-temurin:21
-WORKDIR /opt/app
-EXPOSE 8070
-COPY --from=builder /opt/app/target/*.jar /opt/app/*.jar
-ENTRYPOINT ["java", "-jar", "/opt/app/*.jar"]
+FROM maven:3.9.9-eclipse-temurin-21
+COPY pom.xml /build/
+WORKDIR /build/
+RUN mvn dependency:go-offline
+COPY . /basket/

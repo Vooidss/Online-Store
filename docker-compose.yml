@@ -1,0 +1,174 @@
+services:
+
+  zookeeper:
+    image: zookeeper:3.7.0
+    container_name: zookeeper
+    restart: "no"
+    networks:
+      - kafka-net
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: obsidiandynamics/kafka
+    container_name: kafka
+    restart: "no"
+    networks:
+      - kafka-net
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER_INTERNAL:PLAINTEXT,DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: DOCKER_INTERNAL://:29092,DOCKER_EXTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: DOCKER_INTERNAL://kafka:29092,DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER_INTERNAL
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop
+    restart: "no"
+    networks:
+      - kafka-net
+    ports:
+      - "9000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:29092"
+    depends_on:
+      - "kafka"
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: OnlineStore
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres_user" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  discovery:
+    build:
+      context: ./backend/discovery
+    container_name: discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  gateway:
+    build:
+      context: ./backend/gateway
+    container_name: gateway
+    ports:
+      - "8091:8091"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  config-server:
+    build:
+      context: ./backend/config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - backend
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  authorization:
+    build:
+      context: ./backend/authorization
+    container_name: authorization
+    ports:
+      - "8060:8060"
+    networks:
+      - backend
+    environment:
+        SPRING_PROFILES_ACTIVE: docker
+
+  basket:
+    build:
+      context: ./backend/basket
+    container_name: basket
+    ports:
+      - "8050:8050"
+    networks:
+      - backend
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  orders:
+    build:
+      context: ./backend/orders
+    container_name: orders
+    ports:
+      - "8020:8020"
+    networks:
+      - backend
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  products:
+    build:
+      context: ./backend/products
+    container_name: products
+    ports:
+      - "8071:8071"
+    networks:
+      - backend
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+networks:
+  backend:
+    driver: bridge
+  kafka-net:
+    name: kafka-net
+    driver: bridge
+
+volumes:
+  postgres_data: {}
+  zookeeper: {}
+  kafka: {}
+  kafdrop: {}
+  postgres: {}
+  discovery: {}
+  config-server: {}
+  gateway: {}
+  authorization: {}
+  basket: {}
+  orders: {}
+  products: {}
+
