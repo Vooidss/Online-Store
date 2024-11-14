@@ -1,11 +1,8 @@
-FROM openjdk:21-jdk AS build
+FROM openjdk:21-jdk as build
 WORKDIR /discovery
-COPY . /discovery
-
-FROM openjdk:21-jdk
+COPY . .
 WORKDIR /opt/discovery
-ARG JAR_FILE=/discovery/target/*.jar
-COPY --from=build $JAR_FILE /opt/discovery/discovery.jar
-
-EXPOSE 8020
+ARG JAR_FILE=/target/*.jar
+COPY ${JAR_FILE} /opt/discovery/discovery.jar
+EXPOSE 8761
 ENTRYPOINT ["java", "-jar", "/opt/discovery/discovery.jar"]

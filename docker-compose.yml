@@ -5,7 +5,7 @@ services:
     container_name: zookeeper
     restart: "no"
     networks:
-      - kafka-net
+      - backend
     ports:
       - "2181:2181"
 
@@ -14,7 +14,7 @@ services:
     container_name: kafka
     restart: "no"
     networks:
-      - kafka-net
+      - backend
     ports:
       - "9092:9092"
     environment:
@@ -33,7 +33,7 @@ services:
     container_name: kafdrop
     restart: "no"
     networks:
-      - kafka-net
+      - backend
     ports:
       - "9000:9000"
     environment:
@@ -83,7 +83,7 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8091/actuator/health"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -96,8 +96,9 @@ services:
       - "8888:8888"
     networks:
       - backend
+    depends_on:
+      - postgres
     environment:
-      SPRING_PROFILES_ACTIVE: docker
       DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: admin
@@ -111,12 +112,22 @@ services:
     build:
       context: ./backend/authorization
     container_name: authorization
+    depends_on:
+      - discovery
+      - config-server
     ports:
       - "8060:8060"
+    environment:
+      DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin
     networks:
       - backend
-    environment:
-        SPRING_PROFILES_ACTIVE: docker
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8060/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   basket:
     build:
@@ -127,7 +138,17 @@ services:
     networks:
       - backend
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin
+    depends_on:
+      - discovery
+      - config-server
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8050/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   orders:
     build:
@@ -138,7 +159,17 @@ services:
     networks:
       - backend
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin
+    depends_on:
+      - discovery
+      - config-server
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8020/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   products:
     build:
@@ -149,13 +180,20 @@ services:
     networks:
       - backend
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: admin
+    depends_on:
+      - discovery
+      - config-server
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8071/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   backend:
-    driver: bridge
-  kafka-net:
-    name: kafka-net
     driver: bridge
 
 volumes:

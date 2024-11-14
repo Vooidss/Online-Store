@@ -16,22 +16,19 @@ spring:
   kafka:
     template:
       default-topic: authorization
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka:9092
 
   mvc:
     hiddenmethod:
       filter:
         enabled: true
 
-  config:
-    import: optional:configserver:http://localhost:8888
-
 eureka:
   instance:
-    hostname: localhost
+    hostname: discovery
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://discovery:8761/eureka
 
 server:
   port:

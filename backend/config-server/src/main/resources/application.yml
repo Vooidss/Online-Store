@@ -9,5 +9,12 @@ spring:
         native:
           search-locations: classpath:/configurations
 
+eureka:
+  instance:
+    hostname: discovery
+  client:
+    service-url:
+      defaultZone: http://discovery:8761/eureka
+
 server:
   port: 8888

@@ -1,11 +1,8 @@
-FROM openjdk:21-jdk AS build
+FROM openjdk:21-jdk as build
 WORKDIR /config-server
-COPY . /config-server
-
-FROM openjdk:21-jdk
+COPY . .
 WORKDIR /opt/config-server
-ARG JAR_FILE=/config-server/target/*.jar
-COPY --from=build $JAR_FILE /opt/config-server/config-server.jar
-
-EXPOSE 8020
+ARG JAR_FILE=/target/*.jar
+COPY ${JAR_FILE} /opt/config-server/config-server.jar
+EXPOSE 8888
 ENTRYPOINT ["java", "-jar", "/opt/config-server/config-server.jar"]

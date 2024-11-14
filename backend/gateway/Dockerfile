@@ -1,11 +1,8 @@
-FROM openjdk:21-jdk AS build
-WORKDIR /gatway
-COPY . /gatway
-
-FROM openjdk:21-jdk
-WORKDIR /opt/gatway
-ARG JAR_FILE=/gatway/target/*.jar
-COPY --from=build $JAR_FILE /opt/gatway/gatway.jar
-
-EXPOSE 8020
-ENTRYPOINT ["java", "-jar", "/opt/gatway/gatway.jar"]
+FROM openjdk:21-jdk as build
+WORKDIR /gateway
+COPY . .
+WORKDIR /opt/gateway
+ARG JAR_FILE=/target/*.jar
+COPY ${JAR_FILE} /opt/gateway/gateway.jar
+EXPOSE 8091
+ENTRYPOINT ["java", "-jar", "/opt/gateway/gateway.jar"]

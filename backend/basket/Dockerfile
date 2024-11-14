@@ -1,11 +1,8 @@
-FROM openjdk:21-jdk AS build
+FROM openjdk:21-jdk as build
 WORKDIR /basket
-COPY . /basket
-
-FROM openjdk:21-jdk
+COPY . .
 WORKDIR /opt/basket
-ARG JAR_FILE=/basket/target/*.jar
-COPY --from=build $JAR_FILE /opt/basket/basket.jar
-
-EXPOSE 8020
+ARG JAR_FILE=/target/*.jar
+COPY ${JAR_FILE} /opt/basket/basket.jar
+EXPOSE 8050
 ENTRYPOINT ["java", "-jar", "/opt/basket/basket.jar"]
