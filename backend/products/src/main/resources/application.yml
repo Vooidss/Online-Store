@@ -7,4 +7,8 @@ spring:
   application:
     name: products
   config:
-    import: optional:configserver:http://config-server:8888
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      uri: http://localhost:8888
+      profile:

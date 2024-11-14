@@ -9,7 +9,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>ru.vooidss.gateway</groupId>
+	<groupId>com.onlinestore.backend</groupId>
 	<artifactId>gateway</artifactId>
 
 	<properties>

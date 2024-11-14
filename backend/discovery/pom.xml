@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>ru.vooidss.discovery</groupId>
+    <groupId>com.onlinestore.backend</groupId>
     <artifactId>discovery</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 

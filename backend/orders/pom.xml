@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>ru.org.backend</groupId>
+    <groupId>com.onlinestore.backend</groupId>
     <artifactId>orders</artifactId>
 
     <properties>

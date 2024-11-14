@@ -68,6 +68,8 @@ services:
       - "8761:8761"
     networks:
       - backend
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
       interval: 30s
@@ -82,6 +84,8 @@ services:
       - "8091:8091"
     networks:
       - backend
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8091/actuator/health"]
       interval: 30s
@@ -99,6 +103,7 @@ services:
     depends_on:
       - postgres
     environment:
+      SPRING_PROFILES_ACTIVE: dev, native
       DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: admin
@@ -112,15 +117,18 @@ services:
     build:
       context: ./backend/authorization
     container_name: authorization
+    restart: on-failure
     depends_on:
       - discovery
       - config-server
     ports:
       - "8060:8060"
     environment:
+      SPRING_PROFILES_ACTIVE: dev
       DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: admin
+      TOKEN-SIGNING-KEY: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
     networks:
       - backend
     healthcheck:
@@ -133,11 +141,13 @@ services:
     build:
       context: ./backend/basket
     container_name: basket
+    restart: on-failure
     ports:
       - "8050:8050"
     networks:
       - backend
     environment:
+      SPRING_PROFILES_ACTIVE: dev
       DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: admin
@@ -154,11 +164,13 @@ services:
     build:
       context: ./backend/orders
     container_name: orders
+    restart: on-failure
     ports:
       - "8020:8020"
     networks:
       - backend
     environment:
+      SPRING_PROFILES_ACTIVE: dev
       DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: admin
@@ -175,11 +187,13 @@ services:
     build:
       context: ./backend/products
     container_name: products
+    restart: on-failure
     ports:
       - "8071:8071"
     networks:
       - backend
     environment:
+      SPRING_PROFILES_ACTIVE: dev
       DATABASE_URL: 'jdbc:postgresql://postgres:5432/OnlineStore'
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: admin

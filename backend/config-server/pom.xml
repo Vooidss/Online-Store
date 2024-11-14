@@ -11,7 +11,7 @@
     </parent>
 
 
-    <groupId>ru.vooidss.configServer</groupId>
+    <groupId>com.onlinestore.backend</groupId>
     <artifactId>config-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
