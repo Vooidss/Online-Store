@@ -8,4 +8,8 @@ import lombok.Data;
 public class Size {
     private Long id;
     private String size_value;
+
+    public Size(String size_value){
+        this.size_value = size_value;
+    }
 }

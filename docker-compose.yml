@@ -206,6 +206,21 @@ services:
       timeout: 5s
       retries: 5
 
+  telegram-bot:
+    build:
+      context: ./telegrambot
+    container_name: telegram-bot
+    restart: on-failure
+    ports:
+      - "8010:8010"
+    networks:
+      backend:
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      BOT_TOKE: 7875396019:AAEA7ACi0FA-9bkyuBiDd8yrnE6XZcKJKqk
+      BOT_NAME: HukisingBot
+
+
 networks:
   backend:
     driver: bridge

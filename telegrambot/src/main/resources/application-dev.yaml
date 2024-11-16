@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: telegrambot
+  kafka:
+    template:
+      default-topic: telegram
+    bootstrap-servers: kafka:29092
+
+bot:
+  name: ${BOT_NAME}
+  token: ${BOT_TOKEN}

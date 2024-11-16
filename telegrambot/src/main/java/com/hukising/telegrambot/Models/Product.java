@@ -1,10 +1,12 @@
 package com.hukising.telegrambot.Models;
 
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Data
+@Component
 public class Product {
     private int id;
     private String type;
@@ -16,8 +18,6 @@ public class Product {
     private String color;
     private int price;
     private int discount;
-    private int priceWithDiscount;
-    private int priceDiscount;
     private List<Size> sizes;
 
     @Override
@@ -25,16 +25,14 @@ public class Product {
         return
                 "id: " + id +
                 "\n Тип продукта: " + type +
-                "\n Бренд продукта=" + brand +
-                "\n Ссылка на картинку=" + img +
+                "\n Бренд продукта: " + brand +
+                "\n Ссылка на картинку: " + img +
                 "\n Описание: " + description +
                 "\n Модель: " + model +
                 "\n Материал: " + material +
-                "\n Цвет: '" + color +
+                "\n Цвет: " + color +
                 "\n Цена: " + price +
                 "\n Скидка: " + discount +
-                "\n Цена со скидкой: " + priceWithDiscount +
-                "\n Скидка в рублях: " + priceDiscount +
                 "\n Размеры: " + sizes.stream().map(Size::getSize_value).toList();
     }
 }
