@@ -1,6 +1,8 @@
 package com.hukising.telegrambot.Configuration;
 
 import com.hukising.telegrambot.Deserializer.ProductsDeserializer;
+import com.hukising.telegrambot.Models.Product;
+import com.hukising.telegrambot.Serializer.ProductSerializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -27,7 +29,6 @@ public class KafkaConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
-
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -44,6 +45,27 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
+    }
+
+    @Bean
+    public ProducerFactory<String, Product> producerFactoryForProduct() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ProductSerializer.class);
+        configProps.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, 20000);
+        configProps.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, 30000);
+        configProps.put(ProducerConfig.RETRIES_CONFIG, 5);
+        configProps.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, 1000);
+        configProps.put(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 40000);
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+
+    @Bean
+    public KafkaTemplate<String, Product> kafkaTemplateForProduct(
+            ProducerFactory<String, Product> producerFactoryForProduct
+    ) {
+        return new KafkaTemplate<>(producerFactoryForProduct);
     }
 
     @Bean

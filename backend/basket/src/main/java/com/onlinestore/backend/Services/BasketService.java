@@ -1,4 +1,4 @@
-package ru.org.basket.Services;
+package com.onlinestore.backend.Services;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -28,13 +28,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import ru.org.basket.DTO.BasketResponse;
-import ru.org.basket.DTO.ProductInfoRequest;
-import ru.org.basket.DTO.ProductResponse;
-import ru.org.basket.DTO.ResponseDTO;
-import ru.org.basket.Model.Basket;
-import ru.org.basket.Model.Status;
-import ru.org.basket.Repositories.BasketRepositories;
+import com.onlinestore.backend.DTO.BasketResponse;
+import com.onlinestore.backend.DTO.ProductInfoRequest;
+import com.onlinestore.backend.DTO.ProductResponse;
+import com.onlinestore.backend.DTO.ResponseDTO;
+import com.onlinestore.backend.Model.Basket;
+import com.onlinestore.backend.Model.Status;
+import com.onlinestore.backend.Repositories.BasketRepositories;
 
 @Service
 @AllArgsConstructor
@@ -81,10 +81,6 @@ public class BasketService {
             e.printStackTrace();
         }
         throw new RuntimeException();
-    }
-
-    public void deleteBasketsById(Integer userId){
-        basketRepositories.deleteAllByUserId(userId);
     }
 
     private Basket createBasket(ProductInfoRequest productInfoRequest) {

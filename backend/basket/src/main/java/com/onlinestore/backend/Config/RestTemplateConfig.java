@@ -1,4 +1,4 @@
-package ru.org.basket.Config;
+package com.onlinestore.backend.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

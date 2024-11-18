@@ -1,9 +1,9 @@
-package ru.org.basket.DTO;
+package com.onlinestore.backend.DTO;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import ru.org.basket.Model.Basket;
+import com.onlinestore.backend.Model.Basket;
 
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder

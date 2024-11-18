@@ -1,4 +1,4 @@
-package ru.org.basket.Model;
+package com.onlinestore.backend.Model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

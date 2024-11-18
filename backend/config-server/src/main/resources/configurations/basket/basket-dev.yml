@@ -21,7 +21,7 @@ spring:
   kafka:
     template:
       default-topic: basket
-    bootstrap-servers: http://kafka:29092
+    bootstrap-servers: kafka:29092
 
 eureka:
   instance:

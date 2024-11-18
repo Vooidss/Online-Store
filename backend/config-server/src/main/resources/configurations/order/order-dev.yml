@@ -9,7 +9,7 @@ spring:
   kafka:
     template:
       default-topic: order
-    bootstrap-servers: http://kafka:29092
+    bootstrap-servers: kafka:29092
 
   datasource:
     driver-class-name: org.postgresql.Driver

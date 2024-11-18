@@ -6,13 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.hukising</groupId>
 	<artifactId>telegrambot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>telegrambot</name>
-	<description>Telegram bot for web </description>
+	<description>Telegram bot for web</description>
 	<url/>
 	<licenses>
 		<license/>

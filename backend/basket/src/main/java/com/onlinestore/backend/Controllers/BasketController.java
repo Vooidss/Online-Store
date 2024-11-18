@@ -1,4 +1,4 @@
-package ru.org.basket.Controllers;
+package com.onlinestore.backend.Controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -7,13 +7,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.org.basket.DTO.BasketResponse;
-import ru.org.basket.DTO.ProductInfoRequest;
-import ru.org.basket.DTO.ResponseDTO;
-import ru.org.basket.Model.Basket;
-import ru.org.basket.Model.Status;
-import ru.org.basket.Services.BasketService;
-import ru.org.basket.Services.KafkaProducer;
+import com.onlinestore.backend.DTO.BasketResponse;
+import com.onlinestore.backend.DTO.ProductInfoRequest;
+import com.onlinestore.backend.DTO.ResponseDTO;
+import com.onlinestore.backend.Model.Basket;
+import com.onlinestore.backend.Model.Status;
+import com.onlinestore.backend.Services.BasketService;
+import com.onlinestore.backend.Services.KafkaProducer;
 
 @RestController
 @Slf4j
