@@ -23,11 +23,11 @@
 	</developers>
 
 	<modules>
-		<module>products</module>
-		<module>authorization</module>
+		<module>discovery</module>
 		<module>gateway</module>
 		<module>config-server</module>
-		<module>discovery</module>
+		<module>products</module>
+		<module>authorization</module>
 		<module>basket</module>
         <module>orders</module>
     </modules>

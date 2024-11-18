@@ -1,4 +1,4 @@
-package ru.org.basket;
+package com.onlinestore.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

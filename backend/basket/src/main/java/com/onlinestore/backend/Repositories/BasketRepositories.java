@@ -1,4 +1,4 @@
-package ru.org.basket.Repositories;
+package com.onlinestore.backend.Repositories;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.org.basket.Model.Basket;
+import com.onlinestore.backend.Model.Basket;
 
 public interface BasketRepositories extends JpaRepository<Basket, Integer> {
     @Query("SELECT b FROM Basket b WHERE b.userId = :userId and b.status != 'Куплен'")

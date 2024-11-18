@@ -1,4 +1,4 @@
-package ru.org.basket.Config;
+package com.onlinestore.backend.Config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;

@@ -90,7 +90,7 @@ public class TelegramService {
                 break;
             case DISCOUNT:
                 product.setDiscount(Integer.parseInt(input));
-                addProductsInDataBase(product);
+                addProductInDataBase(product,chatId,telegramBot);
                 userSteps.remove(chatId);
                 message.sendMessage("Продукт успешно добавлен!", chatId, null, telegramBot);
                 break;
@@ -99,8 +99,23 @@ public class TelegramService {
         }
     }
 
-    public void addProductsInDataBase(Product products){
-        System.out.println(products.toString());
+    public void addProductInDataBase(Product product,Long chatId, TelegramBot telegramBot){
+        System.out.println(product.toString());
+
+        try{
+            kafkaProducer.sendProduct(new ProducerRecord<>(
+                    "telegram",
+                    "addProduct",
+                            product
+            ));
+        }catch (KafkaException e){
+            log.error("Произошла ошибка. Проблема с kafka. Невозможно сохранить продукт.");
+            log.error(e.getMessage());
+            log.error(Arrays.toString(e.getStackTrace()));
+            message.sendMessage("Произошла ошибка. Проблема с kafka. Невозможно сохранить продукт",chatId,null,telegramBot);
+            throw new KafkaException("Произошла ошибка. Проблема с kafka. Невозможно сохранить продукт.");
+        }
+
     }
     public void seeProduct(Long chatId, TelegramBot telegramBot) {
         try{

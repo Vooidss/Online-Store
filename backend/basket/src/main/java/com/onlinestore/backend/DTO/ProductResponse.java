@@ -1,4 +1,4 @@
-package ru.org.basket.DTO;
+package com.onlinestore.backend.DTO;
 
 import lombok.Builder;
 import lombok.Data;

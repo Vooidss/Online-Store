@@ -217,7 +217,7 @@ services:
       backend:
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      BOT_TOKE: 7875396019:AAEA7ACi0FA-9bkyuBiDd8yrnE6XZcKJKqk
+      BOT_TOKEN: 7875396019:AAEA7ACi0FA-9bkyuBiDd8yrnE6XZcKJKqk
       BOT_NAME: HukisingBot
 
 

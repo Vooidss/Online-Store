@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk as build
+FROM openjdk:21-jdk
 WORKDIR /config-server
 COPY . .
 WORKDIR /opt/config-server
