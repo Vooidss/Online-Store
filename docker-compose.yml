@@ -60,6 +60,22 @@ services:
       timeout: 10s
       retries: 5
 
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5433:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - backend
+    depends_on:
+      - postgres
+
+
   discovery:
     build:
       context: ./backend/discovery
@@ -238,4 +254,5 @@ volumes:
   basket: {}
   orders: {}
   products: {}
+  pgadmin_data: {}
 

@@ -5,6 +5,12 @@ spring:
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
 
+  flyway:
+    enabled: true
+    locations: classpath:migration
+    baseline-on-migrate: true
+    validate-on-migrate: false
+
   jpa:
     hibernate:
       ddl-auto: update

@@ -72,6 +72,7 @@
             <version>${spring-security.version}</version>
         </dependency>
 
+
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>

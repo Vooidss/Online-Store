@@ -5,6 +5,12 @@ spring:
     username: postgres
     password: admin
 
+  flyway:
+    enabled: true
+    locations: classpath:migration
+    baseline-on-migrate: true
+    validate-on-migrate: false
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -28,7 +34,7 @@ eureka:
     hostname: discovery
   client:
     service-url:
-      defaultZone: http://discovery:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
 server:
   port: 8071
