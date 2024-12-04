@@ -61,7 +61,6 @@
     &__item {
         width: 350px;
         height: 350px;
-
         margin: 20px;
         padding: 2px;
         color: aliceblue;
@@ -81,14 +80,13 @@
 
 
         &__components {
-            display: flex;
+            display: grid;
+            grid-template-rows: 80% 20%;
             width: 100%;
             height: 100%;
             position: relative;
             background: #ffffff;
             border-radius: 10px;
-
-            flex-flow: column nowrap;
 
             &__basket {
                 color: black;
@@ -100,7 +98,6 @@
 
             &__image {
                 width: 100%;
-                min-height: 80%;
                 position: relative;
                 overflow: hidden;
                 z-index: 0;

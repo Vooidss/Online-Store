@@ -320,13 +320,13 @@ svg * {
   background: #eae9e9;
 }
 .section__item__components {
-  display: flex;
+  display: grid;
+  grid-template-rows: 80% 20%;
   width: 100%;
   height: 100%;
   position: relative;
   background: #ffffff;
   border-radius: 10px;
-  flex-flow: column nowrap;
 }
 .section__item__components__basket {
   color: black;
@@ -337,7 +337,6 @@ svg * {
 }
 .section__item__components__image {
   width: 100%;
-  min-height: 80%;
   position: relative;
   overflow: hidden;
   z-index: 0;

@@ -48,16 +48,16 @@ export default function Basket({ isAuthorization }) {
             (acc, product) => {
                 acc.count += product.count;
                 acc.price += product.count * product.price;
-                acc.discount += product.discount * product.count
+                acc.priceDiscount += product.priceDiscount * product.count
                 return acc;
             },
-            { count: 0, price: 0, discount: 0 }
+            { count: 0, price: 0, priceDiscount: 0 }
         );
 
         setOrderInformation({
             count: totalOrder.count,
             price: totalOrder.price,
-            discountPrice: totalOrder.discount
+            discountPrice: totalOrder.priceDiscount
         });
     }
 

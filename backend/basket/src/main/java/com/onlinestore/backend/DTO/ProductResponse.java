@@ -17,6 +17,7 @@ public class ProductResponse {
     private int price;
     private int discount;
     private int priceWithDiscount;
+    private int priceDiscount;
 
     private int basketId;
     private int count;
