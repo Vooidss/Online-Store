@@ -68,4 +68,22 @@ public class Products {
     @ManyToMany(mappedBy = "products")
     @JsonManagedReference
     private List<Sizes> sizes;
+
+    @Override
+    public String toString() {
+        return "Products{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", brand='" + brand + '\'' +
+                ", img='" + img + '\'' +
+                ", description='" + description + '\'' +
+                ", model='" + model + '\'' +
+                ", material='" + material + '\'' +
+                ", color='" + color + '\'' +
+                ", price=" + price +
+                ", discount=" + discount +
+                ", priceWithDiscount=" + priceWithDiscount +
+                ", priceDiscount=" + priceDiscount +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package com.onlinestore.backend.Services;
 
+import com.onlinestore.backend.Components.IdComponent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -16,6 +17,26 @@ public class KafkaConsumer {
 
     private final BasketService basketService;
     private final KafkaProducer kafkaProducer;
+    private final IdComponent idComponent;
+
+    @KafkaListener(topics = "authorization", groupId = "basket_consumer")
+    public void getId(ConsumerRecord<String, Integer> consumerRecord){
+        if(consumerRecord.key().equals("id")){
+            int id = consumerRecord.value();
+            idComponent.setUserId(id);
+        }
+    }
+
+    @KafkaListener(topics = "products", groupId = "basket_consumer")
+    public void getProducts(ConsumerRecord<String, Object> consumerRecord){
+
+        if(consumerRecord.key().equals("products")){
+            log.info(consumerRecord.value().toString());
+            log.info(consumerRecord.toString());
+            log.info(consumerRecord.value().getClass().toString());
+        }
+
+    }
 
     @KafkaListener(topics = "order", groupId = "basket_consumer")
     public void listener(ConsumerRecord<String, String> consumerRecord){

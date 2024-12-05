@@ -1,5 +1,6 @@
 package com.onlinestore.backend.Services;
 
+import com.onlinestore.backend.DTO.ProductDTO;
 import com.onlinestore.backend.Models.Products;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +15,13 @@ import java.util.List;
 @AllArgsConstructor
 public class KafkaProducer {
 
-    private final KafkaTemplate<String, List<Products>> kafkaTemplate;
+    private final KafkaTemplate<String, List<Products>> kafkaTemplateProduct;
+    private final KafkaTemplate<String, List<ProductDTO>> kafkaTemplateProductDTO;
 
     public void sendProduct(ProducerRecord<String, List<Products>> message){
-        kafkaTemplate.send(message);
+        kafkaTemplateProduct.send(message);
+    }
+    public void sendProductDTO(ProducerRecord<String, List<ProductDTO>> message){
+        kafkaTemplateProductDTO.send(message);
     }
 }

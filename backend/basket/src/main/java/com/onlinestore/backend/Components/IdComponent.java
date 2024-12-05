@@ -1,0 +1,10 @@
+package com.onlinestore.backend.Components;
+
+import lombok.Data;
+import org.springframework.stereotype.Component;
+
+@Component
+@Data
+public class IdComponent {
+    private Integer userId;
+}

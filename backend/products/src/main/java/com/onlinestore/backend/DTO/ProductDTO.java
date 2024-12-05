@@ -20,6 +20,6 @@ public class ProductDTO {
     private int discount;
     private int priceWithDiscount;
     private int priceDiscount;
-    private List<String> ListSizes;
+    private List<String> ListSize;
 
 }

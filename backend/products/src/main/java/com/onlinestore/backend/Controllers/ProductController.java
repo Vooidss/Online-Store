@@ -71,11 +71,4 @@ public class ProductController {
     private ResponseEntity<ProductResponse> findProductById(@PathVariable("id") int id) {
         return productService.findProductById(id);
     }
-
-    @PostMapping("/ids")
-    public ResponseEntity<List<ProductDTO>> findProductsByIds(
-        @RequestBody List<Integer> ids
-    ) {
-        return productService.findAllById(ids);
-    }
 }

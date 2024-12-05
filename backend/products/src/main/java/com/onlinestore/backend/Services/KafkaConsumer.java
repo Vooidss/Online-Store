@@ -1,5 +1,6 @@
 package com.onlinestore.backend.Services;
 
+import com.onlinestore.backend.DTO.ProductDTO;
 import com.onlinestore.backend.Models.Products;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -32,6 +35,25 @@ public class KafkaConsumer {
                             products
                     )
             );
+
+        }
+    }
+
+    @KafkaListener(topics = "basket", groupId = "product_consumer")
+    public void getProductByUserId(ConsumerRecord<String, HashSet<Integer>> consumerRecord){
+        if(consumerRecord.key().equals("ids")){
+            List<Integer> idsProducts = consumerRecord.value().stream().toList();
+            log.info(idsProducts.toString());
+            List<ProductDTO> products = productService.findAllById(idsProducts);
+            log.info(products.toString());
+
+            kafkaProducer.sendProductDTO(new ProducerRecord<>(
+                    "product",
+                    "products",
+                    products
+            ));
+
+            log.info("Продукты успешно отправлены");
 
         }
     }
