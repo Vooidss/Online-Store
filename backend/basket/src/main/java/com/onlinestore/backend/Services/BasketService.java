@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -19,15 +18,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import com.onlinestore.backend.DTO.BasketResponse;
 import com.onlinestore.backend.DTO.ProductInfoRequest;
 import com.onlinestore.backend.DTO.ProductResponse;
@@ -44,7 +39,7 @@ public class BasketService {
     private final BasketRepositories basketRepositories;
 
     public Integer findUserId(String token) {
-        String urlString = "http://localhost:8060/user/id";
+        String urlString = "http://authorization:8060/user/id";
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -144,7 +139,7 @@ public class BasketService {
 
     public List<ProductResponse> productServiceRequest(Integer userId) throws IOException {
 
-        String urlString = "http://localhost:8071/products/ids";
+        String urlString = "http://products:8071/products/ids";
 
         List<Integer> list = findBasketByUserId(userId)
                 .stream()
