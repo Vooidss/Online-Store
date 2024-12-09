@@ -32,3 +32,8 @@ eureka:
 
 server:
   port: 8050
+
+host:
+  localhost: true
+  products: products
+  authorization: authorization

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,14 +33,38 @@ import com.onlinestore.backend.Model.Status;
 import com.onlinestore.backend.Repositories.BasketRepositories;
 
 @Service
-@AllArgsConstructor
 @Slf4j
 public class BasketService {
 
+    @Value("${host.localhost}")
+    private String localhost;
+
+    @Value("${host.products}")
+    private String products;
+
+    @Value("${host.authorization}")
+    private String authorization;
+
     private final BasketRepositories basketRepositories;
 
+    public BasketService(BasketRepositories basketRepositories) {
+        this.basketRepositories = basketRepositories;
+    }
+
     public Integer findUserId(String token) {
-        String urlString = "http://authorization:8060/user/id";
+
+        String urlString;
+
+        log.info(String.valueOf(localhost.equals("false")));
+
+        if(localhost.equals("false")){
+            urlString = String.format("http://%s:8060/user/id", products);
+        }else{
+            urlString = "http://localhost:8060/user/id";
+        }
+
+        log.info(urlString);
+
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -139,7 +164,13 @@ public class BasketService {
 
     public List<ProductResponse> productServiceRequest(Integer userId) throws IOException {
 
-        String urlString = "http://products:8071/products/ids";
+        String urlString;
+
+        if(localhost.equals("false")){
+            urlString = String.format("http://%s:8071/products/ids", authorization);
+        }else{
+            urlString = "http://localhost:8071/products/ids";
+        }
 
         List<Integer> list = findBasketByUserId(userId)
                 .stream()
