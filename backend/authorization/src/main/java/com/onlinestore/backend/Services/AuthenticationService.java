@@ -1,8 +1,10 @@
 package com.onlinestore.backend.Services;
 
+import com.onlinestore.backend.user.MyUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,13 +26,8 @@ public class AuthenticationService {
     private final UserService userService;
     private final JwtService jwtService;
 
-    public JwtAuthenticationResponse authenticate(
-        AuthenticationRequest request
-    ) {
-        String jwt = null;
-        int code = 200;
-        StringBuilder error = new StringBuilder();
-        boolean isError = false;
+    public ResponseEntity<JwtAuthenticationResponse> authenticate(AuthenticationRequest request) {
+        StringBuilder jwt = new StringBuilder();
 
         try {
             authenticationManager.authenticate(
@@ -39,32 +36,56 @@ public class AuthenticationService {
                     request.getPassword()
                 )
             );
-        } catch (BadCredentialsException e) {
-            error.append("Неверный учётные данные пользователя");
-            code = 400;
-            log.error(error.toString() + e.getMessage());
-            isError = true;
+        } catch (RuntimeException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.ok().body(JwtAuthenticationResponse.generateJwtAuthenticationResponse(
+                            null,
+                            true,
+                            "Неверный логин или пароль",
+                            HttpStatus.NOT_FOUND.value(),
+                            true
+                    )
+            );
         }
 
-        if (!isError) {
-            var user = userService.getByLogin(request.getLogin());
-            MyUserDetails myUserDetails = MyUserDetails.builder()
+        MyUser user = userService.getByLogin(request.getLogin());
+
+        if(user == null){
+            return ResponseEntity.ok().body(JwtAuthenticationResponse.generateJwtAuthenticationResponse(
+                            null,
+                            true,
+                            "Пользователь с таким логином не найден",
+                            HttpStatus.NOT_FOUND.value(),
+                            true
+                    )
+            );
+        }
+
+        MyUserDetails myUserDetails = MyUserDetails.builder()
                 .user(user)
                 .build();
 
-            try {
-                jwt = jwtService.generateToken(myUserDetails);
-            } catch (JwtGenerateTokenExceptions e) {
-                log.error(e.getMessage());
-            }
+        try {
+            jwt.append(jwtService.generateToken(myUserDetails));
+        } catch (JwtGenerateTokenExceptions e) {
+            log.error(e.getMessage());
+            return ResponseEntity.ok().body(JwtAuthenticationResponse.generateJwtAuthenticationResponse(
+                            null,
+                            true,
+                            "Ошибка генерации токена",
+                            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                            true
+                    )
+            );
         }
 
-        return JwtAuthenticationResponse.generateJwtAuthenticationResponse(
-            jwt,
-            jwtService.isTokenExpired(jwt),
-            error.toString(),
-            code,
-            isError
+        return ResponseEntity.ok().body(JwtAuthenticationResponse.generateJwtAuthenticationResponse(
+                jwt.toString(),
+                jwtService.isTokenExpired(jwt.toString()),
+                null,
+                HttpStatus.OK.value(),
+                false
+            )
         );
     }
 

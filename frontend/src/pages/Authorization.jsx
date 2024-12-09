@@ -17,7 +17,9 @@ export default function Authorization({
     })
 
     const [isError, setError] = useState(false)
+    const [isErrorReg, setErrorReg] = useState(false)
     const [isReg, setReg] = useState(false)
+    const [errorText, setErrorText] = useState("");
 
     const activeLink = 'mainWindow active'
     const defaultLink = 'mainWindow'
@@ -44,10 +46,12 @@ export default function Authorization({
             )
                 .then(response => response.json())
                 .then(data => {
-                        if (data.code === 200) {
+                        if (data.code >= 200 && data.code <= 299) {
                             setReg(false);
                         }else{
                             console.error(data.error)
+                            setErrorReg(true);
+                            setErrorText(data.error)
                         }
                     }
                 )
@@ -73,7 +77,7 @@ export default function Authorization({
 
             const data = await response.json()
 
-            if (data.code === 200) {
+            if (data.code >= 200 && data.code <= 299) {
                 console.log('Success:', data.token)
                 localStorage.setItem('token', data.token)
                 setError(data.failed)
@@ -81,8 +85,10 @@ export default function Authorization({
                 setAuthentication(true)
                 setActive(false)
             } else {
+                console.error(data)
                 console.error('Error:', data.error)
                 setError(data.failed)
+                console.log(isError)
             }
         } catch (error) {
             console.error('Network error:', error)
@@ -156,6 +162,13 @@ export default function Authorization({
                                 email: e.target.value}
                         ))}
                     />
+                    {isErrorReg && (
+                        <p className={
+                            isErrorReg
+                                ? 'mainWindow__authenticationWindow__error active'
+                                : 'mainWindow__authenticationWindow__error'
+                        }>{errorText}</p>
+                    )}
                 </div>
                 <div className="mainWindow__authenticationWindow__under">
                     <button

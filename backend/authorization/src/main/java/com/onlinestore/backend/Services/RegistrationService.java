@@ -1,5 +1,6 @@
 package com.onlinestore.backend.Services;
 
+import com.onlinestore.backend.util.PatternCustom;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,25 +26,26 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final JwtService jwtService;
+    private final PatternCustom patternCustom;
 
     public ResponseEntity<JwtAuthenticationResponse> registration(RegisterRequest request) {
-        String jwt = null;
-        String error = null;
+        StringBuilder jwt = new StringBuilder();
+        StringBuilder error =  new StringBuilder();
 
         if (request.getLogin() == null || request.getPassword() == null) {
-            error = "Нет логина или пароля";
-            log.error(error);
+            error.append("Нет логина или пароля");
+            log.error(error.toString());
             return  ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(JwtAuthenticationResponse
                             .builder()
-                            .error(error)
+                            .error(error.toString())
                             .code(HttpStatus.NOT_FOUND.value())
                             .build()
                     );
         }
 
-        var user = MyUser.builder()
+        MyUser user = MyUser.builder()
             .login(request.getLogin())
             .password(passwordEncoder.encode(request.getPassword()))
             .name(request.getName())
@@ -64,44 +66,43 @@ public class RegistrationService {
         try {
             userService.save(user);
         } catch (ConstraintViolationException e) {
-            error = e
-                .getConstraintViolations()
+            error.append(e.getConstraintViolations()
                 .stream()
                 .toList()
                 .getFirst()
-                .getMessage();
-            log.error(error);
+                .getMessage());
+            log.error(error.toString());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(JwtAuthenticationResponse
                             .builder()
-                            .error(error)
+                            .error(patternCustom.registrationError(error.toString()))
                             .code(HttpStatus.BAD_REQUEST.value())
                             .build()
                     );
         } catch (DataIntegrityViolationException e) {
-            error = e.getMostSpecificCause().getLocalizedMessage();
-            log.error(error);
+            error.append(e.getMostSpecificCause().getLocalizedMessage());
+            log.error(error.toString());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(JwtAuthenticationResponse
                             .builder()
-                            .error(error)
+                            .error(patternCustom.registrationError(error.toString()))
                             .code(HttpStatus.BAD_REQUEST.value())
                             .build()
                     );
         }
 
         try {
-            jwt = jwtService.generateToken(new MyUserDetails(user));
+            jwt.append(jwtService.generateToken(new MyUserDetails(user)));
         } catch (JwtGenerateTokenExceptions e) {
-            error = "Ошибка генерации токена";
-            log.error(error);
+            error.append("Ошибка генерации токена");
+            log.error(error.toString());
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(JwtAuthenticationResponse
                             .builder()
-                            .error(error)
+                            .error(error.toString())
                             .code(HttpStatus.BAD_REQUEST.value())
                             .build()
                     );
@@ -110,8 +111,8 @@ public class RegistrationService {
         return ResponseEntity.ok().body(
                 JwtAuthenticationResponse
                         .builder()
-                        .token(jwt)
-                        .code(200)
+                        .token(jwt.toString())
+                        .code(HttpStatus.CREATED.value())
                         .build()
         );
     }
