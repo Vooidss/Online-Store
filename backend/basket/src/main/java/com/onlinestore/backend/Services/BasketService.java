@@ -1,19 +1,26 @@
 package com.onlinestore.backend.Services;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.onlinestore.backend.Components.IdComponent;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
-import java.util.*;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,34 +36,71 @@ import com.onlinestore.backend.Repositories.BasketRepositories;
 @Slf4j
 public class BasketService {
 
+    @Value("${host.localhost}")
+    private String localhost;
+
+    @Value("${host.products}")
+    private String products;
+
+    @Value("${host.authorization}")
+    private String authorization;
+
     private final BasketRepositories basketRepositories;
-    private final IdComponent idComponent;
-    private final KafkaProducer kafkaProducer;
 
-
-    public BasketService(BasketRepositories basketRepositories, IdComponent idComponent, KafkaProducer kafkaProducer) {
+    public BasketService(BasketRepositories basketRepositories) {
         this.basketRepositories = basketRepositories;
-        this.idComponent = idComponent;
-        this.kafkaProducer = kafkaProducer;
     }
 
     public Integer findUserId(String token) {
-        kafkaProducer.sendMessage(
-                new ProducerRecord<>(
-                        "basket",
-                        "token",
-                        token
-                )
-        );
 
-        int id = idComponent.getUserId();
+        String urlString;
 
-        if(id != 0 ){
-           return id;
+        log.info(String.valueOf(localhost.equals("false")));
+
+        if(localhost.equals("false")){
+            urlString = String.format("http://%s:8060/user/id", products);
+        }else{
+            urlString = "http://localhost:8060/user/id";
         }
 
-        throw new RuntimeException("Пользователь не найден");
+        log.info(urlString);
 
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", "Bearer " + token);
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                StringBuilder response = new StringBuilder();
+
+                try (
+                    BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream())
+                    )
+                ) {
+                    String inputLine;
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                }
+                System.out.println("Response: " + response.toString());
+
+                JsonObject jsonResponse = JsonParser.parseString(
+                    response.toString()
+                ).getAsJsonObject();
+                return jsonResponse.get("Id").getAsInt();
+            } else {
+                System.out.println("GET request not worked");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        throw new RuntimeException();
     }
 
     private Basket createBasket(ProductInfoRequest productInfoRequest) {
@@ -120,16 +164,42 @@ public class BasketService {
 
     public List<ProductResponse> productServiceRequest(Integer userId) throws IOException {
 
-        Set<Integer> idsProduct = findBasketByUserId(userId)
+        String urlString;
+
+        if(localhost.equals("false")){
+            urlString = String.format("http://%s:8071/products/ids", authorization);
+        }else{
+            urlString = "http://localhost:8071/products/ids";
+        }
+
+        List<Integer> list = findBasketByUserId(userId)
                 .stream()
                 .map(Basket::getProductId)
-                .collect(Collectors.toSet());
+                .toList();
 
-        kafkaProducer.sendMessage(new ProducerRecord<>(
-                "basket",
-                "ids",
-                idsProduct
-        ));
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
+
+        String jsonInputString = new Gson().toJson(list);
+
+        try (OutputStream os = conn.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        int responseCode = conn.getResponseCode();
+        System.out.println("Response Code: " + responseCode);
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            String response = getResponseAsString(conn);
+
+            return getProducts(response);
+        }else{
+            log.error("BAD REQUEST. Не удалость получить продукты");
+        }
 
         return null;
     }

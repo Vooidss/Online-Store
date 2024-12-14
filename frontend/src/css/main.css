@@ -881,7 +881,7 @@ input:focus {
 }
 .mainWindow__authenticationWindow {
   display: grid;
-  grid-template-rows: 30% 50% 20%;
+  grid-template-rows: 20% 60% 20%;
   background-color: #0a8ea9;
   height: 350px;
   width: 450px;
@@ -931,7 +931,10 @@ input:focus {
 .mainWindow__authenticationWindow__error {
   margin: 10px;
   transform: scale(0);
-  color: red;
+  color: #000000;
+  font-size: 16px;
+  transition: 1s;
+  opacity: 1;
 }
 .mainWindow__authenticationWindow__error.active {
   transform: scale(1);
