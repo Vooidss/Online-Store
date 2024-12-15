@@ -118,7 +118,7 @@ public class ProductService {
         return list;
     }
 
-    private SpecificationsResponse buildResponse(List<Object[]> specifications, String type) {
+    private SpecificationsResponse buildResponse(List<Object[]> specifications, String type)    {
 
         List<Map<String,Object>> colors = getCountSpecification(specifications, "color");
         List<Map<String,Object>> brands = getCountSpecification(specifications, "brand");
