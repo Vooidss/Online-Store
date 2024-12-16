@@ -121,7 +121,7 @@ public class ProductService {
         return list;
     }
 
-    private SpecificationsResponse buildResponse(List<Object[]> specifications, String type) {
+    private SpecificationsResponse buildResponse(List<Object[]> specifications, String type)    {
 
         List<Map<String,Object>> colors = getCountSpecification(specifications, "color");
         List<Map<String,Object>> brands = getCountSpecification(specifications, "brand");
@@ -204,15 +204,15 @@ public class ProductService {
 
     public ResponseEntity<ProductResponse> findProductById(int id) {
 
-        Optional<ProductDTO> productDTO;
+        ProductDTO productDTO;
 
         try{
-            productDTO = Optional.ofNullable(
+            productDTO = (
                     mapper.mapProductInDTO(
                             productRepositories.findById(id).orElseThrow()
                     )
             );
-        }catch (RuntimeException e){
+        }catch (NullPointerException e){
             log.error(e.getMessage());
             log.error(Arrays.toString(e.getStackTrace()));
             log.error("Ошибка при получении ID пользовтеля");
@@ -234,7 +234,7 @@ public class ProductService {
                         .status(HttpStatus.OK)
                         .code(HttpStatus.OK.value())
                         .message("Продукт по ID успешно получен")
-                        .product(productDTO.orElseThrow())
+                        .product(productDTO)
                         .build()
         );
     }

@@ -6,6 +6,7 @@ import ScrollToTop from '../util/ScrollToTop'
 import ProductSelection from '../components/ProductSelection'
 import BasketPage from './Basket'
 import ProfilePage from './Profile'
+import Welcome from './Welcome'
 
 export default function Main() {
     const [isModelOpen, setModelOpen] = useState(false)
@@ -29,16 +30,17 @@ export default function Main() {
                 <Header
                     modalActive={isModelOpen}
                     setModalActive={toggleModal}
-                    setAuthorization = {setAuthorization}
+                    setAuthorization={setAuthorization}
                 />
                 <Routes>
                     <Route path="/ShopList/*" element={<ShoppingList />} />
+                    <Route path ="" element={<Welcome/>}></Route>
                     <Route
                         path="/:products/:id"
                         element={<ProductSelection />}
                     />
                     <Route path="/Basket" element={<BasketPage
-                    isAuthorization={isAuthorization}
+                        isAuthorization={isAuthorization}
                     />} />
                     <Route path="/Profile" element={<ProfilePage />} />
                 </Routes>

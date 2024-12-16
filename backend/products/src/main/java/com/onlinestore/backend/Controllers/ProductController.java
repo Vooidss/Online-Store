@@ -63,7 +63,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    private Optional<Products> deleteShort(@PathVariable("id") int id) {
+    private Optional<Products> deleteProduct(@PathVariable("id") int id) {
         return productService.deleteProduct(id);
     }
 

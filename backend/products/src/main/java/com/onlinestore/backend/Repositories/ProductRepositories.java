@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductRepositories extends JpaRepository<Products, Integer> {
-    public List<Products> findByType(String type);
+    List<Products> findByType(String type);
 
     @Query("""
         SELECT 'color' AS attribute, p.color as value, count(*) as count  FROM Products p WHERE p.type = :type GROUP BY p.color
@@ -27,17 +27,17 @@ public interface ProductRepositories extends JpaRepository<Products, Integer> {
         WHERE p.type = :type
         GROUP BY s.size_value
         """)
-    public List<Object[]> findSpecificationsProducts(@Param("type") String type);
+    List<Object[]> findSpecificationsProducts(@Param("type") String type);
 
     @Query("""
      SELECT p FROM Products p WHERE p.type = :type ORDER BY p.price DESC
      """)
-    public List<Products> findDescPriceByType(@Param("type") String type);
+    List<Products> findDescPriceByType(@Param("type") String type);
 
     @Query("""
      SELECT p FROM Products p WHERE p.type = :type ORDER BY p.price ASC
      """)
-    public List<Products> findAscPriceByType(@Param("type") String type);
+    List<Products> findAscPriceByType(@Param("type") String type);
 
     @Query("""
     SELECT p FROM Products p WHERE p.discount > 0 AND p.type = :type

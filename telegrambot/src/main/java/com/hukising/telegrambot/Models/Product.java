@@ -1,5 +1,6 @@
 package com.hukising.telegrambot.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 @Data
 @Component
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
     private int id;
     private String type;
