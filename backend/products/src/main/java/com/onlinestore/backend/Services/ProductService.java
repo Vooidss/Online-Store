@@ -91,17 +91,14 @@ public class ProductService {
         return deleteProduct;
     }
 
-    public List<ProductDTO> findAllById(List<Integer> ids) {
-        System.out.println(productRepositories.findAllById(ids));
+    public ResponseEntity<List<ProductDTO>> findAllById(List<Integer> ids) {
         List<ProductDTO> products = mapper.mapProductsInDTO(productRepositories.findAllById(ids));
 
         if (products.isEmpty()) {
-            log.error("Продуктов по такому ID нет");
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        return products;
-
+        return ResponseEntity.ok(products);
     }
 
     private List<Map<String, Object>> getCountSpecification(List<Object[]> specifications, String specificationName){

@@ -44,7 +44,7 @@ public class KafkaConsumer {
         if(consumerRecord.key().equals("ids")){
             List<Integer> idsProducts = consumerRecord.value().stream().toList();
             log.info(idsProducts.toString());
-            List<ProductDTO> products = productService.findAllById(idsProducts);
+            List<ProductDTO> products = productService.findAllById(idsProducts).getBody();
             log.info(products.toString());
 
             kafkaProducer.sendProductDTO(new ProducerRecord<>(

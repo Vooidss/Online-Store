@@ -58,7 +58,7 @@ public class BasketService {
         log.info(String.valueOf(localhost.equals("false")));
 
         if(localhost.equals("false")){
-            urlString = String.format("http://%s:8060/user/id", products);
+            urlString = String.format("http://%s:8060/user/id", authorization);
         }else{
             urlString = "http://localhost:8060/user/id";
         }
@@ -167,7 +167,7 @@ public class BasketService {
         String urlString;
 
         if(localhost.equals("false")){
-            urlString = String.format("http://%s:8071/products/ids", authorization);
+            urlString = String.format("http://%s:8071/products/ids", products);
         }else{
             urlString = "http://localhost:8071/products/ids";
         }

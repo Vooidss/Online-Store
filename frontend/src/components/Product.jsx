@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 export default function Product({product, productName }) {
     const navigate = useNavigate()
-    const [sizeProduct,setSize] = useState(product.listSizes[0]);
+    const [sizeProduct,setSize] = useState(product.listSize[0]);
 
     useEffect(() => {
     }, [sizeProduct])
@@ -66,7 +66,7 @@ export default function Product({product, productName }) {
                                 className="select"
                                 value={sizeProduct}
                                 onChange={(e) => setSize(e.target.value)}>
-                                {product.listSizes.map((size) =>{
+                                {product.listSize.map((size) =>{
                                     return(
                                         <DropDownBlock
                                             value={size}
