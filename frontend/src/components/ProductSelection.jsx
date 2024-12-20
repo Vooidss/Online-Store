@@ -53,7 +53,7 @@ export default function ProductSelection() {
                     price: data.product.price || 0,
                     priceWithDiscount: data.product.priceWithDiscount || '',
                     color: data.product.color || '',
-                    sizes: data.product.listSizes || [],
+                    sizes: data.product.listSize || [],
                     discount: data.product.discount || 0
                 })
                 setTakingSize(info.sizes[0])

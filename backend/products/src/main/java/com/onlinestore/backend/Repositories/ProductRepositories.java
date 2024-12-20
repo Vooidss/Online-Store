@@ -30,12 +30,12 @@ public interface ProductRepositories extends JpaRepository<Products, Integer> {
     List<Object[]> findSpecificationsProducts(@Param("type") String type);
 
     @Query("""
-     SELECT p FROM Products p WHERE p.type = :type ORDER BY p.price DESC
+     SELECT p FROM Products p WHERE p.type = :type ORDER BY p.priceWithDiscount DESC
      """)
     List<Products> findDescPriceByType(@Param("type") String type);
 
     @Query("""
-     SELECT p FROM Products p WHERE p.type = :type ORDER BY p.price ASC
+     SELECT p FROM Products p WHERE p.type = :type ORDER BY p.priceWithDiscount ASC
      """)
     List<Products> findAscPriceByType(@Param("type") String type);
 
